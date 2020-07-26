@@ -1,15 +1,20 @@
 # Loopy NGINX Stats Monitor
-
+  
 Latest release available [here](https://github.com/loopy750/NGINX-Stats-Monitor/releases/latest).
 
 This is a program to assist with "IRL streaming" for popular streaming websites such as Twitch, using OBS Studio. This program is currently in use by Twitch streamers and has been proven to a be a valuable asset to their stream.
 
 Using a "homemade" solution to RTMP stream from your location back to your home PC, this program will automatically switch to a "fallback" OBS scene whenever your connection is lost, and is restored when your connection resumes.
 
+Basic features (**_MultiCameraSwitch=false_**) allow a simple two-scene scenario, either "LIVE" or "FALLBACK" scene.
 
+Advanced features (**_MultiCameraSwitch=true_**) consider for a two-camera multiple-scene scenario, and can alternate between scenes depending on the combination of cameras/streams used, i.e. stream 1, stream 2, and both stream 1&2 simultaneously. See 'readme.txt' for a full description regarding these and other settings.
+  
+  
+  
 Guide is a work in progress...
-
-
+  
+  
 DOWNLOADS
 =========
 
