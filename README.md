@@ -1,5 +1,6 @@
 # NGINX-Stats-Monitor
-NGINX Stats Monitor
+
+Latest release available [here](https://github.com/loopy750/NGINX-Stats-Monitor/releases/latest).
 
 This is a program to assist with "IRL streaming" for popular streaming websites such as Twitch, using OBS Studio.
 
