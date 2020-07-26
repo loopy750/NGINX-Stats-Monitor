@@ -1,0 +1,1 @@
+@START "mpv - stream1" /MIN mpv --vd-lavc-threads=1 --cache-pause=no --demuxer-lavf-analyzeduration=1 --no-osd-bar --no-osc --input-media-keys=no --window-minimized=yes --fs --force-window --audio-device=auto -vf lavfi=[fade=in:10:50] rtmp://127.0.0.1/live/stream1
