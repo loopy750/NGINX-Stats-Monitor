@@ -72,15 +72,19 @@ Open 'nginx.conf'
 Find the line: `"listen 1935;"`  
 Below that line, add: `"ping 3s;"`
 
+Alternatively, download [nginx.conf](https://raw.githubusercontent.com/loopy750/NGINX-Stats-Monitor/master/modifications/nginx.conf) from here.
+
 mpv
 ---
-Inside the mpv folder, create a file called **rtmp_stream_1.cmd**. Edit add the following line, then save:  
-`@START "mpv - stream1" /MIN mpv --vd-lavc-threads=1 --cache-pause=no --demuxer-lavf-analyzeduration=1 --no-osd-bar --no-osc --input-media-keys=no --window-minimized=yes --fs --force-window --audio-device=auto -vf lavfi=[fade=in:10:50] rtmp://127.0.0.1/live/stream1`
+Download [**rtmp_stream_1.cmd**](https://raw.githubusercontent.com/loopy750/NGINX-Stats-Monitor/master/modifications/rtmp_stream_1.cmd) and copy to the _mpv_ root folder (where 'mpv.com' and 'mpv.exe' are located).
 
-If two cameras/scenes are to be used, create an additional file called **rtmp_stream_2.cmd**. Edit and add the following line, then save:  
-`@START "mpv - stream2" /MIN mpv --vd-lavc-threads=1 --cache-pause=no --demuxer-lavf-analyzeduration=1 --no-osd-bar --no-osc --input-media-keys=no --window-minimized=yes --fs --force-window --audio-device=auto -vf lavfi=[fade=in:10:50] rtmp://127.0.0.1/live/stream2`
+If two cameras/scenes are to be used, download an additional file [**rtmp_stream_2.cmd**](https://raw.githubusercontent.com/loopy750/NGINX-Stats-Monitor/master/modifications/rtmp_stream_2.cmd) and also copy to the _mpv_ root folder (where 'mpv.com' and 'mpv.exe' are located).
 
-These file/s are to be executed AFTER 'nginx.exe'.
+These **.cmd** file/s are to be executed AFTER 'nginx.exe'.
+
+Download [**input.conf**](https://raw.githubusercontent.com/loopy750/NGINX-Stats-Monitor/master/modifications/input.conf) and copy to the _mpv_ folder (where 'fonts.conf' is located). This will disable several mouse and keyboard functions from accidentally seeking/interrupting a live stream.
+
+Download [**mpv.conf**](https://raw.githubusercontent.com/loopy750/NGINX-Stats-Monitor/master/modifications/mpv.conf) and also copy to the _mpv_ folder (where 'fonts.conf' is located). This will enable high quality OpenGL options for most modern hardware that supports them. Remove these options if they cause problems.
 
 VLC 64-bit
 ----------
