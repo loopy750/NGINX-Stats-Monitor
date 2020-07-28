@@ -7,9 +7,9 @@ SUB __UI_LoadForm
 
     DIM __UI_NewID AS LONG, __UI_RegisterResult AS LONG
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Form, "LoopyNginxMonitor", 800, 450, 0, 0, 0)
+    __UI_NewID = __UI_NewControl(__UI_Type_Form, "LoopyNGINXMonitor", 800, 450, 0, 0, 0)
     __UI_RegisterResult = 0
-    SetCaption __UI_NewID, "Loopy Nginx Monitor"
+    SetCaption __UI_NewID, "Loopy NGINX Monitor"
     Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(1, 1, 1)
     Control(__UI_NewID).BackColor = _RGB32(32, 32, 32)
@@ -61,7 +61,7 @@ SUB __UI_LoadForm
     Control(__UI_NewID).Value = 2
     Control(__UI_NewID).BorderSize = 1
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Frame, "Debug", 753, 59, 24, 383, 0)
+    __UI_NewID = __UI_NewControl(__UI_Type_Frame, "DebugFrame", 753, 59, 24, 383, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Debug"
     Control(__UI_NewID).Font = SetFont("phagspa.ttf?segoeui.ttf?seguisb.ttf", 12)
@@ -100,6 +100,14 @@ SUB __UI_LoadForm
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Help"
     Control(__UI_NewID).ForeColor = _RGB32(255, 255, 255)
+
+    __UI_NewID = __UI_NewControl(__UI_Type_Frame, "versionFrame", 753, 59, 24, 383, 0)
+    __UI_RegisterResult = 0
+    SetCaption __UI_NewID, "v1.3.2"
+    Control(__UI_NewID).ForeColor = _RGB32(1, 172, 1)
+    Control(__UI_NewID).HasBorder = True
+    Control(__UI_NewID).Value = 1
+    Control(__UI_NewID).BorderSize = 1
 
     __UI_NewID = __UI_NewControl(__UI_Type_MenuItem, "FileMenuExit", 63, 20, 0, 4, __UI_GetID("FileMenu"))
     __UI_RegisterResult = 0
@@ -334,9 +342,9 @@ SUB __UI_LoadForm
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "tPing3LB", 104, 21, 504, 35, __UI_GetID("Status"))
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "tPingOutLB", 104, 21, 504, 35, __UI_GetID("Status"))
     __UI_RegisterResult = 0
-    SetCaption __UI_NewID, "tPing3#"
+    SetCaption __UI_NewID, "tPingOut#"
     Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(131, 151, 163)
     Control(__UI_NewID).BorderColor = _RGB32(164, 166, 170)
@@ -403,7 +411,7 @@ SUB __UI_LoadForm
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "TimerLB", 146, 21, 18, 12, __UI_GetID("Debug"))
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "TimerLB", 146, 21, 18, 12, __UI_GetID("DebugFrame"))
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Timer"
     Control(__UI_NewID).Font = SetFont("segoeui.ttf?phagspa.ttf?seguisb.ttf", 12)
@@ -412,7 +420,7 @@ SUB __UI_LoadForm
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "TimerSnapshotLB", 175, 21, 161, 12, __UI_GetID("Debug"))
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "TimerSnapshotLB", 175, 21, 161, 12, __UI_GetID("DebugFrame"))
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Timer (snapshot)"
     Control(__UI_NewID).Font = SetFont("segoeui.ttf?phagspa.ttf?seguisb.ttf", 12)
@@ -421,7 +429,7 @@ SUB __UI_LoadForm
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "td_displayVarLB", 125, 21, 326, 12, __UI_GetID("Debug"))
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "td_displayVarLB", 125, 21, 326, 12, __UI_GetID("DebugFrame"))
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "td_display var"
     Control(__UI_NewID).Font = SetFont("segoeui.ttf?phagspa.ttf?seguisb.ttf", 12)
@@ -430,7 +438,7 @@ SUB __UI_LoadForm
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "mouseXVarLB", 80, 21, 436, 12, __UI_GetID("Debug"))
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "mouseXVarLB", 80, 21, 436, 12, __UI_GetID("DebugFrame"))
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "mouseX var"
     Control(__UI_NewID).Font = SetFont("segoeui.ttf?phagspa.ttf?seguisb.ttf", 12)
@@ -439,7 +447,7 @@ SUB __UI_LoadForm
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "mouseYVarLB", 90, 21, 516, 12, __UI_GetID("Debug"))
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "mouseYVarLB", 90, 21, 516, 12, __UI_GetID("DebugFrame"))
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "mouseY var"
     Control(__UI_NewID).Font = SetFont("segoeui.ttf?phagspa.ttf?seguisb.ttf", 12)
@@ -448,7 +456,7 @@ SUB __UI_LoadForm
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "__ERRORLINEVarLB", 130, 21, 598, 12, __UI_GetID("Debug"))
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "__ERRORLINEVarLB", 130, 21, 598, 12, __UI_GetID("DebugFrame"))
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "_ERRORLINE var"
     Control(__UI_NewID).Font = SetFont("segoeui.ttf?phagspa.ttf?seguisb.ttf", 12)
@@ -457,7 +465,7 @@ SUB __UI_LoadForm
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "Debug_TimerLB", 146, 21, 18, 34, __UI_GetID("Debug"))
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "Debug_TimerLB", 146, 21, 18, 34, __UI_GetID("DebugFrame"))
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Debug_Timer"
     Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
@@ -465,7 +473,7 @@ SUB __UI_LoadForm
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "Debug_Timer_SnapshotLB", 175, 21, 161, 34, __UI_GetID("Debug"))
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "Debug_Timer_SnapshotLB", 175, 21, 161, 34, __UI_GetID("DebugFrame"))
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Debug_Timer_Snapshot"
     Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
@@ -473,7 +481,7 @@ SUB __UI_LoadForm
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "td_displayLB", 125, 21, 326, 34, __UI_GetID("Debug"))
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "td_displayLB", 125, 21, 326, 34, __UI_GetID("DebugFrame"))
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "td_display"
     Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
@@ -481,7 +489,7 @@ SUB __UI_LoadForm
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "mouseXLB", 80, 21, 436, 34, __UI_GetID("Debug"))
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "mouseXLB", 80, 21, 436, 34, __UI_GetID("DebugFrame"))
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "mouseX"
     Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
@@ -489,7 +497,7 @@ SUB __UI_LoadForm
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "mouseYLB", 90, 21, 516, 34, __UI_GetID("Debug"))
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "mouseYLB", 90, 21, 516, 34, __UI_GetID("DebugFrame"))
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "mouseY"
     Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
@@ -497,7 +505,7 @@ SUB __UI_LoadForm
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "__ERRORLINELB", 130, 21, 598, 34, __UI_GetID("Debug"))
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "__ERRORLINELB", 130, 21, 598, 34, __UI_GetID("DebugFrame"))
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "_ERRORLINE"
     Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
@@ -645,26 +653,34 @@ SUB __UI_LoadForm
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "About"
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "StatusLB", 265, 23, 495, 0, 0)
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "StatusLB", 310, 21, 450, 1, 0)
     __UI_RegisterResult = 0
-    Control(__UI_NewID).ForeColor = _RGB32(30, 153, 238)
+    Control(__UI_NewID).Font = SetFont("segoeui.ttf?seguisb.ttf?phagspa.ttf", 12)
+    Control(__UI_NewID).ForeColor = _RGB32(60, 180, 240)
     Control(__UI_NewID).Align = __UI_Right
     Control(__UI_NewID).VAlign = __UI_Middle
+
+    __UI_NewID = __UI_NewControl(__UI_Type_PictureBox, "PictureBoxLogoBottom", 401, 30, 176, 14, __UI_GetID("versionFrame"))
+    __UI_RegisterResult = 0
+    Control(__UI_NewID).Align = __UI_Center
+    Control(__UI_NewID).VAlign = __UI_Middle
+    Control(__UI_NewID).BorderSize = 1
 
 END SUB
 
 SUB __UI_AssignIDs
-    LoopyNginxMonitor = __UI_GetID("LoopyNginxMonitor")
+    LoopyNGINXMonitor = __UI_GetID("LoopyNGINXMonitor")
     FileMenu = __UI_GetID("FileMenu")
     NGINX = __UI_GetID("NGINX")
     Status = __UI_GetID("Status")
     Settings = __UI_GetID("Settings")
     CurrentScene = __UI_GetID("CurrentScene")
-    Debug = __UI_GetID("Debug")
+    DebugFrame = __UI_GetID("DebugFrame")
     Stream1 = __UI_GetID("Stream1")
     Stream2 = __UI_GetID("Stream2")
     OptionsMenu = __UI_GetID("OptionsMenu")
     HelpMenu = __UI_GetID("HelpMenu")
+    versionFrame = __UI_GetID("versionFrame")
     FileMenuExit = __UI_GetID("FileMenuExit")
     RMTPLB = __UI_GetID("RMTPLB")
     clientsLB = __UI_GetID("clientsLB")
@@ -692,7 +708,7 @@ SUB __UI_AssignIDs
     Kb_DiffLB = __UI_GetID("Kb_DiffLB")
     Timer_FailLB = __UI_GetID("Timer_FailLB")
     Timer_Fail_CountLB = __UI_GetID("Timer_Fail_CountLB")
-    tPing3LB = __UI_GetID("tPing3LB")
+    tPingOutLB = __UI_GetID("tPingOutLB")
     td_updateLB = __UI_GetID("td_updateLB")
     BandwidthThresholdLB = __UI_GetID("BandwidthThresholdLB")
     StreamFailDelayLB = __UI_GetID("StreamFailDelayLB")
@@ -732,4 +748,5 @@ SUB __UI_AssignIDs
     IndicatorLB = __UI_GetID("IndicatorLB")
     HelpMenuAbout = __UI_GetID("HelpMenuAbout")
     StatusLB = __UI_GetID("StatusLB")
+    PictureBoxLogoBottom = __UI_GetID("PictureBoxLogoBottom")
 END SUB

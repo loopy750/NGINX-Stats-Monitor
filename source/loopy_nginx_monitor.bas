@@ -6,17 +6,18 @@ OPTION _EXPLICIT
 '-----------------------------------------------------------
 
 ': Controls' IDs: ------------------------------------------------------------------
-DIM SHARED LoopyNginxMonitor AS LONG
+DIM SHARED LoopyNGINXMonitor AS LONG
 DIM SHARED FileMenu AS LONG
 DIM SHARED NGINX AS LONG
 DIM SHARED Status AS LONG
 DIM SHARED Settings AS LONG
 DIM SHARED CurrentScene AS LONG
-DIM SHARED Debug AS LONG
+DIM SHARED DebugFrame AS LONG
 DIM SHARED Stream1 AS LONG
 DIM SHARED Stream2 AS LONG
 DIM SHARED OptionsMenu AS LONG
 DIM SHARED HelpMenu AS LONG
+DIM SHARED versionFrame AS LONG
 DIM SHARED FileMenuExit AS LONG
 DIM SHARED RMTPLB AS LONG
 DIM SHARED clientsLB AS LONG
@@ -44,7 +45,7 @@ DIM SHARED UpdateIntervalLB AS LONG
 DIM SHARED Kb_DiffLB AS LONG
 DIM SHARED Timer_FailLB AS LONG
 DIM SHARED Timer_Fail_CountLB AS LONG
-DIM SHARED tPing3LB AS LONG
+DIM SHARED tPingOutLB AS LONG
 DIM SHARED td_updateLB AS LONG
 DIM SHARED BandwidthThresholdLB AS LONG
 DIM SHARED StreamFailDelayLB AS LONG
@@ -84,6 +85,7 @@ DIM SHARED OptionsMenuFullscreen AS LONG
 DIM SHARED IndicatorLB AS LONG
 DIM SHARED HelpMenuAbout AS LONG
 DIM SHARED StatusLB AS LONG
+DIM SHARED PictureBoxLogoBottom AS LONG
 
 ': External modules: ---------------------------------------------------------------
 '$INCLUDE:'InForm_Deleted.bas'
@@ -95,18 +97,18 @@ DIM SHARED StatusLB AS LONG
 '$INCLUDE:'image.png.MEM'
 SUB __UI_BeforeInit
     $VERSIONINFO:CompanyName=loopy750
-    $VERSIONINFO:ProductName=Loopy Nginx Monitor
-    $VERSIONINFO:Comments=Monitor Nginx RTMP Streams
-    $VERSIONINFO:FileDescription=Loopy Nginx Monitor
-    $VERSIONINFO:FILEVERSION#=1,3,1,0
-    $VERSIONINFO:PRODUCTVERSION#=1,3,1,0
+    $VERSIONINFO:ProductName=Loopy NGINX Monitor
+    $VERSIONINFO:Comments=Monitor NGINX RTMP Streams
+    $VERSIONINFO:FileDescription=Loopy NGINX Monitor
+    $VERSIONINFO:FILEVERSION#=1,3,2,0
+    $VERSIONINFO:PRODUCTVERSION#=1,3,2,0
     $CHECKING:ON
     $RESIZE:OFF
     IF ERR = 0 THEN
         $EXEICON:'.\icon.ico'
-        _TITLE "Loopy Nginx Stats Monitor - loopy750"
+        _TITLE "Loopy NGINX Monitor - loopy750"
     END IF
-    Ver$ = "1.3.1"
+    Ver$ = "1.3.2"
 
     'Always on top : ------------------------------------------------------------------
     CONST HWND_TOPMOST%& = -1
@@ -141,7 +143,7 @@ SUB __UI_OnLoad
     SetCaption Kb_DiffLB, "-"
     SetCaption Timer_FailLB, "-"
     SetCaption Timer_Fail_CountLB, "-"
-    SetCaption tPing3LB, "-"
+    SetCaption tPingOutLB, "-"
     SetCaption td_updateLB, "-"
     'Settings
     SetCaption Bandwidth_ThresholdLB, "-"
@@ -179,6 +181,7 @@ SUB __UI_OnLoad
     Port = "8080"
     fileStat = "stat"
     filePrevious = "returnPreviousScene.tmp"
+    outputStatusFile = "outputStatus.txt"
     IF _FILEEXISTS(filePrevious) THEN KILL filePrevious
     _ALLOWFULLSCREEN OFF
     RANDOMIZE TIMER
@@ -209,6 +212,7 @@ SUB __UI_OnLoad
                     IF file4_var$ = "ServerPort" THEN Port = file4_val$
                     IF file4_var$ = "WebsocketAddress" THEN OBS_URL = file4_val$
                     IF file4_var$ = "WebsocketPassword" THEN OBS_PW = file4_val$
+                    IF file4_var$ = "FileStatusOutput" THEN FileStatusOutput = file4_val$
                     IF file4_var$ = "CheckUpdateOnStartup" THEN CheckUpdateOnStartup = file4_val$
                     IF file4_var$ = "MultiCameraSwitch" THEN MultiCameraSwitch$ = file4_val$
                     IF file4_var$ = "urlStream1" THEN urlStream1 = file4_val$
@@ -222,6 +226,9 @@ SUB __UI_OnLoad
             END IF
         LOOP UNTIL EOF(4)
         CLOSE #4
+
+        IF Scene_OK = "" OR Scene_Fail = "" OR Scene_Intro = "" OR URL = "" OR Port = "" OR OBS_URL = "" OR OBS_PW = "" OR FileStatusOutput = "" OR CheckUpdateOnStartup = "" OR MultiCameraSwitch$ = "" OR urlStream1 = "" OR urlStream2 = "" OR titleScene1 = "" OR titleScene2 = "" OR titleScene12 = "" OR returnPreviousScene = "" OR returnPreviousSceneRemember$ = "" THEN verCheck$ = "Settings missing in 'config.ini' file, check 'readme.txt'...": iniFeatures = 1
+
         IF Bandwidth_Threshold <= 0 THEN
             Bandwidth_Threshold = 0
         ELSEIF Bandwidth_Threshold >= 9999 THEN Bandwidth_Threshold = 9999
@@ -247,10 +254,11 @@ SUB __UI_OnLoad
     END IF
     IF MultiCameraSwitch$ = "true" THEN __MultiCameraSwitch = 1 ELSE __MultiCameraSwitch = 0
     IF returnPreviousScene = "true" THEN __returnPreviousScene = 1 ELSE __returnPreviousScene = 0
+    IF FileStatusOutput = "true" THEN __FileStatusOutput = 1 ELSE __FileStatusOutput = 0
     IF returnPreviousSceneRemember$ = "true" THEN returnPreviousSceneRemember = 1 ELSE returnPreviousSceneRemember = 0
     IF __MultiCameraSwitch = 0 THEN __returnPreviousScene = 0: returnPreviousSceneRemember = 0
 
-    IF CheckUpdateOnStartup = "true" THEN 'This is repeated - need a better solution
+    IF CheckUpdateOnStartup = "true" AND iniFeatures = 0 THEN
         file224$ = ""
         updateResult$ = ""
         _DELAY .25
@@ -272,6 +280,8 @@ SUB __UI_OnLoad
         IF file224$ = Ver$ THEN verCheck$ = "You are using the latest version..."
     END IF
 
+    iniFeatures = 0
+
     Port_Client$ = "TCP/IP:" + Port + ":"
 
     IF Scene_OK = "" OR Scene_Fail = "" OR Scene_Intro = "" OR URL = "" OR Port = "" OR OBS_URL = "" THEN RefreshDisplayRequest = 1: Error_msg$ = "Variable/s for scenes empty, check if " + CHR$(34) + config_main + CHR$(34) + " exists. (#2)": _DELAY 3
@@ -287,9 +297,13 @@ SUB __UI_OnLoad
     END IF
 
     _DELAY .25
-    _TITLE "Loopy Nginx Stats Monitor"
+    _TITLE "Loopy NGINX Monitor"
 
     IF __MultiCameraSwitch = 0 THEN Control(Stream1).Hidden = True: Control(Stream2).Hidden = True
+
+    Control(DebugFrame).Hidden = True
+    Control(versionFrame).Hidden = False
+    LoadImageMEM Control(PictureBoxLogoBottom), "nginx_logo_bottom.png"
 
     ON TIMER(1) Timer01
     TIMER ON
@@ -298,7 +312,7 @@ END SUB
 SUB __UI_BeforeUpdateDisplay
     'This event occurs at approximately 30 frames per second.
     'You can change the update frequency by calling SetFrameRate DesiredRate%
-    SetFrameRate 30
+    SetFrameRate 36
 
     IF RefreshDisplayRequest = 1 THEN
         RefreshDisplayRequest = 0
@@ -365,7 +379,7 @@ END SUB
 
 SUB __UI_Click (id AS LONG)
     SELECT CASE id
-        CASE LoopyNginxMonitor
+        CASE LoopyNGINXMonitor
 
         CASE FileMenu
 
@@ -399,10 +413,12 @@ SUB __UI_Click (id AS LONG)
         CASE OptionsMenuDebug
             IF Debug <> 1 THEN
                 Debug = 1
-                Control(Debug).Disabled = False
+                Control(DebugFrame).Hidden = False
+                Control(versionFrame).Hidden = True
             ELSE
                 Debug = 0
-                Control(Debug).Disabled = True
+                Control(DebugFrame).Hidden = True
+                Control(versionFrame).Hidden = False
             END IF
 
         CASE OptionsMenuFullscreen
@@ -416,9 +432,12 @@ SUB __UI_Click (id AS LONG)
 
         CASE FileMenuExit
             IF _FILEEXISTS(filePrevious) THEN KILL filePrevious
+            IF _FILEEXISTS(outputStatusFile) THEN KILL outputStatusFile
             SYSTEM
 
         CASE HelpMenuCheckForUpdates
+            verCheck$ = "Checking for new version..."
+            SetCaption StatusLB, verCheck$
             file224$ = ""
             updateResult$ = ""
             _DELAY .25
@@ -441,7 +460,7 @@ SUB __UI_Click (id AS LONG)
             IF verCheck <> "" THEN updateDisplayCounter = 0
 
         CASE HelpMenuAbout
-            About = MessageBox(SPACE$(3) + "Loopy Nginx Stats Monitor v" + Ver$ + "\n\n" + SPACE$(20) + "07/20 - loopy750\n\n" + SPACE$(3) + "https://www.github.com/loopy750", "About", MsgBox_OkOnly)
+            About = MessageBox(SPACE$(3) + "Loopy NGINX Stats Monitor v" + Ver$ + "\n\n" + SPACE$(20) + "07/20 - loopy750\n\n" + SPACE$(3) + "https://www.github.com/loopy750", "About", MsgBox_OkOnly)
 
         CASE RMTPLB
 
@@ -495,7 +514,7 @@ SUB __UI_Click (id AS LONG)
 
         CASE Timer_Fail_CountLB
 
-        CASE tPing3LB
+        CASE tPingOutLB
 
         CASE td_updateLB
 
@@ -566,7 +585,7 @@ END SUB
 
 SUB __UI_MouseEnter (id AS LONG)
     SELECT CASE id
-        CASE LoopyNginxMonitor
+        CASE LoopyNGINXMonitor
 
         CASE FileMenu
 
@@ -648,7 +667,7 @@ SUB __UI_MouseEnter (id AS LONG)
 
         CASE Timer_Fail_CountLB
 
-        CASE tPing3LB
+        CASE tPingOutLB
 
         CASE td_updateLB
 
@@ -719,7 +738,7 @@ END SUB
 
 SUB __UI_MouseLeave (id AS LONG)
     SELECT CASE id
-        CASE LoopyNginxMonitor
+        CASE LoopyNGINXMonitor
 
         CASE FileMenu
 
@@ -801,7 +820,7 @@ SUB __UI_MouseLeave (id AS LONG)
 
         CASE Timer_Fail_CountLB
 
-        CASE tPing3LB
+        CASE tPingOutLB
 
         CASE td_updateLB
 
@@ -884,7 +903,7 @@ END SUB
 
 SUB __UI_MouseDown (id AS LONG)
     SELECT CASE id
-        CASE LoopyNginxMonitor
+        CASE LoopyNGINXMonitor
 
         CASE FileMenu
 
@@ -966,7 +985,7 @@ SUB __UI_MouseDown (id AS LONG)
 
         CASE Timer_Fail_CountLB
 
-        CASE tPing3LB
+        CASE tPingOutLB
 
         CASE td_updateLB
 
@@ -1037,7 +1056,7 @@ END SUB
 
 SUB __UI_MouseUp (id AS LONG)
     SELECT CASE id
-        CASE LoopyNginxMonitor
+        CASE LoopyNGINXMonitor
 
         CASE FileMenu
 
@@ -1119,7 +1138,7 @@ SUB __UI_MouseUp (id AS LONG)
 
         CASE Timer_Fail_CountLB
 
-        CASE tPing3LB
+        CASE tPingOutLB
 
         CASE td_updateLB
 
@@ -1396,6 +1415,14 @@ FUNCTION calc_nginx$ (convertTime#, includeSec)
 
 END FUNCTION
 
+SUB statusOutputToFile (outputMSG$)
+
+    OPEN outputStatusFile FOR OUTPUT AS #48
+    PRINT #48, outputMSG$
+    CLOSE #48
+
+END SUB
+
 SUB Timer01
     td_update# = TIMER(.001) - timer1#
     timer1# = TIMER(.001)
@@ -1467,7 +1494,7 @@ SUB Timer01
     tPing1# = TIMER(.001)
     client = _OPENCLIENT(Port_Client$ + URL)
     tPing2# = TIMER(.001)
-    tPing3# = (tPing2# - tPing1#)
+    tPingOut# = (tPing2# - tPing1#)
 
     IF client THEN
         NULL = NULL
@@ -1560,7 +1587,7 @@ SUB Timer01
     IF Kb_Diff# <= Bandwidth_Threshold AND nginx_warmup = 1 THEN Timer_Fail = Timer_Fail + 1
     IF Timer_Fail >= 19999 THEN Timer_Fail = 19999
 
-    SetCaption (rtmp_nacceptedLB), "A:" + STR$(rtmp_naccepted#)
+    SetCaption (rtmp_nacceptedLB), "Acc:" + STR$(rtmp_naccepted#)
     SetCaption (rtmp_codec_nclientsLB), LTRIM$(STR$(rtmp_codec_nclients#))
     IF rtmp_codec_video$ <> "" THEN SetCaption (rtmp_codec_videoLB), rtmp_codec_video$ ELSE SetCaption rtmp_codec_videoLB, "-"
     IF rtmp_codec_audio$ <> "" THEN SetCaption (rtmp_codec_audioLB), rtmp_codec_audio$ ELSE SetCaption rtmp_codec_audioLB, "-"
@@ -1582,14 +1609,14 @@ SUB Timer01
     IF Timer_Fail >= Stream_Fail_Delay THEN Control(Timer_FailLB).ForeColor = RED_FAIL
     SetCaption (Timer_FailLB), calc_nginx$(Timer_Fail, 1)
 
-    IF Timer_Fail = 0 AND SD = 1 THEN SD = 0: _TITLE "Loopy Nginx Stats Monitor"
+    IF Timer_Fail = 0 AND SD = 1 THEN SD = 0: _TITLE "Loopy NGINX Monitor"
 
-    IF Timer_Fail >= 1 THEN Control(Timer_Fail_CountLB).ForeColor = RED_WARNING ELSE Control(Timer_Fail_CountLB).ForeColor = GREEN_OK
-    IF Timer_Fail >= Stream_Fail_Delay THEN Control(Timer_Fail_CountLB).ForeColor = RED_FAIL
+    IF Timer_Fail_Count >= 1 THEN Control(Timer_Fail_CountLB).ForeColor = RED_WARNING ELSE Control(Timer_Fail_CountLB).ForeColor = GREEN_OK
     IF Timer_Fail_Count <> 1 THEN SetCaption (Timer_Fail_CountLB), LTRIM$(STR$(Timer_Fail_Count)) + " times" ELSE SetCaption (Timer_Fail_CountLB), LTRIM$(STR$(Timer_Fail_Count)) + " time"
 
-    TIMEms tPing3#, 0
-    SetCaption (tPing3LB), LTRIM$(STR$(VAL(tout) * 1000)) + "ms"
+    TIMEms tPingOut#, 0
+    IF VAL(tout) >= .1 THEN Control(tPingOutLB).ForeColor = RED_WARNING ELSE Control(tPingOutLB).ForeColor = GREEN_OK
+    SetCaption (tPingOutLB), LTRIM$(STR$(VAL(tout) * 1000)) + "ms"
 
     IF nginx_warmup = 1 THEN
         IF td_update# <= 0.001 THEN td_update# = 0.001
@@ -1675,6 +1702,7 @@ SUB Timer01
                 LoadImageMEM Control(PictureBox1), "tick.png"
                 SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + CHR$(34) + Scene_OK + CHR$(34)
                 _DELAY .1
+                IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM UP]"
             END IF
         ELSE
             IF Timer_Fail >= Stream_Fail_Delay THEN
@@ -1691,6 +1719,7 @@ SUB Timer01
                         Scene_Current$ = Scene_Fail
                         SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + CHR$(34) + Scene_Fail + CHR$(34)
                         _DELAY .1
+                        IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM DOWN]"
                         Timer_Fail_Count = Timer_Fail_Count + 1
                         IF Timer_Fail_Count >= 999 THEN Timer_Fail_Count = 999
                     END IF
@@ -1715,10 +1744,12 @@ SUB Timer01
                     Scene_Current$ = previousScene$
                     SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + CHR$(34) + previousScene$ + CHR$(34)
                     _DELAY .1
+                    IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM UP] : [CAMERA #1 UP] : [CAMERA #2 DOWN]"
                 ELSE
                     Scene_Current$ = titleScene1
                     SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + CHR$(34) + titleScene1 + CHR$(34)
                     _DELAY .1
+                    IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM UP] : [CAMERA #1 UP]"
                 END IF
             END IF
             streamsUp$ = "1"
@@ -1730,12 +1761,15 @@ SUB Timer01
                     IF lastStreamUp$ <> "2" THEN previousScene$ = titleScene2
                     Scene_Current$ = previousScene$
                     SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + CHR$(34) + previousScene$ + CHR$(34)
+                    _DELAY .1
+                    IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM UP] : [CAMERA #2 UP] : [CAMERA #1 DOWN]"
                 ELSE
                     Scene_Current$ = titleScene2
                     SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + CHR$(34) + titleScene2 + CHR$(34)
+                    _DELAY .1
+                    IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM UP] : [CAMERA #2 UP]"
                 END IF
             END IF
-            _DELAY .1
             streamsUp$ = "2"
         END IF
 
@@ -1746,10 +1780,12 @@ SUB Timer01
                     Scene_Current$ = previousScene$
                     SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + CHR$(34) + previousScene$ + CHR$(34)
                     _DELAY .1
+                    IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM UP] : [ALL CAMERAS UP]"
                 ELSE
                     Scene_Current$ = titleScene12
                     SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + CHR$(34) + titleScene12 + CHR$(34)
                     _DELAY .1
+                    IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM UP] : [ALL CAMERAS UP]"
                 END IF
             END IF
             streamsUp$ = "12"
@@ -1768,6 +1804,7 @@ SUB Timer01
                     Scene_Current$ = Scene_Fail
                     SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + CHR$(34) + Scene_Fail + CHR$(34)
                     _DELAY .1
+                    IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM DOWN] : [ALL CAMERAS DOWN]"
                     Timer_Fail_Count = Timer_Fail_Count + 1
                     IF Timer_Fail_Count >= 999 THEN Timer_Fail_Count = 999
                 END IF
