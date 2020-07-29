@@ -72,23 +72,28 @@ Open 'nginx.conf'
 Find the line: `"listen 1935;"`  
 Below that line, add: `"ping 3s;"`
 
-Alternatively, download [nginx.conf](https://raw.githubusercontent.com/loopy750/NGINX-Stats-Monitor/master/modifications/nginx.conf) from here.
+Alternatively, download [nginx.conf](https://raw.githubusercontent.com/loopy750/NGINX-Stats-Monitor/master/modifications/nginx/nginx.conf) from here.
 
 mpv
 ---
-Download [**rtmp_stream_1.cmd**](https://raw.githubusercontent.com/loopy750/NGINX-Stats-Monitor/master/modifications/rtmp_stream_1.cmd) and copy to the _mpv_ root folder (where 'mpv.com' and 'mpv.exe' are located).
+Download [rtmp_stream_1.cmd](https://raw.githubusercontent.com/loopy750/NGINX-Stats-Monitor/master/modifications/mpv/rtmp_stream_1.cmd) and copy to the _mpv_ root folder (where 'mpv.com' and 'mpv.exe' are located).
 
-If two cameras/scenes are to be used, download an additional file [**rtmp_stream_2.cmd**](https://raw.githubusercontent.com/loopy750/NGINX-Stats-Monitor/master/modifications/rtmp_stream_2.cmd) and also copy to the _mpv_ root folder (where 'mpv.com' and 'mpv.exe' are located).
+If two cameras/scenes are to be used, download an additional file [rtmp_stream_2.cmd](https://raw.githubusercontent.com/loopy750/NGINX-Stats-Monitor/master/modifications/mpv/rtmp_stream_2.cmd) and also copy to the _mpv_ root folder (where 'mpv.com' and 'mpv.exe' are located).
 
 These **.cmd** file/s are to be executed AFTER 'nginx.exe'.
 
-Download [**input.conf**](https://raw.githubusercontent.com/loopy750/NGINX-Stats-Monitor/master/modifications/input.conf) and copy to the _mpv_ folder (where 'fonts.conf' is located). This will disable several mouse and keyboard functions from accidentally seeking/interrupting a live stream.
+Download [input.conf](https://raw.githubusercontent.com/loopy750/NGINX-Stats-Monitor/master/modifications/mpv/input.conf) and copy to the _mpv_ folder (where 'fonts.conf' is located). This will disable several mouse and keyboard functions from accidentally seeking/interrupting a live stream.
 
-Download [**mpv.conf**](https://raw.githubusercontent.com/loopy750/NGINX-Stats-Monitor/master/modifications/mpv.conf) and also copy to the _mpv_ folder (where 'fonts.conf' is located). This will enable high quality OpenGL options for most modern hardware that supports them. Remove these options if they cause problems.
+Download [mpv.conf](https://raw.githubusercontent.com/loopy750/NGINX-Stats-Monitor/master/modifications/mpv/mpv.conf) and also copy to the _mpv_ folder (where 'fonts.conf' is located). This will enable high quality OpenGL options for most modern hardware that supports them. Remove these options if they cause problems.
 
 VLC 64-bit
 ----------
 Open OBS, and within the "fallback" scene, add a source 'VLC Video Source'. Select your video that viewers will see when your connection is lost. The following settings are recommended: **_Loop Playlist_** enabled, **_Pause when not visible, unpause when visible_** enabled.
+
+AdiIRC
+------
+
+[AdiIRC](https://www.adiirc.com/) is a free alternative to mIRC. If you have set (**_FileStatusOutput=true_**) for the purpose of outputting the stream status to a chat room, a sample script is supplied here. First, edit [vars.ini](https://raw.githubusercontent.com/loopy750/NGINX-Stats-Monitor/master/modifications/adiirc/vars.ini) and place in AdiIRC's root folder. Load the script [outputRTMP.ini](https://raw.githubusercontent.com/loopy750/NGINX-Stats-Monitor/master/modifications/adiirc/outputRTMP.ini).
 
 
 ADDITIONAL STEPS
