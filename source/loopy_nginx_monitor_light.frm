@@ -12,84 +12,81 @@ SUB __UI_LoadForm
     SetCaption __UI_NewID, "Loopy NGINX Monitor"
     Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(1, 1, 1)
-    Control(__UI_NewID).BackColor = _RGB32(38, 40, 45)
+    Control(__UI_NewID).BackColor = _RGB32(235, 233, 238)
     Control(__UI_NewID).BorderColor = _RGB32(163, 166, 170)
 
     __UI_NewID = __UI_NewControl(__UI_Type_MenuBar, "FileMenu", 34, 22, 8, 0, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "File"
-    Control(__UI_NewID).ForeColor = _RGB32(255, 255, 255)
     Control(__UI_NewID).BorderColor = _RGB32(170, 166, 170)
 
     __UI_NewID = __UI_NewControl(__UI_Type_MenuBar, "OptionsMenu", 58, 22, 42, 0, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Options"
-    Control(__UI_NewID).ForeColor = _RGB32(255, 255, 255)
 
     __UI_NewID = __UI_NewControl(__UI_Type_MenuBar, "HelpMenu", 41, 22, 100, 0, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Help"
-    Control(__UI_NewID).ForeColor = _RGB32(255, 255, 255)
 
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "NGINX", 753, 64, 24, 34, 0)
     __UI_RegisterResult = 0
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
-    Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
+    Control(__UI_NewID).BorderColor = _RGB32(253, 251, 255)
     Control(__UI_NewID).HasBorder = True
     Control(__UI_NewID).BorderSize = 1
 
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "Status", 753, 64, 24, 111, 0)
     __UI_RegisterResult = 0
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
-    Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
+    Control(__UI_NewID).BorderColor = _RGB32(253, 251, 255)
     Control(__UI_NewID).HasBorder = True
     Control(__UI_NewID).BorderSize = 1
 
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "Settings", 753, 64, 24, 187, 0)
     __UI_RegisterResult = 0
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
-    Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
+    Control(__UI_NewID).BorderColor = _RGB32(253, 251, 255)
     Control(__UI_NewID).HasBorder = True
     Control(__UI_NewID).BorderSize = 1
 
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "CurrentScene", 199, 106, 301, 264, 0)
     __UI_RegisterResult = 0
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
-    Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
+    Control(__UI_NewID).BorderColor = _RGB32(253, 251, 255)
     Control(__UI_NewID).HasBorder = True
     Control(__UI_NewID).BorderSize = 1
 
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "DebugFrame", 753, 59, 24, 382, 0)
     __UI_RegisterResult = 0
     Control(__UI_NewID).ForeColor = _RGB32(33, 4, 4)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
-    Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
+    Control(__UI_NewID).BorderColor = _RGB32(253, 251, 255)
     Control(__UI_NewID).HasBorder = True
     Control(__UI_NewID).BorderSize = 1
 
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "Stream1", 245, 106, 24, 264, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Stream #1"
-    Control(__UI_NewID).ForeColor = _RGB32(64, 252, 48)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
-    Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
+    Control(__UI_NewID).ForeColor = _RGB32(8, 160, 4)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
+    Control(__UI_NewID).BorderColor = _RGB32(253, 251, 255)
     Control(__UI_NewID).HasBorder = True
     Control(__UI_NewID).BorderSize = 1
 
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "Stream2", 245, 106, 532, 264, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Stream #2"
-    Control(__UI_NewID).ForeColor = _RGB32(64, 252, 48)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
-    Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
+    Control(__UI_NewID).ForeColor = _RGB32(8, 160, 4)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
+    Control(__UI_NewID).BorderColor = _RGB32(253, 251, 255)
     Control(__UI_NewID).HasBorder = True
     Control(__UI_NewID).BorderSize = 1
 
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "versionFrame", 753, 59, 24, 382, 0)
     __UI_RegisterResult = 0
     Control(__UI_NewID).ForeColor = _RGB32(32, 128, 16)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
-    Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
+    Control(__UI_NewID).BorderColor = _RGB32(253, 251, 255)
     Control(__UI_NewID).HasBorder = True
     Control(__UI_NewID).BorderSize = 1
 
@@ -194,8 +191,8 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "rtmp_nacceptedLB", 65, 21, 42, 69, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "rtmp_naccepted"
-    Control(__UI_NewID).ForeColor = _RGB32(125, 187, 154)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
+    Control(__UI_NewID).ForeColor = _RGB32(25, 87, 54)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
@@ -203,8 +200,8 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "rtmp_codec_nclientsLB", 62, 21, 98, 69, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "rtmp_codec_nclients"
-    Control(__UI_NewID).ForeColor = _RGB32(125, 187, 154)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
+    Control(__UI_NewID).ForeColor = _RGB32(25, 87, 54)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
@@ -212,8 +209,8 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "rtmp_codec_videoLB", 69, 21, 157, 69, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "rtmp_codec_video"
-    Control(__UI_NewID).ForeColor = _RGB32(125, 187, 154)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
+    Control(__UI_NewID).ForeColor = _RGB32(25, 87, 54)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
@@ -221,8 +218,8 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "rtmp_codec_audioLB", 57, 21, 210, 69, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "rtmp_codec_audio"
-    Control(__UI_NewID).ForeColor = _RGB32(125, 187, 154)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
+    Control(__UI_NewID).ForeColor = _RGB32(25, 87, 54)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
@@ -230,8 +227,8 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "rtmp_bytes_inLB", 114, 21, 266, 69, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "rtmp_bytes_in"
-    Control(__UI_NewID).ForeColor = _RGB32(125, 187, 154)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
+    Control(__UI_NewID).ForeColor = _RGB32(25, 87, 54)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
@@ -239,8 +236,8 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "rtmp_bytes_outLB", 108, 21, 370, 69, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "rtmp_bytes_out"
-    Control(__UI_NewID).ForeColor = _RGB32(125, 187, 154)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
+    Control(__UI_NewID).ForeColor = _RGB32(25, 87, 54)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
@@ -248,8 +245,8 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "rtmp_bw_inLB", 110, 21, 472, 69, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "rtmp_bw_in"
-    Control(__UI_NewID).ForeColor = _RGB32(125, 187, 154)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
+    Control(__UI_NewID).ForeColor = _RGB32(25, 87, 54)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
@@ -257,8 +254,8 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "rtmp_bw_outLB", 109, 21, 576, 69, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "rtmp_bw_out"
-    Control(__UI_NewID).ForeColor = _RGB32(125, 187, 154)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
+    Control(__UI_NewID).ForeColor = _RGB32(25, 87, 54)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
@@ -266,8 +263,8 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "rtmp_uptimeLB", 83, 21, 677, 69, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "rtmp_uptime"
-    Control(__UI_NewID).ForeColor = _RGB32(125, 187, 154)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
+    Control(__UI_NewID).ForeColor = _RGB32(25, 87, 54)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
@@ -325,8 +322,8 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "Kb_DiffLB", 189, 21, 42, 146, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Kb_Diff"
-    Control(__UI_NewID).ForeColor = _RGB32(131, 151, 163)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
+    Control(__UI_NewID).ForeColor = _RGB32(31, 51, 63)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
@@ -334,8 +331,8 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "Timer_FailLB", 191, 21, 231, 146, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Timer_Fail"
-    Control(__UI_NewID).ForeColor = _RGB32(131, 151, 163)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
+    Control(__UI_NewID).ForeColor = _RGB32(31, 51, 63)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
@@ -343,8 +340,8 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "Timer_Fail_CountLB", 111, 21, 418, 146, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Timer_Fail_Count"
-    Control(__UI_NewID).ForeColor = _RGB32(131, 151, 163)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
+    Control(__UI_NewID).ForeColor = _RGB32(31, 51, 63)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
@@ -352,8 +349,8 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "tPingOutLB", 104, 21, 528, 146, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "tPingOut#"
-    Control(__UI_NewID).ForeColor = _RGB32(131, 151, 163)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
+    Control(__UI_NewID).ForeColor = _RGB32(31, 51, 63)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
@@ -361,8 +358,8 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "td_updateLB", 129, 21, 632, 146, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "td_update"
-    Control(__UI_NewID).ForeColor = _RGB32(131, 151, 163)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
+    Control(__UI_NewID).ForeColor = _RGB32(31, 51, 63)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
@@ -400,8 +397,8 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "Bandwidth_ThresholdLB", 240, 21, 42, 222, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Bandwidth_Threshold"
-    Control(__UI_NewID).ForeColor = _RGB32(142, 166, 143)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
+    Control(__UI_NewID).ForeColor = _RGB32(42, 66, 43)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
@@ -409,8 +406,8 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "Stream_Fail_DelayLB", 229, 21, 281, 222, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Stream_Fail_Delay"
-    Control(__UI_NewID).ForeColor = _RGB32(142, 166, 143)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
+    Control(__UI_NewID).ForeColor = _RGB32(42, 66, 43)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
@@ -418,8 +415,8 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "MultiCameraSwitchStatusLB", 253, 21, 507, 222, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "MultiCameraSwitchStatus"
-    Control(__UI_NewID).ForeColor = _RGB32(142, 166, 143)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
+    Control(__UI_NewID).ForeColor = _RGB32(42, 66, 43)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
@@ -487,8 +484,8 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "Debug_TimerLB", 146, 21, 42, 416, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Debug_Timer"
-    Control(__UI_NewID).ForeColor = _RGB32(235, 96, 57)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
+    Control(__UI_NewID).ForeColor = _RGB32(224, 28, 7)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
@@ -496,8 +493,8 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "Debug_Timer_SnapshotLB", 175, 21, 185, 416, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Debug_Timer_Snapshot"
-    Control(__UI_NewID).ForeColor = _RGB32(235, 96, 57)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
+    Control(__UI_NewID).ForeColor = _RGB32(224, 28, 7)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
@@ -505,8 +502,8 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "td_displayLB", 125, 21, 350, 416, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "td_display"
-    Control(__UI_NewID).ForeColor = _RGB32(235, 96, 57)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
+    Control(__UI_NewID).ForeColor = _RGB32(224, 28, 7)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
@@ -514,8 +511,8 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "mouseXLB", 80, 21, 460, 416, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "mouseX"
-    Control(__UI_NewID).ForeColor = _RGB32(235, 96, 57)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
+    Control(__UI_NewID).ForeColor = _RGB32(224, 28, 7)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
@@ -523,8 +520,8 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "mouseYLB", 90, 21, 540, 416, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "mouseY"
-    Control(__UI_NewID).ForeColor = _RGB32(235, 96, 57)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
+    Control(__UI_NewID).ForeColor = _RGB32(224, 28, 7)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
@@ -532,8 +529,8 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "__ERRORLINELB", 130, 21, 622, 416, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "_ERRORLINE"
-    Control(__UI_NewID).ForeColor = _RGB32(235, 96, 57)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
+    Control(__UI_NewID).ForeColor = _RGB32(224, 28, 7)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
@@ -542,8 +539,8 @@ SUB __UI_LoadForm
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "In bytes"
     Control(__UI_NewID).Font = SetFont("segoeui.ttf?phagspa.ttf?seguisb.ttf", 12)
-    Control(__UI_NewID).ForeColor = _RGB32(185, 221, 200)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 35)
+    Control(__UI_NewID).ForeColor = _RGB32(85, 21, 10)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
@@ -552,8 +549,8 @@ SUB __UI_LoadForm
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "In bytes difference"
     Control(__UI_NewID).Font = SetFont("segoeui.ttf?phagspa.ttf?seguisb.ttf", 12)
-    Control(__UI_NewID).ForeColor = _RGB32(185, 221, 200)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 35)
+    Control(__UI_NewID).ForeColor = _RGB32(85, 21, 10)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
@@ -562,8 +559,8 @@ SUB __UI_LoadForm
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Stream fail timer"
     Control(__UI_NewID).Font = SetFont("segoeui.ttf?phagspa.ttf?seguisb.ttf", 12)
-    Control(__UI_NewID).ForeColor = _RGB32(185, 221, 200)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 35)
+    Control(__UI_NewID).ForeColor = _RGB32(85, 21, 10)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
@@ -571,24 +568,24 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "multiStream1LB", 77, 21, 153, 279, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "multiStream1"
-    Control(__UI_NewID).ForeColor = _RGB32(185, 181, 211)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
+    Control(__UI_NewID).ForeColor = _RGB32(85, 81, 11)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
 
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "Kb_Diff_stream1LB", 90, 21, 153, 306, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Kb_Diff_stream1"
-    Control(__UI_NewID).ForeColor = _RGB32(185, 181, 211)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
+    Control(__UI_NewID).ForeColor = _RGB32(85, 81, 11)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
 
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "Timer_Fail_Stream1LB", 108, 21, 153, 334, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Timer_Fail_Stream1"
-    Control(__UI_NewID).ForeColor = _RGB32(185, 181, 211)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
+    Control(__UI_NewID).ForeColor = _RGB32(85, 81, 11)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
 
@@ -596,8 +593,8 @@ SUB __UI_LoadForm
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Scene_Current"
     Control(__UI_NewID).Font = SetFont("seguisb.ttf?ebrimabd.ttf?phagspa.ttf?segoeui.ttf", 18)
-    Control(__UI_NewID).ForeColor = _RGB32(155, 255, 240)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 35)
+    Control(__UI_NewID).ForeColor = _RGB32(85, 81, 11)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).Align = __UI_Center
     Control(__UI_NewID).VAlign = __UI_Middle
@@ -616,8 +613,8 @@ SUB __UI_LoadForm
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "In bytes"
     Control(__UI_NewID).Font = SetFont("segoeui.ttf?phagspa.ttf?seguisb.ttf", 12)
-    Control(__UI_NewID).ForeColor = _RGB32(185, 221, 200)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 35)
+    Control(__UI_NewID).ForeColor = _RGB32(85, 21, 10)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
@@ -626,8 +623,8 @@ SUB __UI_LoadForm
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "In bytes difference"
     Control(__UI_NewID).Font = SetFont("segoeui.ttf?phagspa.ttf?seguisb.ttf", 12)
-    Control(__UI_NewID).ForeColor = _RGB32(185, 221, 200)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 35)
+    Control(__UI_NewID).ForeColor = _RGB32(85, 21, 10)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
@@ -636,8 +633,8 @@ SUB __UI_LoadForm
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Stream fail timer"
     Control(__UI_NewID).Font = SetFont("segoeui.ttf?phagspa.ttf?seguisb.ttf", 12)
-    Control(__UI_NewID).ForeColor = _RGB32(185, 221, 200)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 35)
+    Control(__UI_NewID).ForeColor = _RGB32(85, 21, 10)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
@@ -645,24 +642,24 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "multiStream2LB", 77, 21, 661, 279, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "multiStream2"
-    Control(__UI_NewID).ForeColor = _RGB32(185, 181, 211)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
+    Control(__UI_NewID).ForeColor = _RGB32(85, 81, 11)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
 
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "Kb_Diff_stream2LB", 90, 21, 661, 306, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Kb_Diff_stream2"
-    Control(__UI_NewID).ForeColor = _RGB32(185, 181, 211)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
+    Control(__UI_NewID).ForeColor = _RGB32(85, 81, 11)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
 
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "Timer_Fail_Stream2LB", 108, 21, 661, 334, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Timer_Fail_Stream2"
-    Control(__UI_NewID).ForeColor = _RGB32(185, 181, 211)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
+    Control(__UI_NewID).ForeColor = _RGB32(85, 81, 11)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
 
@@ -706,7 +703,7 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_PictureBox, "PictureBoxLogoBottom", 401, 30, 200, 396, 0)
     __UI_RegisterResult = 0
     Control(__UI_NewID).ForeColor = _RGB32(33, 4, 4)
-    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
+    Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).Align = __UI_Center
     Control(__UI_NewID).VAlign = __UI_Middle

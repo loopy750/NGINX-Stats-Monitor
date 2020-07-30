@@ -8,6 +8,8 @@ OPTION _EXPLICIT
 ': Controls' IDs: ------------------------------------------------------------------
 DIM SHARED LoopyNGINXMonitor AS LONG
 DIM SHARED FileMenu AS LONG
+DIM SHARED OptionsMenu AS LONG
+DIM SHARED HelpMenu AS LONG
 DIM SHARED NGINX AS LONG
 DIM SHARED Status AS LONG
 DIM SHARED Settings AS LONG
@@ -15,8 +17,6 @@ DIM SHARED CurrentScene AS LONG
 DIM SHARED DebugFrame AS LONG
 DIM SHARED Stream1 AS LONG
 DIM SHARED Stream2 AS LONG
-DIM SHARED OptionsMenu AS LONG
-DIM SHARED HelpMenu AS LONG
 DIM SHARED versionFrame AS LONG
 DIM SHARED FileMenuExit AS LONG
 DIM SHARED RMTPLB AS LONG
@@ -100,15 +100,15 @@ SUB __UI_BeforeInit
     $VERSIONINFO:ProductName=Loopy NGINX Monitor
     $VERSIONINFO:Comments=Monitor NGINX RTMP Streams
     $VERSIONINFO:FileDescription=Loopy NGINX Monitor
-    $VERSIONINFO:FILEVERSION#=1,3,2,0
-    $VERSIONINFO:PRODUCTVERSION#=1,3,2,0
+    $VERSIONINFO:FILEVERSION#=1,3,3,0
+    $VERSIONINFO:PRODUCTVERSION#=1,3,3,0
     $CHECKING:ON
     $RESIZE:OFF
     IF ERR = 0 THEN
         $EXEICON:'.\icon.ico'
         _TITLE "Loopy NGINX Monitor - loopy750"
     END IF
-    Ver$ = "1.3.2"
+    Ver$ = "1.3.3"
 
     'Always on top : ------------------------------------------------------------------
     CONST HWND_TOPMOST%& = -1
@@ -231,20 +231,20 @@ SUB __UI_OnLoad
 
         IF Bandwidth_Threshold <= 0 THEN
             Bandwidth_Threshold = 0
-        ELSEIF Bandwidth_Threshold >= 9999 THEN Bandwidth_Threshold = 9999
+        ELSEIF Bandwidth_Threshold > 9999 THEN Bandwidth_Threshold = 9999
         END IF
 
         IF Stream_Fail_Delay <= 3 THEN
             Stream_Fail_Delay = 3
-        ELSEIF Stream_Fail_Delay >= 99 THEN Stream_Fail_Delay = 99
+        ELSEIF Stream_Fail_Delay > 99 THEN Stream_Fail_Delay = 99
         END IF
 
-        IF Desktop_Width_Position <= -(_DESKTOPWIDTH * 4) THEN Desktop_Width_Position = -(_DESKTOPWIDTH * 4)
-        IF Desktop_Width_Position >= (_DESKTOPWIDTH * 4) THEN Desktop_Width_Position = (_DESKTOPWIDTH * 4)
+        IF Desktop_Width_Position < -(_DESKTOPWIDTH * 4) THEN Desktop_Width_Position = -(_DESKTOPWIDTH * 4)
+        IF Desktop_Width_Position > (_DESKTOPWIDTH * 4) THEN Desktop_Width_Position = (_DESKTOPWIDTH * 4)
         IF Desktop_Width_Position = -9999 THEN Desktop_Width_Position = -9999
 
-        IF Desktop_Height_Position <= -(_DESKTOPHEIGHT * 4) THEN Desktop_Height_Position = -(_DESKTOPHEIGHT * 4)
-        IF Desktop_Height_Position >= (_DESKTOPHEIGHT * 4) THEN Desktop_Height_Position = (_DESKTOPHEIGHT * 4)
+        IF Desktop_Height_Position < -(_DESKTOPHEIGHT * 4) THEN Desktop_Height_Position = -(_DESKTOPHEIGHT * 4)
+        IF Desktop_Height_Position > (_DESKTOPHEIGHT * 4) THEN Desktop_Height_Position = (_DESKTOPHEIGHT * 4)
         IF Desktop_Height_Position = -9999 THEN Desktop_Height_Position = -9999
 
         IF Desktop_Width_Position = -9999 AND Desktop_Height_Position = -9999 THEN
@@ -299,11 +299,40 @@ SUB __UI_OnLoad
     _DELAY .25
     _TITLE "Loopy NGINX Monitor"
 
-    IF __MultiCameraSwitch = 0 THEN Control(Stream1).Hidden = True: Control(Stream2).Hidden = True
+    IF __MultiCameraSwitch = 0 THEN
+        Control(Stream1).Hidden = True
+        Control(Stream2).Hidden = True
+        Control(InBytesLB2).Hidden = True
+        Control(InBytesDifferenceLB2).Hidden = True
+        Control(failLB).Hidden = True
+        Control(multiStream1LB).Hidden = True
+        Control(Kb_Diff_stream1LB).Hidden = True
+        Control(Timer_Fail_Stream1LB).Hidden = True
+        Control(InBytesLB3).Hidden = True
+        Control(InBytesDifferenceLB3).Hidden = True
+        Control(failLB2).Hidden = True
+        Control(multiStream2LB).Hidden = True
+        Control(Kb_Diff_stream2LB).Hidden = True
+        Control(Timer_Fail_Stream2LB).Hidden = True
+    END IF
 
     Control(DebugFrame).Hidden = True
     Control(versionFrame).Hidden = False
     LoadImageMEM Control(PictureBoxLogoBottom), "nginx_logo_bottom.png"
+    Control(TimerLB).Hidden = True
+    Control(TimerSnapshotLB).Hidden = True
+    Control(td_displayVarLB).Hidden = True
+    Control(mouseXVarLB).Hidden = True
+    Control(mouseYVarLB).Hidden = True
+    Control(__ERRORLINEVarLB).Hidden = True
+    Control(Debug_TimerLB).Hidden = True
+    Control(Debug_Timer_SnapshotLB).Hidden = True
+    Control(td_displayLB).Hidden = True
+    Control(mouseXLB).Hidden = True
+    Control(mouseYLB).Hidden = True
+    Control(__ERRORLINELB).Hidden = True
+    Control(PictureBoxLogoBottom).Hidden = False
+    SetCaption (versionFrame), "v" + Ver$
 
     ON TIMER(1) Timer01
     TIMER ON
@@ -359,16 +388,27 @@ SUB __UI_BeforeUpdateDisplay
         END IF
     END IF
 
-    ProgressCounter = ProgressCounter + 1 ' | / - \ | / - \
-    IF ProgressCounter >= 1 AND ProgressCounter <= 8 THEN SetCaption IndicatorLB, "|"
-    IF ProgressCounter >= 9 AND ProgressCounter <= 16 THEN SetCaption IndicatorLB, "/"
-    IF ProgressCounter >= 17 AND ProgressCounter <= 24 THEN SetCaption IndicatorLB, "-"
-    IF ProgressCounter >= 25 AND ProgressCounter <= 32 THEN SetCaption IndicatorLB, "\"
-    IF ProgressCounter >= 33 AND ProgressCounter <= 40 THEN SetCaption IndicatorLB, "|"
-    IF ProgressCounter >= 41 AND ProgressCounter <= 48 THEN SetCaption IndicatorLB, "/"
-    IF ProgressCounter >= 49 AND ProgressCounter <= 56 THEN SetCaption IndicatorLB, "-"
-    IF ProgressCounter >= 57 AND ProgressCounter <= 64 THEN SetCaption IndicatorLB, "\"
-    IF ProgressCounter >= 64 THEN ProgressCounter = 1
+    ProgressCounter = ProgressCounter + 1 '| / - \ | / - \
+    SELECT CASE ProgressCounter
+        CASE 1 TO 8
+            SetCaption IndicatorLB, "|"
+        CASE 9 TO 16
+            SetCaption IndicatorLB, "/"
+        CASE 17 TO 24
+            SetCaption IndicatorLB, "-"
+        CASE 25 TO 32
+            SetCaption IndicatorLB, "\"
+        CASE 33 TO 40
+            SetCaption IndicatorLB, "|"
+        CASE 41 TO 48
+            SetCaption IndicatorLB, "/"
+        CASE 49 TO 56
+            SetCaption IndicatorLB, "-"
+        CASE 57 TO 64
+            SetCaption IndicatorLB, "\"
+        CASE IS >= 64
+            ProgressCounter = 1
+    END SELECT
 END SUB
 
 SUB __UI_BeforeUnload
@@ -1228,25 +1268,6 @@ SUB __UI_FormResized
 
 END SUB
 
-SUB Error_Exit (Error_msg$)
-
-    TIMER STOP
-    CLS , _RGB(1, 120, 220)
-    BSOD& = __imageMEM&("face_sad_x.png")
-    _PUTIMAGE (50, 50)-(107, 162), BSOD&
-    _FREEIMAGE BSOD&
-    COLOR _RGB(254, 254, 254), _RGB(1, 120, 220)
-    _PRINTSTRING (37, 12 * 18), "Program encountered an error and needs to restart."
-    _PRINTSTRING (37, 14 * 18), Error_msg$
-    _PRINTSTRING (37, 22 * 18), "Program will resume shortly"
-    _DISPLAY
-    _DELAY 10
-    CLS , BG
-    Refresh_Request = 1
-    TIMER ON
-
-END SUB
-
 SUB Indicators
 
     TIMER STOP
@@ -1275,26 +1296,6 @@ SUB Indicators
 
 END SUB
 
-SUB IMAGEPUT (x, y, Lx, Ly)
-
-    TIMER STOP
-    _BLEND
-    FOR Pt& = 1 TO (x * y)
-        READ image_data(Pt&)
-    NEXT
-
-    x2 = 1
-    FOR Px = 0 TO (x - 1)
-        FOR Py = 0 TO (y - 1)
-            PSET (Px + Lx, Py + Ly), image_data(x2)
-            x2 = x2 + 1
-        NEXT
-    NEXT
-    _DONTBLEND
-    TIMER ON
-
-END SUB
-
 SUB TIMEms (tout#, plus)
 
     TIMER STOP
@@ -1314,22 +1315,6 @@ SUB TIMEms (tout#, plus)
     IF LEN(STR$(toutdec#)) = 4 THEN tout = tout + "00"
     IF LEN(STR$(toutdec#)) = 2 THEN tout = tout + "000"
     'Output to tout
-    TIMER ON
-
-END SUB
-
-SUB IMAGECLEAR (x, y, Lx, Ly)
-
-    TIMER STOP
-    _BLEND
-    x2 = 1
-    FOR Px = 0 TO (x - 1)
-        FOR Py = 0 TO (y - 1)
-            PSET (Px + Lx, Py + Ly), BG
-            x2 = x2 + 1
-        NEXT
-    NEXT
-    _DONTBLEND
     TIMER ON
 
 END SUB
@@ -1405,7 +1390,7 @@ END SUB
 FUNCTION calc_nginx$ (convertTime#, includeSec)
 
     TIMER STOP
-    IF convertTime# >= 3596400 THEN convertTime# = 3596400
+    IF convertTime# > 3596400 THEN convertTime# = 3596400
     t_hr = convertTime# \ 3600
     t_min = (convertTime# - (3600 * t_hr)) \ 60
     t_sec = (convertTime# - (3600 * t_hr)) - (t_min * 60)
@@ -1428,25 +1413,51 @@ SUB Timer01
     timer1# = TIMER(.001)
 
     IF Debug = 0 THEN
+        Control(TimerLB).Hidden = True
+        Control(TimerSnapshotLB).Hidden = True
+        Control(td_displayVarLB).Hidden = True
+        Control(mouseXVarLB).Hidden = True
+        Control(mouseYVarLB).Hidden = True
+        Control(__ERRORLINEVarLB).Hidden = True
+        Control(Debug_TimerLB).Hidden = True
+        Control(Debug_Timer_SnapshotLB).Hidden = True
+        Control(td_displayLB).Hidden = True
+        Control(mouseXLB).Hidden = True
+        Control(mouseYLB).Hidden = True
+        Control(__ERRORLINELB).Hidden = True
+        Control(PictureBoxLogoBottom).Hidden = False
         SetCaption Debug_TimerLB, "-"
         SetCaption Debug_Timer_SnapshotLB, "-"
         SetCaption td_displayLB, "-"
         SetCaption mouseXLB, "-"
         SetCaption mouseYLB, "-"
         SetCaption __ERRORLINELB, "-"
-        SetCaption (TimerLB), "-" 'TIMER
-        SetCaption (TimerSnapshotLB), "-" 'TIMER (snapshot)
-        SetCaption (td_displayVarLB), "-" 'td_display var
-        SetCaption (mouseXVarLB), "-" 'mouseX var
-        SetCaption (mouseYVarLB), "-" 'mouseY var
-        SetCaption (__ERRORLINEVarLB), "-" '_ERRORLINE var
+        SetCaption TimerLB, "-" 'TIMER
+        SetCaption TimerSnapshotLB, "-" 'TIMER (snapshot)
+        SetCaption td_displayVarLB, "-" 'td_display var
+        SetCaption mouseXVarLB, "-" 'mouseX var
+        SetCaption mouseYVarLB, "-" 'mouseY var
+        SetCaption __ERRORLINEVarLB, "-" '_ERRORLINE var
     ELSEIF Debug = 1 THEN
-        SetCaption (TimerLB), "TIMER" 'TIMER
-        SetCaption (TimerSnapshotLB), "TIMER (snapshot)" 'TIMER (snapshot)
-        SetCaption (td_displayVarLB), "td_display var" 'td_display var
-        SetCaption (mouseXVarLB), "mouseX var" 'mouseX var
-        SetCaption (mouseYVarLB), "mouseY var" 'mouseY var
-        SetCaption (__ERRORLINEVarLB), "_ERRORLINE var" '_ERRORLINE var
+        Control(TimerLB).Hidden = False
+        Control(TimerSnapshotLB).Hidden = False
+        Control(td_displayVarLB).Hidden = False
+        Control(mouseXVarLB).Hidden = False
+        Control(mouseYVarLB).Hidden = False
+        Control(__ERRORLINEVarLB).Hidden = False
+        Control(Debug_TimerLB).Hidden = False
+        Control(Debug_Timer_SnapshotLB).Hidden = False
+        Control(td_displayLB).Hidden = False
+        Control(mouseXLB).Hidden = False
+        Control(mouseYLB).Hidden = False
+        Control(__ERRORLINELB).Hidden = False
+        Control(PictureBoxLogoBottom).Hidden = True
+        SetCaption TimerLB, "TIMER" 'TIMER
+        SetCaption TimerSnapshotLB, "TIMER (snapshot)" 'TIMER (snapshot)
+        SetCaption td_displayVarLB, "td_display var" 'td_display var
+        SetCaption mouseXVarLB, "mouseX var" 'mouseX var
+        SetCaption mouseYVarLB, "mouseY var" 'mouseY var
+        SetCaption __ERRORLINEVarLB, "_ERRORLINE var" '_ERRORLINE var
         TIMEms Debug_Timer#, 0
         SetCaption (Debug_Timer_SnapshotLB), tout + " sec "
     END IF
@@ -1585,7 +1596,7 @@ SUB Timer01
 
     IF Kb_Diff# >= Bandwidth_Threshold THEN Timer_Fail = 0
     IF Kb_Diff# <= Bandwidth_Threshold AND nginx_warmup = 1 THEN Timer_Fail = Timer_Fail + 1
-    IF Timer_Fail >= 19999 THEN Timer_Fail = 19999
+    IF Timer_Fail > 19999 THEN Timer_Fail = 19999
 
     SetCaption (rtmp_nacceptedLB), "Acc:" + STR$(rtmp_naccepted#)
     SetCaption (rtmp_codec_nclientsLB), LTRIM$(STR$(rtmp_codec_nclients#))
@@ -1642,7 +1653,7 @@ SUB Timer01
 
         IF Kb_Diff_stream1# >= Bandwidth_Threshold THEN Timer_Fail_Stream1 = 0
         IF Kb_Diff_stream1# <= Bandwidth_Threshold AND nginx_warmup = 1 THEN Timer_Fail_Stream1 = Timer_Fail_Stream1 + 1
-        IF Timer_Fail_Stream1 >= 19999 THEN Timer_Fail_Stream1 = 19999
+        IF Timer_Fail_Stream1 > 19999 THEN Timer_Fail_Stream1 = 19999
 
         'temp1_stream2 variables
         IF nginx_warmup = 0 THEN Kb_Diff_stream2# = (Bandwidth_Threshold + 1)
@@ -1654,7 +1665,7 @@ SUB Timer01
 
         IF Kb_Diff_stream2# >= Bandwidth_Threshold THEN Timer_Fail_Stream2 = 0
         IF Kb_Diff_stream2# <= Bandwidth_Threshold AND nginx_warmup = 1 THEN Timer_Fail_Stream2 = Timer_Fail_Stream2 + 1
-        IF Timer_Fail_Stream2 >= 19999 THEN Timer_Fail_Stream2 = 19999
+        IF Timer_Fail_Stream2 > 19999 THEN Timer_Fail_Stream2 = 19999
 
         calcbw multiStream1#, 0
         SetCaption (multiStream1LB), LTRIM$(bout)
@@ -1721,7 +1732,7 @@ SUB Timer01
                         _DELAY .1
                         IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM DOWN]"
                         Timer_Fail_Count = Timer_Fail_Count + 1
-                        IF Timer_Fail_Count >= 999 THEN Timer_Fail_Count = 999
+                        IF Timer_Fail_Count > 999 THEN Timer_Fail_Count = 999
                     END IF
                 END IF
             END IF
@@ -1744,12 +1755,12 @@ SUB Timer01
                     Scene_Current$ = previousScene$
                     SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + CHR$(34) + previousScene$ + CHR$(34)
                     _DELAY .1
-                    IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM UP] : [CAMERA #1 UP] : [CAMERA #2 DOWN]"
+                    IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM UP]:[CAMERA #1 UP]:[CAMERA #2 DOWN]"
                 ELSE
                     Scene_Current$ = titleScene1
                     SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + CHR$(34) + titleScene1 + CHR$(34)
                     _DELAY .1
-                    IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM UP] : [CAMERA #1 UP]"
+                    IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM UP]:[CAMERA #1 UP]"
                 END IF
             END IF
             streamsUp$ = "1"
@@ -1762,12 +1773,12 @@ SUB Timer01
                     Scene_Current$ = previousScene$
                     SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + CHR$(34) + previousScene$ + CHR$(34)
                     _DELAY .1
-                    IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM UP] : [CAMERA #2 UP] : [CAMERA #1 DOWN]"
+                    IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM UP]:[CAMERA #2 UP]:[CAMERA #1 DOWN]"
                 ELSE
                     Scene_Current$ = titleScene2
                     SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + CHR$(34) + titleScene2 + CHR$(34)
                     _DELAY .1
-                    IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM UP] : [CAMERA #2 UP]"
+                    IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM UP]:[CAMERA #2 UP]"
                 END IF
             END IF
             streamsUp$ = "2"
@@ -1780,12 +1791,12 @@ SUB Timer01
                     Scene_Current$ = previousScene$
                     SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + CHR$(34) + previousScene$ + CHR$(34)
                     _DELAY .1
-                    IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM UP] : [ALL CAMERAS UP]"
+                    IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM UP]:[ALL CAMERAS UP]"
                 ELSE
                     Scene_Current$ = titleScene12
                     SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + CHR$(34) + titleScene12 + CHR$(34)
                     _DELAY .1
-                    IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM UP] : [ALL CAMERAS UP]"
+                    IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM UP]:[ALL CAMERAS UP]"
                 END IF
             END IF
             streamsUp$ = "12"
@@ -1804,9 +1815,9 @@ SUB Timer01
                     Scene_Current$ = Scene_Fail
                     SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + CHR$(34) + Scene_Fail + CHR$(34)
                     _DELAY .1
-                    IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM DOWN] : [ALL CAMERAS DOWN]"
+                    IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM DOWN]:[ALL CAMERAS DOWN]"
                     Timer_Fail_Count = Timer_Fail_Count + 1
-                    IF Timer_Fail_Count >= 999 THEN Timer_Fail_Count = 999
+                    IF Timer_Fail_Count > 999 THEN Timer_Fail_Count = 999
                 END IF
             END IF
         END IF

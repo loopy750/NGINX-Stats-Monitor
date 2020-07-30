@@ -10,7 +10,7 @@ FIND:			b$ = "Initializing..."
 ADD BEFORE:		COLOR _RGB32(254,254,255)
 
 FIND:		'This.Canvas holds the children controls' images
-ADD BEFORE:	_SETALPHA 24, _RGB(0, 0, 0) TO _RGB(255, 255, 255), ControlImage
+ADD BEFORE:	_SETALPHA 16, _RGB(0, 0, 0) TO _RGB(255, 255, 255), ControlImage
 
 UiEditor.bas
 ------------
