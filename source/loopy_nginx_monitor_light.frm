@@ -11,7 +11,7 @@ SUB __UI_LoadForm
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Loopy NGINX Monitor"
     Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
-    Control(__UI_NewID).ForeColor = _RGB32(1, 1, 1)
+    Control(__UI_NewID).ForeColor = _RGB32(1, 1, 2)
     Control(__UI_NewID).BackColor = _RGB32(235, 233, 238)
     Control(__UI_NewID).BorderColor = _RGB32(163, 166, 170)
 
@@ -67,7 +67,6 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "Stream1", 245, 106, 24, 264, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Stream #1"
-    Control(__UI_NewID).ForeColor = _RGB32(8, 160, 4)
     Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(253, 251, 255)
     Control(__UI_NewID).HasBorder = True
@@ -76,7 +75,6 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "Stream2", 245, 106, 532, 264, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Stream #2"
-    Control(__UI_NewID).ForeColor = _RGB32(8, 160, 4)
     Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(253, 251, 255)
     Control(__UI_NewID).HasBorder = True
@@ -84,7 +82,7 @@ SUB __UI_LoadForm
 
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "versionFrame", 753, 59, 24, 382, 0)
     __UI_RegisterResult = 0
-    Control(__UI_NewID).ForeColor = _RGB32(32, 128, 16)
+    Control(__UI_NewID).ForeColor = _RGB32(1, 1, 3)
     Control(__UI_NewID).BackColor = _RGB32(245, 243, 247)
     Control(__UI_NewID).BorderColor = _RGB32(253, 251, 255)
     Control(__UI_NewID).HasBorder = True
@@ -94,7 +92,6 @@ SUB __UI_LoadForm
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Exit"
     ToolTip(__UI_NewID) = "Exits the program"
-    Control(__UI_NewID).ForeColor = _RGB32(144, 0, 0)
     Control(__UI_NewID).BackColor = _RGB32(235, 233, 23)
     Control(__UI_NewID).BorderColor = _RGB32(170, 166, 170)
 
@@ -602,6 +599,7 @@ SUB __UI_LoadForm
 
     __UI_NewID = __UI_NewControl(__UI_Type_PictureBox, "PictureBox1", 64, 64, 369, 296, 0)
     __UI_RegisterResult = 0
+    Control(__UI_NewID).ForeColor = _RGB32(1, 1, 1)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).BackStyle = __UI_Transparent
@@ -672,7 +670,6 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_MenuItem, "HelpMenuCheckForUpdates", 139, 20, 0, 4, __UI_GetID("HelpMenu"))
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Check for updates"
-    Control(__UI_NewID).ForeColor = _RGB32(255, 255, 255)
     Control(__UI_NewID).BackColor = _RGB32(32, 32, 32)
 
     __UI_NewID = __UI_NewControl(__UI_Type_MenuItem, "OptionsMenuFullscreen", 97, 20, 0, 24, __UI_GetID("OptionsMenu"))
