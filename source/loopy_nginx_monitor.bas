@@ -4,8 +4,8 @@ OPTION _EXPLICIT
 ': Fellippe Heitor, 2016-2019 - fellippe@qb64.org - @fellippeheitor
 ': https://github.com/FellippeHeitor/InForm
 '-----------------------------------------------------------
-
 ': Controls' IDs: ------------------------------------------------------------------
+': EDITED --------------------------------------------------------------------------
 DIM SHARED LoopyNGINXMonitor AS LONG
 DIM SHARED FileMenu AS LONG
 DIM SHARED OptionsMenu AS LONG
@@ -80,18 +80,22 @@ DIM SHARED multiStream2LB AS LONG
 DIM SHARED Kb_Diff_stream2LB AS LONG
 DIM SHARED Timer_Fail_Stream2LB AS LONG
 DIM SHARED OptionsMenuDebug AS LONG
+DIM SHARED HelpMenuVisitWebsite AS LONG
 DIM SHARED HelpMenuCheckForUpdates AS LONG
 DIM SHARED OptionsMenuFullscreen AS LONG
 DIM SHARED IndicatorLB AS LONG
 DIM SHARED HelpMenuAbout AS LONG
 DIM SHARED StatusLB AS LONG
 DIM SHARED PictureBoxLogoBottom AS LONG
+DIM SHARED OBSRemoteLB AS LONG
+DIM SHARED OBS_RemoteLB AS LONG
 
 ': External modules: ---------------------------------------------------------------
 '$INCLUDE:'InForm_Deleted.bas'
 '$INCLUDE:'InForm\InForm.ui'
 '$INCLUDE:'InForm\xp.uitheme'
 '$INCLUDE:'loopy_nginx_monitor.frm'
+'$INCLUDE:'loopy_nginx_monitor_light.frm'
 
 ': Event procedures: ---------------------------------------------------------------
 '$INCLUDE:'image.png.MEM'
@@ -100,15 +104,15 @@ SUB __UI_BeforeInit
     $VERSIONINFO:ProductName=Loopy NGINX Monitor
     $VERSIONINFO:Comments=Monitor NGINX RTMP Streams
     $VERSIONINFO:FileDescription=Loopy NGINX Monitor
-    $VERSIONINFO:FILEVERSION#=1,3,3,0
-    $VERSIONINFO:PRODUCTVERSION#=1,3,3,0
+    $VERSIONINFO:FILEVERSION#=1,3,8,0
+    $VERSIONINFO:PRODUCTVERSION#=1,3,8,0
     $CHECKING:ON
     $RESIZE:OFF
     IF ERR = 0 THEN
         $EXEICON:'.\icon.ico'
         _TITLE "Loopy NGINX Monitor - loopy750"
     END IF
-    Ver$ = "1.3.3"
+    Ver$ = "1.3.8"
 
     'Always on top : ------------------------------------------------------------------
     CONST HWND_TOPMOST%& = -1
@@ -149,6 +153,7 @@ SUB __UI_OnLoad
     SetCaption Bandwidth_ThresholdLB, "-"
     SetCaption Stream_Fail_DelayLB, "-"
     SetCaption MultiCameraSwitchStatusLB, "-"
+    SetCaption OBS_RemoteLB, "-"
     'Stream #1
     SetCaption multiStream1LB, "-"
     SetCaption Kb_Diff_stream1LB, "-"
@@ -167,13 +172,14 @@ SUB __UI_OnLoad
     SetCaption mouseYLB, "-"
     SetCaption __ERRORLINELB, "-"
     'Debug titles
-    SetCaption TimerLB, "-" 'TIMER
-    SetCaption TimerSnapshotLB, "-" 'TIMER (snapshot)
-    SetCaption td_displayVarLB, "-" 'td_display var
-    SetCaption mouseXVarLB, "-" 'mouseX var
-    SetCaption mouseYVarLB, "-" 'mouseY var
-    SetCaption __ERRORLINEVarLB, "-" '_ERRORLINE var
+    SetCaption TimerLB, "-"
+    SetCaption TimerSnapshotLB, "-"
+    SetCaption td_displayVarLB, "-"
+    SetCaption mouseXVarLB, "-"
+    SetCaption mouseYVarLB, "-"
+    SetCaption __ERRORLINEVarLB, "-"
 
+    c34 = CHR$(34)
     BG = _RGB(32, 32, 32)
     Exe_OK = 1
     config_main = "config.ini"
@@ -191,7 +197,7 @@ SUB __UI_OnLoad
     Stream_Fail_Delay = 10
     Desktop_Width_Position = 160
     Desktop_Height_Position = 100
-    IF NOT _FILEEXISTS(config_main) THEN RefreshDisplayRequest = 1: Error_msg$ = "File " + CHR$(34) + config_main + CHR$(34) + " cannot be accessed, check if it exists. (#1)": _DELAY 3
+    IF NOT _FILEEXISTS(config_main) THEN RefreshDisplayRequest = 1: Error_msg$ = "File " + c34 + config_main + c34 + " cannot be accessed, check if it exists. (#1)": _DELAY 3
     IF _FILEEXISTS(config_main) THEN
         OPEN config_main FOR INPUT AS #4 'Basic INI management, nothing fancy needed
         DO
@@ -201,53 +207,55 @@ SUB __UI_OnLoad
                 IF EqualFound THEN
                     file4_var$ = LEFT$(file4$, INSTR(file4$, "=") - 1)
                     file4_val$ = MID$(file4$, INSTR(file4$, "=") + 1)
-                    IF file4_var$ = "BandwidthThreshold" THEN Bandwidth_Threshold = VAL(file4_val$)
-                    IF file4_var$ = "StreamFailDelay" THEN Stream_Fail_Delay = VAL(file4_val$)
-                    IF file4_var$ = "xWindow" THEN Desktop_Width_Position = VAL(file4_val$)
-                    IF file4_var$ = "yWindow" THEN Desktop_Height_Position = VAL(file4_val$)
-                    IF file4_var$ = "SceneOK" THEN Scene_OK = file4_val$
-                    IF file4_var$ = "SceneFail" THEN Scene_Fail = file4_val$
-                    IF file4_var$ = "SceneIntro" THEN Scene_Intro = file4_val$
-                    IF file4_var$ = "ServerIP" THEN URL = file4_val$
-                    IF file4_var$ = "ServerPort" THEN Port = file4_val$
-                    IF file4_var$ = "WebsocketAddress" THEN OBS_URL = file4_val$
-                    IF file4_var$ = "WebsocketPassword" THEN OBS_PW = file4_val$
-                    IF file4_var$ = "FileStatusOutput" THEN FileStatusOutput = file4_val$
-                    IF file4_var$ = "CheckUpdateOnStartup" THEN CheckUpdateOnStartup = file4_val$
-                    IF file4_var$ = "MultiCameraSwitch" THEN MultiCameraSwitch$ = file4_val$
-                    IF file4_var$ = "urlStream1" THEN urlStream1 = file4_val$
-                    IF file4_var$ = "urlStream2" THEN urlStream2 = file4_val$
-                    IF file4_var$ = "titleScene1" THEN titleScene1 = file4_val$
-                    IF file4_var$ = "titleScene2" THEN titleScene2 = file4_val$
-                    IF file4_var$ = "titleScene12" THEN titleScene12 = file4_val$
-                    IF file4_var$ = "returnPreviousScene" THEN returnPreviousScene = file4_val$
-                    IF file4_var$ = "returnPreviousSceneRemember" THEN returnPreviousSceneRemember$ = file4_val$
+                    file4_var$ = LCASE$(file4_var$)
+                    IF file4_var$ = "bandwidththreshold" THEN Bandwidth_Threshold = VAL(file4_val$)
+                    IF file4_var$ = "streamfaildelay" THEN Stream_Fail_Delay = VAL(file4_val$)
+                    IF file4_var$ = "xwindow" THEN Desktop_Width_Position = VAL(file4_val$)
+                    IF file4_var$ = "ywindow" THEN Desktop_Height_Position = VAL(file4_val$)
+                    IF file4_var$ = "sceneok" THEN Scene_OK = file4_val$
+                    IF file4_var$ = "scenefail" THEN Scene_Fail = file4_val$
+                    IF file4_var$ = "sceneintro" THEN Scene_Intro = file4_val$
+                    IF file4_var$ = "serverip" THEN URL = file4_val$
+                    IF file4_var$ = "serverport" THEN Port = file4_val$
+                    IF file4_var$ = "websocketaddress" THEN OBS_URL = file4_val$
+                    IF file4_var$ = "websocketpassword" THEN OBS_PW = file4_val$
+                    IF file4_var$ = "websocketmethod" THEN WebsocketMethod = file4_val$
+                    IF file4_var$ = "filestatusoutput" THEN FileStatusOutput = file4_val$
+                    IF file4_var$ = "checkupdateonstartup" THEN CheckUpdateOnStartup = file4_val$
+                    IF file4_var$ = "multicameraswitch" THEN MultiCameraSwitch$ = file4_val$
+                    IF file4_var$ = "urlstream1" THEN urlStream1 = file4_val$
+                    IF file4_var$ = "urlstream2" THEN urlStream2 = file4_val$
+                    IF file4_var$ = "titlescene1" THEN titleScene1 = file4_val$
+                    IF file4_var$ = "titlescene2" THEN titleScene2 = file4_val$
+                    IF file4_var$ = "titlescene12" THEN titleScene12 = file4_val$
+                    IF file4_var$ = "returnpreviousscene" THEN returnPreviousScene = file4_val$
+                    IF file4_var$ = "returnprevioussceneremember" THEN returnPreviousSceneRemember$ = file4_val$
                 END IF
             END IF
         LOOP UNTIL EOF(4)
         CLOSE #4
 
-        IF Scene_OK = "" OR Scene_Fail = "" OR Scene_Intro = "" OR URL = "" OR Port = "" OR OBS_URL = "" OR OBS_PW = "" OR FileStatusOutput = "" OR CheckUpdateOnStartup = "" OR MultiCameraSwitch$ = "" OR urlStream1 = "" OR urlStream2 = "" OR titleScene1 = "" OR titleScene2 = "" OR titleScene12 = "" OR returnPreviousScene = "" OR returnPreviousSceneRemember$ = "" THEN verCheck$ = "Settings missing in 'config.ini' file, check 'readme.txt'...": iniFeatures = 1
+        IF Scene_OK = "" OR Scene_Fail = "" OR Scene_Intro = "" OR URL = "" OR Port = "" OR OBS_URL = "" OR OBS_PW = "" OR WebsocketMethod = "" OR FileStatusOutput = "" OR CheckUpdateOnStartup = "" OR MultiCameraSwitch$ = "" OR urlStream1 = "" OR urlStream2 = "" OR titleScene1 = "" OR titleScene2 = "" OR titleScene12 = "" OR returnPreviousScene = "" OR returnPreviousSceneRemember$ = "" THEN verCheck$ = "Settings missing in 'config.ini' file, check 'readme.txt'...": iniFeatures = 1
 
-        IF Bandwidth_Threshold <= 0 THEN
+        IF Bandwidth_Threshold < 0 THEN
             Bandwidth_Threshold = 0
         ELSEIF Bandwidth_Threshold > 9999 THEN Bandwidth_Threshold = 9999
         END IF
 
-        IF Stream_Fail_Delay <= 3 THEN
+        IF Stream_Fail_Delay < 3 THEN
             Stream_Fail_Delay = 3
         ELSEIF Stream_Fail_Delay > 99 THEN Stream_Fail_Delay = 99
         END IF
 
         IF Desktop_Width_Position < -(_DESKTOPWIDTH * 4) THEN Desktop_Width_Position = -(_DESKTOPWIDTH * 4)
         IF Desktop_Width_Position > (_DESKTOPWIDTH * 4) THEN Desktop_Width_Position = (_DESKTOPWIDTH * 4)
-        IF Desktop_Width_Position = -9999 THEN Desktop_Width_Position = -9999
+        IF Desktop_Width_Position < -9999 THEN Desktop_Width_Position = -9999
 
         IF Desktop_Height_Position < -(_DESKTOPHEIGHT * 4) THEN Desktop_Height_Position = -(_DESKTOPHEIGHT * 4)
         IF Desktop_Height_Position > (_DESKTOPHEIGHT * 4) THEN Desktop_Height_Position = (_DESKTOPHEIGHT * 4)
-        IF Desktop_Height_Position = -9999 THEN Desktop_Height_Position = -9999
+        IF Desktop_Height_Position < -9999 THEN Desktop_Height_Position = -9999
 
-        IF Desktop_Width_Position = -9999 AND Desktop_Height_Position = -9999 THEN
+        IF Desktop_Width_Position < -9999 AND Desktop_Height_Position = -9999 THEN
         ELSE
             _SCREENMOVE Desktop_Width_Position, Desktop_Height_Position
         END IF
@@ -257,12 +265,69 @@ SUB __UI_OnLoad
     IF FileStatusOutput = "true" THEN __FileStatusOutput = 1 ELSE __FileStatusOutput = 0
     IF returnPreviousSceneRemember$ = "true" THEN returnPreviousSceneRemember = 1 ELSE returnPreviousSceneRemember = 0
     IF __MultiCameraSwitch = 0 THEN __returnPreviousScene = 0: returnPreviousSceneRemember = 0
+    IF WebsocketMethod <> "nodejs" THEN WebsocketMethod = "obscommand"
+
+    IF WebsocketMethod = "nodejs" THEN
+        OPEN ".\js\obs_change_scene.js" FOR OUTPUT AS #64
+        PRINT #64, "// This file has been automatically generated"
+        PRINT #64, "// Any changes made will be lost"
+        PRINT #64, "// https://github.com/loopy750/NGINX-Stats-Monitor"
+        PRINT #64, "const OBSWebSocket = require('obs-websocket-js');"
+        PRINT #64, "const obs = new OBSWebSocket();"
+        PRINT #64, "const WebsocketAddress = " + c34 + OBS_URL + c34 + ";"
+        PRINT #64, "const WebsocketPassword = " + c34 + OBS_PW + c34 + ";"
+        PRINT #64, "var sceneName_1 = process.argv[2];"
+        PRINT #64, "var sceneName_2 = process.argv[3];"
+        PRINT #64, "var sceneName_3 = process.argv[4];"
+        PRINT #64, "var sceneName_4 = process.argv[5];"
+        PRINT #64, "var sceneName_5 = process.argv[6];"
+        PRINT #64, "var sceneName_6 = process.argv[7];"
+        PRINT #64, "var sceneName_7 = process.argv[8];"
+        PRINT #64, "var sceneName_8 = process.argv[9];"
+        PRINT #64, "if (sceneName_2 === undefined) { var sceneName_2 = '' } else { var sceneName_1 = sceneName_1 + " + c34 + " " + c34 + " }"
+        PRINT #64, "if (sceneName_3 === undefined) { var sceneName_3 = '' } else { var sceneName_2 = sceneName_2 + " + c34 + " " + c34 + " }"
+        PRINT #64, "if (sceneName_4 === undefined) { var sceneName_4 = '' } else { var sceneName_3 = sceneName_3 + " + c34 + " " + c34 + " }"
+        PRINT #64, "if (sceneName_5 === undefined) { var sceneName_5 = '' } else { var sceneName_4 = sceneName_4 + " + c34 + " " + c34 + " }"
+        PRINT #64, "if (sceneName_6 === undefined) { var sceneName_6 = '' } else { var sceneName_5 = sceneName_5 + " + c34 + " " + c34 + " }"
+        PRINT #64, "if (sceneName_7 === undefined) { var sceneName_7 = '' } else { var sceneName_6 = sceneName_6 + " + c34 + " " + c34 + " }"
+        PRINT #64, "if (sceneName_8 === undefined) { var sceneName_8 = '' } else { var sceneName_7 = sceneName_7 + " + c34 + " " + c34 + " }"
+        PRINT #64, "obs.connect({ address: WebsocketAddress, password: WebsocketPassword })"
+        PRINT #64, ".then(() => { return obs.send('GetSceneList'); })"
+        PRINT #64, ".then(data => { data.scenes.forEach(scene => {"
+        PRINT #64, "        if (scene.name !== data.currentScene) {"
+        PRINT #64, "            // console.log(`${scene.name}`);"
+        PRINT #64, "            obs.send('SetCurrentScene', {"
+        PRINT #64, "                'scene-name': sceneName_1 + sceneName_2 + sceneName_3 + sceneName_4 + sceneName_5 + sceneName_6 + sceneName_7 + sceneName_8"
+        PRINT #64, "            });"
+        PRINT #64, "        }"
+        PRINT #64, "    });"
+        PRINT #64, "})"
+        PRINT #64, ".then(() => { obs.disconnect(); });"
+        CLOSE #64
+
+        OPEN ".\js\obs_get_scene.js" FOR OUTPUT AS #72
+        PRINT #72, "// This file has been automatically generated"
+        PRINT #72, "// Any changes made will be lost"
+        PRINT #72, "// https://github.com/loopy750/NGINX-Stats-Monitor"
+        PRINT #72, "const OBSWebSocket = require('obs-websocket-js');"
+        PRINT #72, "const obs = new OBSWebSocket();"
+        PRINT #72, "const WebsocketAddress = " + c34 + OBS_URL + c34 + ";"
+        PRINT #72, "const WebsocketPassword = " + c34 + OBS_PW + c34 + ";"
+        PRINT #72, "obs.connect({ address: WebsocketAddress, password: WebsocketPassword })"
+        PRINT #72, ".then(() => { return obs.send('GetCurrentScene'); })"
+        PRINT #72, ".then(data => { data.sources.forEach(sources => {"
+        PRINT #72, "            console.log(`${data.name}`);"
+        PRINT #72, "    });"
+        PRINT #72, "})"
+        PRINT #72, ".then(() => { obs.disconnect(); });"
+        CLOSE #72
+    END IF
 
     IF CheckUpdateOnStartup = "true" AND iniFeatures = 0 THEN
         file224$ = ""
         updateResult$ = ""
         _DELAY .25
-        SHELL _HIDE "%ComSpec% /C curl -H " + CHR$(34) + "Cache-Control: no-cache" + CHR$(34) + " https://raw.githubusercontent.com/loopy750/NGINX-Stats-Monitor-Version/master/checkversion.txt > checkversion.txt"
+        SHELL _HIDE "%ComSpec% /C curl -H " + c34 + "Cache-Control: no-cache" + c34 + " https://raw.githubusercontent.com/loopy750/NGINX-Stats-Monitor-Version/master/checkversion.txt > checkversion.txt"
         _DELAY .25
         IF _FILEEXISTS("checkversion.txt") THEN
             OPEN "checkversion.txt" FOR INPUT AS #224
@@ -284,16 +349,26 @@ SUB __UI_OnLoad
 
     Port_Client$ = "TCP/IP:" + Port + ":"
 
-    IF Scene_OK = "" OR Scene_Fail = "" OR Scene_Intro = "" OR URL = "" OR Port = "" OR OBS_URL = "" THEN RefreshDisplayRequest = 1: Error_msg$ = "Variable/s for scenes empty, check if " + CHR$(34) + config_main + CHR$(34) + " exists. (#2)": _DELAY 3
+    IF Scene_OK = "" OR Scene_Fail = "" OR Scene_Intro = "" OR URL = "" OR Port = "" OR OBS_URL = "" THEN RefreshDisplayRequest = 1: Error_msg$ = "Variable/s for scenes empty, check if " + c34 + config_main + c34 + " exists. (#2)": _DELAY 3
 
     IF __MultiCameraSwitch = 0 THEN
         Scene_Current$ = Scene_OK
-        SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + CHR$(34) + Scene_OK + CHR$(34)
+        SELECT CASE WebsocketMethod
+            CASE "nodejs"
+                SHELL _DONTWAIT _HIDE "%ComSpec% /C node.exe .\js\obs_change_scene.js " + Scene_OK
+            CASE "obscommand"
+                SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + c34 + Scene_OK + c34
+        END SELECT
     END IF
 
     IF __MultiCameraSwitch = 1 THEN
         Scene_Current$ = titleScene12
-        SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + CHR$(34) + titleScene12 + CHR$(34)
+        SELECT CASE WebsocketMethod
+            CASE "nodejs"
+                SHELL _DONTWAIT _HIDE "%ComSpec% /C node.exe .\js\obs_change_scene.js " + titleScene12
+            CASE "obscommand"
+                SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + c34 + titleScene12 + c34
+        END SELECT
     END IF
 
     _DELAY .25
@@ -338,10 +413,11 @@ SUB __UI_OnLoad
     TIMER ON
 END SUB
 
+'BeforeUpdateDisplay ----------------------------------------------------------------------------------------------------------------------------------------------------
 SUB __UI_BeforeUpdateDisplay
     'This event occurs at approximately 30 frames per second.
     'You can change the update frequency by calling SetFrameRate DesiredRate%
-    SetFrameRate 36
+    IF NOT _WINDOWHASFOCUS THEN SetFrameRate 30 ELSE SetFrameRate 36
 
     IF RefreshDisplayRequest = 1 THEN
         RefreshDisplayRequest = 0
@@ -361,11 +437,8 @@ SUB __UI_BeforeUpdateDisplay
     END IF
 
     IF Debug = 1 THEN
-        DO WHILE _MOUSEINPUT
-            mouseX = _MOUSEX
-            mouseY = _MOUSEY
-        LOOP
-
+        mouseX = _MOUSEX
+        mouseY = _MOUSEY
         Debug_Timer# = TIMER(.001)
         TIMEms Debug_Timer#, 0
         SetCaption (Debug_TimerLB), tout + " sec   "
@@ -386,6 +459,12 @@ SUB __UI_BeforeUpdateDisplay
             updateDisplayCounter = 0
             SetCaption StatusLB, ""
         END IF
+    END IF
+
+    IF _EXIT THEN
+        IF _FILEEXISTS(filePrevious) THEN KILL filePrevious
+        IF _FILEEXISTS(outputStatusFile) THEN KILL outputStatusFile
+        SYSTEM
     END IF
 
     ProgressCounter = ProgressCounter + 1 '| / - \ | / - \
@@ -410,6 +489,7 @@ SUB __UI_BeforeUpdateDisplay
             ProgressCounter = 1
     END SELECT
 END SUB
+'------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 SUB __UI_BeforeUnload
     'If you set __UI_UnloadSignal = False here you can
@@ -455,10 +535,13 @@ SUB __UI_Click (id AS LONG)
                 Debug = 1
                 Control(DebugFrame).Hidden = False
                 Control(versionFrame).Hidden = True
+                Control(PictureBoxLogoBottom).Hidden = True
+                SetRadioButtonValue OptionsMenuDebug
             ELSE
                 Debug = 0
-                Control(DebugFrame).Hidden = True
-                Control(versionFrame).Hidden = False
+                Control(versionFrame).Hidden = True
+                Control(PictureBoxLogoBottom).Hidden = True
+                SetRadioButtonValue OptionsMenuDebug
             END IF
 
         CASE OptionsMenuFullscreen
@@ -475,13 +558,16 @@ SUB __UI_Click (id AS LONG)
             IF _FILEEXISTS(outputStatusFile) THEN KILL outputStatusFile
             SYSTEM
 
+        CASE HelpMenuVisitWebsite
+            SHELL _DONTWAIT _HIDE "%ComSpec% /C START " + c34 + c34 + " /B https://github.com/loopy750/NGINX-Stats-Monitor"
+
         CASE HelpMenuCheckForUpdates
             verCheck$ = "Checking for new version..."
             SetCaption StatusLB, verCheck$
             file224$ = ""
             updateResult$ = ""
             _DELAY .25
-            SHELL _HIDE "%ComSpec% /C curl -H " + CHR$(34) + "Cache-Control: no-cache" + CHR$(34) + " https://raw.githubusercontent.com/loopy750/NGINX-Stats-Monitor-Version/master/checkversion.txt > checkversion.txt"
+            SHELL _HIDE "%ComSpec% /C curl -H " + c34 + "Cache-Control: no-cache" + c34 + " https://raw.githubusercontent.com/loopy750/NGINX-Stats-Monitor-Version/master/checkversion.txt > checkversion.txt"
             _DELAY .25
             IF _FILEEXISTS("checkversion.txt") THEN
                 OPEN "checkversion.txt" FOR INPUT AS #224
@@ -500,7 +586,7 @@ SUB __UI_Click (id AS LONG)
             IF verCheck <> "" THEN updateDisplayCounter = 0
 
         CASE HelpMenuAbout
-            About = MessageBox(SPACE$(3) + "Loopy NGINX Stats Monitor v" + Ver$ + "\n\n" + SPACE$(20) + "07/20 - loopy750\n\n" + SPACE$(3) + "https://www.github.com/loopy750", "About", MsgBox_OkOnly)
+            Answer = MessageBox("Loopy NGINX Stats Monitor v" + Ver$ + " (08/20)\nby loopy750\n\nGitHub: https://www.github.com/loopy750", "About", MsgBox_OkOnly + MsgBox_Information)
 
         CASE RMTPLB
 
@@ -1268,34 +1354,6 @@ SUB __UI_FormResized
 
 END SUB
 
-SUB Indicators
-
-    TIMER STOP
-    COLOR _RGB(100, 100, 164), BGA
-    AliveIndicator! = AliveIndicator! + .125
-
-    IF AliveIndicator! <= 0 OR AliveIndicator! >= 9 THEN
-        AliveIndicator! = 1
-        __BGA = __BGA + 1
-        IF __BGA = 1 THEN BGA = _RGB(30, 64, 96)
-        IF __BGA > 1 THEN BGA = _RGB(32, 32, 32): __BGA = 0
-    END IF
-
-    aioffsetX = 689: aioffsetY = 425
-    SELECT CASE AliveIndicator!
-        CASE 1, 5
-            LINE (6 + aioffsetX, 0 + aioffsetY)-(6 + aioffsetX, 10 + aioffsetY), BGA: LINE (2 + aioffsetX, 9 + aioffsetY)-(10 + aioffsetX, 1 + aioffsetY), _RGB(128, 192, 240)
-        CASE 2, 6
-            LINE (2 + aioffsetX, 9 + aioffsetY)-(10 + aioffsetX, 1 + aioffsetY), BGA: LINE (0 + aioffsetX, 5 + aioffsetY)-(12 + aioffsetX, 5 + aioffsetY), _RGB(128, 192, 240)
-        CASE 3, 7
-            LINE (0 + aioffsetX, 5 + aioffsetY)-(12 + aioffsetX, 5 + aioffsetY), BGA: LINE (2 + aioffsetX, 1 + aioffsetY)-(10 + aioffsetX, 9 + aioffsetY), _RGB(128, 192, 240)
-        CASE 4, 8
-            LINE (2 + aioffsetX, 1 + aioffsetY)-(10 + aioffsetX, 9 + aioffsetY), BGA: LINE (6 + aioffsetX, 0 + aioffsetY)-(6 + aioffsetX, 10 + aioffsetY), _RGB(128, 192, 240)
-    END SELECT
-    TIMER ON
-
-END SUB
-
 SUB TIMEms (tout#, plus)
 
     TIMER STOP
@@ -1313,8 +1371,7 @@ SUB TIMEms (tout#, plus)
     IF tout# >= 0 THEN tout = tout + "." + MID$(LTRIM$(STR$(toutdec#)), 3, 3) ELSE tout = tout + "." + MID$(LTRIM$(STR$(toutdec#)), 4, 3)
     IF LEN(STR$(toutdec#)) = 5 THEN tout = tout + "0"
     IF LEN(STR$(toutdec#)) = 4 THEN tout = tout + "00"
-    IF LEN(STR$(toutdec#)) = 2 THEN tout = tout + "000"
-    'Output to tout
+    IF LEN(STR$(toutdec#)) = 2 THEN tout = tout + "000" 'Output to tout
     TIMER ON
 
 END SUB
@@ -1354,8 +1411,7 @@ SUB calcbw (bout#, bits)
             IF LEN(boutdec$) = 0 THEN boutdec$ = boutdec$ + "000"
         END IF
         IF bout# < 1073741824 THEN boutdec$ = LEFT$(boutdec$, 2)
-        bout = bout + "." + boutdec$ + " " + boutm$
-        'Output to bout
+        bout = bout + "." + boutdec$ + " " + boutm$ 'Output to bout
     ELSE
         SELECT CASE bout2#
             CASE IS < 1048576
@@ -1380,8 +1436,7 @@ SUB calcbw (bout#, bits)
         IF LEN(LTRIM$(STR$(boutint#))) >= 5 THEN boutdec$ = LEFT$(boutdec$, 1)
         boutdec$ = "." + boutdec$
         IF boutnodec = 1 THEN boutdec$ = ""
-        bout = bout + boutdec$ + " " + boutm$
-        'Output to bout
+        bout = bout + boutdec$ + " " + boutm$ 'Output to bout
     END IF
     TIMER ON
 
@@ -1408,96 +1463,23 @@ SUB statusOutputToFile (outputMSG$)
 
 END SUB
 
+'Timer01 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 SUB Timer01
     td_update# = TIMER(.001) - timer1#
     timer1# = TIMER(.001)
 
-    IF Debug = 0 THEN
-        Control(TimerLB).Hidden = True
-        Control(TimerSnapshotLB).Hidden = True
-        Control(td_displayVarLB).Hidden = True
-        Control(mouseXVarLB).Hidden = True
-        Control(mouseYVarLB).Hidden = True
-        Control(__ERRORLINEVarLB).Hidden = True
-        Control(Debug_TimerLB).Hidden = True
-        Control(Debug_Timer_SnapshotLB).Hidden = True
-        Control(td_displayLB).Hidden = True
-        Control(mouseXLB).Hidden = True
-        Control(mouseYLB).Hidden = True
-        Control(__ERRORLINELB).Hidden = True
-        Control(PictureBoxLogoBottom).Hidden = False
-        SetCaption Debug_TimerLB, "-"
-        SetCaption Debug_Timer_SnapshotLB, "-"
-        SetCaption td_displayLB, "-"
-        SetCaption mouseXLB, "-"
-        SetCaption mouseYLB, "-"
-        SetCaption __ERRORLINELB, "-"
-        SetCaption TimerLB, "-" 'TIMER
-        SetCaption TimerSnapshotLB, "-" 'TIMER (snapshot)
-        SetCaption td_displayVarLB, "-" 'td_display var
-        SetCaption mouseXVarLB, "-" 'mouseX var
-        SetCaption mouseYVarLB, "-" 'mouseY var
-        SetCaption __ERRORLINEVarLB, "-" '_ERRORLINE var
-    ELSEIF Debug = 1 THEN
-        Control(TimerLB).Hidden = False
-        Control(TimerSnapshotLB).Hidden = False
-        Control(td_displayVarLB).Hidden = False
-        Control(mouseXVarLB).Hidden = False
-        Control(mouseYVarLB).Hidden = False
-        Control(__ERRORLINEVarLB).Hidden = False
-        Control(Debug_TimerLB).Hidden = False
-        Control(Debug_Timer_SnapshotLB).Hidden = False
-        Control(td_displayLB).Hidden = False
-        Control(mouseXLB).Hidden = False
-        Control(mouseYLB).Hidden = False
-        Control(__ERRORLINELB).Hidden = False
-        Control(PictureBoxLogoBottom).Hidden = True
-        SetCaption TimerLB, "TIMER" 'TIMER
-        SetCaption TimerSnapshotLB, "TIMER (snapshot)" 'TIMER (snapshot)
-        SetCaption td_displayVarLB, "td_display var" 'td_display var
-        SetCaption mouseXVarLB, "mouseX var" 'mouseX var
-        SetCaption mouseYVarLB, "mouseY var" 'mouseY var
-        SetCaption __ERRORLINEVarLB, "_ERRORLINE var" '_ERRORLINE var
-        TIMEms Debug_Timer#, 0
-        SetCaption (Debug_Timer_SnapshotLB), tout + " sec "
-    END IF
+    'Debug moved down from here ---------------------------------------------------------------------------------------------------------------------------------------------------
+    'Get OBS scene moved down from here -------------------------------------------------------------------------------------------------------------------------------------------
 
-    IF verCheck$ <> "" THEN
-        SetCaption StatusLB, verCheck$
-        updateDisplay = 1
-    END IF
+    SELECT CASE WebsocketMethod
+        CASE "nodejs"
+            SetCaption OBS_RemoteLB, "Node.js"
+        CASE "obscommand"
+            SetCaption OBS_RemoteLB, "OBSCommand"
+        CASE ELSE
+            WebsocketMethod = "obscommand"
+    END SELECT
 
-    IF __returnPreviousScene = 1 THEN
-        returnPreviousSceneTime = returnPreviousSceneTime + 1
-        IF returnPreviousSceneTime >= 3 THEN returnPreviousSceneTime = 1 ELSE GOTO Exit_returnPreviousSceneCheck
-        returnFirstCheck = 1
-        SHELL _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /command=GetCurrentScene > " + filePrevious
-        _DELAY .01
-        ON ERROR GOTO PUT_Fail
-        PUT_Refresh = 1
-        IF _FILEEXISTS(filePrevious) THEN
-            OPEN filePrevious FOR INPUT AS #96
-            DO UNTIL EOF(96)
-                IF LOF(96) = 0 THEN NoKill = 1: EXIT DO 'Overkill with EOF checking, but just being safe
-                IF EOF(96) THEN EXIT DO
-                LINE INPUT #96, file96$
-                findSceneName = INSTR(file96$, "  " + CHR$(34) + "name" + CHR$(34) + ": " + CHR$(34))
-                IF findSceneName THEN
-                    findSceneName2 = INSTR(findSceneName + 11, file96$, CHR$(34))
-                    IF streamsUp$ <> "0" THEN previousScene$ = MID$(file96$, findSceneName + 11, findSceneName2 - 12)
-                    previousSceneDisplay$ = MID$(file96$, findSceneName + 11, findSceneName2 - 12)
-                    EXIT DO 'Output to previousScene$
-                END IF
-            LOOP
-        END IF
-    END IF
-    CLOSE #96
-
-    IF NoKill = 1 THEN NoKill = 0 ELSE IF _FILEEXISTS(filePrevious) THEN KILL filePrevious
-    ON ERROR GOTO 0
-    PUT_Refresh = 0
-
-    Exit_returnPreviousSceneCheck:
     rtmp_naccepted$ = "": rtmp_bytes_in$ = "": rtmp_bytes_out$ = "": rtmp_bw_in$ = "": rtmp_bw_out$ = "": rtmp_codec_video$ = "": rtmp_codec_audio$ = "": rtmp_codec_nclients$ = ""
     rtmp_codec_nclients# = 0: rtmp_codec_nclients_temp# = 0
     a$ = "": a2$ = "": d$ = "": I = 0: i2 = 0: i3 = 0: stats_rtmp.xml$ = ""
@@ -1507,10 +1489,7 @@ SUB Timer01
     tPing2# = TIMER(.001)
     tPingOut# = (tPing2# - tPing1#)
 
-    IF client THEN
-        NULL = NULL
-    ELSE RefreshDisplayRequest = 1: Error_msg$ = "Unable to connect, check if " + CHR$(34) + URL + ":" + Port + CHR$(34) + " is correct. (#3)": _DELAY 3: GOTO URL_OK
-    END IF
+    IF client THEN NULL = NULL ELSE RefreshDisplayRequest = 1: Error_msg$ = "Unable to connect, check if " + c34 + URL + ":" + Port + c34 + " is correct. (#3)": _DELAY 3: GOTO URL_OK
 
     EOL$ = CHR$(13) + CHR$(10)
     xHeader1$ = "GET /" + fileStat + " HTTP/1.1" + EOL$
@@ -1551,10 +1530,7 @@ SUB Timer01
     CLOSE client
     stats_rtmp.xml$ = d$
 
-    GOTO URL_OK
-
-    'PUT_Fail:
-    'IF ERR THEN CLS: _PRINTSTRING (20, 30), "ERR, _ERRORLINE:" + STR$(ERR) + "," + STR$(_ERRORLINE): _AUTODISPLAY: _DELAY 3: IF PUT_Refresh = 1 THEN PUT_Refresh = 0: Refresh_Request = 1: RESUME NEXT ELSE RESUME NEXT
+    'PUT_Fail moved from here ----------
 
     URL_OK:
     IF INSTR(stats_rtmp.xml$, "<uptime>") THEN rtmp_uptime# = VAL(MID$(stats_rtmp.xml$, INSTR(stats_rtmp.xml$, "<uptime>") + 8, 16))
@@ -1565,6 +1541,46 @@ SUB Timer01
     IF INSTR(stats_rtmp.xml$, "<bw_out>") THEN rtmp_bw_out# = VAL(MID$(stats_rtmp.xml$, INSTR(stats_rtmp.xml$, "<bw_out>") + 8, 16))
     IF INSTR(stats_rtmp.xml$, "</frame_rate><codec>") THEN rtmp_codec_video$ = MID$(stats_rtmp.xml$, INSTR(stats_rtmp.xml$, "</frame_rate><codec>") + 20, 4)
     IF INSTR(stats_rtmp.xml$, "<audio><codec>") THEN rtmp_codec_audio$ = MID$(stats_rtmp.xml$, INSTR(stats_rtmp.xml$, "<audio><codec>") + 14, 3)
+
+    rtmp_codec_video_level$ = ""
+    rtmp_codec_video_profile$ = ""
+    rtmp_codec_audio_channels$ = ""
+    rtmp_codec_audio_samplerate$ = ""
+    rtmp_codec_audio_profile$ = ""
+    rtmp_codec_video_width$ = ""
+    rtmp_codec_video_height$ = ""
+    rtmp_codec_video_resolution$ = ""
+
+    'Tooltips - RTMP
+    IF INSTR(stats_rtmp.xml$, "<nginx_version>") THEN rtmp_codec_version$ = MID$(stats_rtmp.xml$, INSTR(stats_rtmp.xml$, "<nginx_version>") + 15, 10)
+    rtmp_codec_version$ = LEFT$(rtmp_codec_version$, INSTR(rtmp_codec_version$, "<") - 1)
+    IF INSTR(stats_rtmp.xml$, "<nginx_rtmp_version>") THEN rtmp_codec_rtmp_version$ = MID$(stats_rtmp.xml$, INSTR(stats_rtmp.xml$, "<nginx_rtmp_version>") + 20, 10)
+    rtmp_codec_rtmp_version$ = LEFT$(rtmp_codec_rtmp_version$, INSTR(rtmp_codec_rtmp_version$, "<") - 1)
+    'Tooltips - Video
+    IF INSTR(stats_rtmp.xml$, "</compat><level>") THEN rtmp_codec_video_level$ = MID$(stats_rtmp.xml$, INSTR(stats_rtmp.xml$, "</compat><level>") + 16, 6)
+    rtmp_codec_video_level$ = LEFT$(rtmp_codec_video_level$, INSTR(rtmp_codec_video_level$, "<") - 1)
+    IF INSTR(stats_rtmp.xml$, "</codec><profile>") THEN rtmp_codec_video_profile$ = MID$(stats_rtmp.xml$, INSTR(stats_rtmp.xml$, "</codec><profile>") + 17, 10)
+    rtmp_codec_video_profile$ = LEFT$(rtmp_codec_video_profile$, INSTR(rtmp_codec_video_profile$, "<") - 1)
+    IF INSTR(stats_rtmp.xml$, "<video><width>") THEN rtmp_codec_video_width$ = STR$(VAL(MID$(stats_rtmp.xml$, INSTR(stats_rtmp.xml$, "<video><width>") + 14, 6)))
+    IF INSTR(stats_rtmp.xml$, "</width><height>") THEN rtmp_codec_video_height$ = STR$(VAL(MID$(stats_rtmp.xml$, INSTR(stats_rtmp.xml$, "</width><height>") + 16, 6)))
+    IF rtmp_codec_video_width$ <> "" THEN rtmp_codec_video_resolution$ = _TRIM$(rtmp_codec_video_width$) + "x" + _TRIM$(rtmp_codec_video_height$)
+    'Tooltips - Audio
+    IF INSTR((INSTR(stats_rtmp.xml$, "</codec><profile>") + 1), stats_rtmp.xml$, "</codec><profile>") THEN rtmp_codec_audio_profile$ = MID$(stats_rtmp.xml$, INSTR((INSTR(stats_rtmp.xml$, "</codec><profile>") + 1), stats_rtmp.xml$, "</codec><profile>") + 17, 10)
+    rtmp_codec_audio_profile$ = LEFT$(rtmp_codec_audio_profile$, INSTR(rtmp_codec_audio_profile$, "<") - 1)
+    IF INSTR(stats_rtmp.xml$, "</profile><channels>") THEN rtmp_codec_audio_channels$ = STR$(VAL(MID$(stats_rtmp.xml$, INSTR(stats_rtmp.xml$, "</profile><channels>") + 20, 1)))
+    IF INSTR(stats_rtmp.xml$, "</channels><sample_rate>") THEN rtmp_codec_audio_samplerate$ = STR$(VAL(MID$(stats_rtmp.xml$, INSTR(stats_rtmp.xml$, "</channels><sample_rate>") + 24, 6)))
+
+    'Dirty fix
+    IF rtmp_codec_video_profile$ = "LC" OR rtmp_codec_video_profile$ = "MP3" THEN rtmp_codec_audio_profile$ = rtmp_codec_video_profile$: rtmp_codec_video_profile$ = ""
+    IF rtmp_codec_audio_profile$ = "Baseline" OR rtmp_codec_audio_profile$ = "Main" OR rtmp_codec_audio_profile$ = "High" THEN rtmp_codec_video_profile$ = rtmp_codec_audio_profile$: rtmp_codec_audio_profile$ = ""
+
+    ToolTip(rtmp_codec_audioLB) = "Profile: " + rtmp_codec_audio_profile$ + "\nChannels: " + _TRIM$(rtmp_codec_audio_channels$) + "\nSample rate: " + _TRIM$(rtmp_codec_audio_samplerate$) + "\n"
+    ToolTip(rtmp_codec_videoLB) = "Resolution: " + rtmp_codec_video_resolution$ + "\nProfile: " + rtmp_codec_video_profile$ + "\nLevel: " + _TRIM$(rtmp_codec_video_level$) + "\n"
+    ToolTip(tPingOutLB) = "URL: " + URL + "\nPort: " + Port$ + "\n"
+
+    ToolTip(RMTPLB) = "NGINX Version: " + rtmp_codec_version$ + "\nNGINX RTMP Version: " + rtmp_codec_rtmp_version$ + "\n"
+    ToolTip(rtmp_nacceptedLB) = "NGINX Version: " + rtmp_codec_version$ + "\nNGINX RTMP Version: " + rtmp_codec_rtmp_version$ + "\n"
+    IF Timer_Failed = 1 THEN Timer_Failed = 0: ToolTip(Timer_Fail_CountLB) = "Last Failed: " + TIME$
 
     IF __MultiCameraSwitch = 1 THEN
         Stream% = 0
@@ -1596,7 +1612,7 @@ SUB Timer01
 
     IF Kb_Diff# >= Bandwidth_Threshold THEN Timer_Fail = 0
     IF Kb_Diff# <= Bandwidth_Threshold AND nginx_warmup = 1 THEN Timer_Fail = Timer_Fail + 1
-    IF Timer_Fail > 19999 THEN Timer_Fail = 19999
+    IF Timer_Fail > 20999 THEN Timer_Fail = 20999
 
     SetCaption (rtmp_nacceptedLB), "Acc:" + STR$(rtmp_naccepted#)
     SetCaption (rtmp_codec_nclientsLB), LTRIM$(STR$(rtmp_codec_nclients#))
@@ -1612,12 +1628,10 @@ SUB Timer01
     SetCaption (rtmp_bw_outLB), LTRIM$(bout)
     SetCaption (rtmp_uptimeLB), calc_nginx$(rtmp_uptime#, 0)
 
-    IF Kb_Diff# <= Bandwidth_Threshold THEN Control(Kb_DiffLB).ForeColor = RED_WARNING ELSE Control(Kb_DiffLB).ForeColor = GREEN_OK
-    IF Timer_Fail >= Stream_Fail_Delay THEN Control(Kb_DiffLB).ForeColor = RED_FAIL
+    IF Timer_Fail >= Stream_Fail_Delay THEN Control(Kb_DiffLB).ForeColor = RED_FAIL ELSE IF Kb_Diff# <= Bandwidth_Threshold THEN Control(Kb_DiffLB).ForeColor = RED_WARNING ELSE Control(Kb_DiffLB).ForeColor = GREEN_OK
     SetCaption (Kb_DiffLB), LTRIM$(STR$(Kb_Diff#)) + " Kb/s"
 
-    IF Timer_Fail >= 1 THEN Control(Timer_FailLB).ForeColor = RED_WARNING: SD = 1: _TITLE "Stream Down!" ELSE Control(Timer_FailLB).ForeColor = GREEN_OK
-    IF Timer_Fail >= Stream_Fail_Delay THEN Control(Timer_FailLB).ForeColor = RED_FAIL
+    IF Timer_Fail >= Stream_Fail_Delay THEN Control(Timer_FailLB).ForeColor = RED_FAIL ELSE IF Timer_Fail >= 1 THEN Control(Timer_FailLB).ForeColor = RED_WARNING: SD = 1: _TITLE "Stream Down!" ELSE Control(Timer_FailLB).ForeColor = GREEN_OK
     SetCaption (Timer_FailLB), calc_nginx$(Timer_Fail, 1)
 
     IF Timer_Fail = 0 AND SD = 1 THEN SD = 0: _TITLE "Loopy NGINX Monitor"
@@ -1672,12 +1686,10 @@ SUB Timer01
 
         IF Kb_Diff_stream1# < 0 THEN Kb_Diff_stream1# = 0 'Dirty fix for now
 
-        IF Kb_Diff_stream1# <= Bandwidth_Threshold THEN Control(Kb_Diff_stream1LB).ForeColor = RED_WARNING ELSE Control(Kb_Diff_stream1LB).ForeColor = GREEN_OK
-        IF Timer_Fail_Stream1 >= Stream_Fail_Delay THEN Control(Kb_Diff_stream1LB).ForeColor = RED_FAIL
+        IF Timer_Fail_Stream1 >= Stream_Fail_Delay THEN Control(Kb_Diff_stream1LB).ForeColor = RED_FAIL ELSE IF Kb_Diff_stream1# <= Bandwidth_Threshold THEN Control(Kb_Diff_stream1LB).ForeColor = RED_WARNING ELSE Control(Kb_Diff_stream1LB).ForeColor = GREEN_OK
         SetCaption (Kb_Diff_stream1LB), LTRIM$(STR$(Kb_Diff_stream1#)) + " Kb/s"
 
-        IF Timer_Fail_Stream1 >= 1 THEN Control(Timer_Fail_Stream1LB).ForeColor = RED_WARNING ELSE Control(Timer_Fail_Stream1LB).ForeColor = GREEN_OK
-        IF Timer_Fail_Stream1 >= Stream_Fail_Delay THEN Control(Timer_Fail_Stream1LB).ForeColor = RED_FAIL
+        IF Timer_Fail_Stream1 >= Stream_Fail_Delay THEN Control(Timer_Fail_Stream1LB).ForeColor = RED_FAIL ELSE IF Timer_Fail_Stream1 >= 1 THEN Control(Timer_Fail_Stream1LB).ForeColor = RED_WARNING ELSE Control(Timer_Fail_Stream1LB).ForeColor = GREEN_OK
         SetCaption (Timer_Fail_Stream1LB), calc_nginx$(Timer_Fail_Stream1, 1)
 
         calcbw multiStream2#, 0
@@ -1685,22 +1697,128 @@ SUB Timer01
 
         IF Kb_Diff_stream2# < 0 THEN Kb_Diff_stream2# = 0 'Dirty fix for now
 
-        IF Kb_Diff_stream2# <= Bandwidth_Threshold THEN Control(Kb_Diff_stream2LB).ForeColor = RED_WARNING ELSE Control(Kb_Diff_stream2LB).ForeColor = GREEN_OK
-        IF Timer_Fail_Stream2 >= Stream_Fail_Delay THEN Control(Kb_Diff_stream2LB).ForeColor = RED_FAIL
+        IF Timer_Fail_Stream2 >= Stream_Fail_Delay THEN Control(Kb_Diff_stream2LB).ForeColor = RED_FAIL ELSE IF Kb_Diff_stream2# <= Bandwidth_Threshold THEN Control(Kb_Diff_stream2LB).ForeColor = RED_WARNING ELSE Control(Kb_Diff_stream2LB).ForeColor = GREEN_OK
         SetCaption (Kb_Diff_stream2LB), LTRIM$(STR$(Kb_Diff_stream2#)) + " Kb/s"
 
-        IF Timer_Fail_Stream2 >= 1 THEN Control(Timer_Fail_Stream2LB).ForeColor = RED_WARNING ELSE Control(Timer_Fail_Stream2LB).ForeColor = GREEN_OK
-        IF Timer_Fail_Stream2 >= Stream_Fail_Delay THEN Control(Timer_Fail_Stream2LB).ForeColor = RED_FAIL
+        IF Timer_Fail_Stream2 >= Stream_Fail_Delay THEN Control(Timer_Fail_Stream2LB).ForeColor = RED_FAIL ELSE IF Timer_Fail_Stream2 >= 1 THEN Control(Timer_Fail_Stream2LB).ForeColor = RED_WARNING ELSE Control(Timer_Fail_Stream2LB).ForeColor = GREEN_OK
         SetCaption (Timer_Fail_Stream2LB), calc_nginx$(Timer_Fail_Stream2, 1)
     END IF
 
-    IF Scene_OK = "" OR Scene_Fail = "" OR Scene_Intro = "" THEN RefreshDisplayRequest = 1: Error_msg$ = "Variable/s for scenes empty, check if " + CHR$(34) + config_main + CHR$(34) + " exists. (#4)": _DELAY 3
+    IF Scene_OK = "" OR Scene_Fail = "" OR Scene_Intro = "" THEN RefreshDisplayRequest = 1: Error_msg$ = "Variable/s for scenes empty, check if " + c34 + config_main + c34 + " exists. (#4)": _DELAY 3
 
     IF Timer_Fail >= 1 AND Exe_OK = 1 AND streamsUp$ <> "0" THEN
         LoadImageMEM Control(PictureBox1), "tick_warning.png"
     ELSEIF Timer_Fail = 0 AND Exe_OK = 1 THEN
         LoadImageMEM Control(PictureBox1), "tick.png"
     END IF
+
+    'Debug ---
+    IF Debug = 0 THEN
+        Control(DebugFrame).Hidden = True
+        Control(versionFrame).Hidden = False
+        Control(TimerLB).Hidden = True
+        Control(TimerSnapshotLB).Hidden = True
+        Control(td_displayVarLB).Hidden = True
+        Control(mouseXVarLB).Hidden = True
+        Control(mouseYVarLB).Hidden = True
+        Control(__ERRORLINEVarLB).Hidden = True
+        Control(Debug_TimerLB).Hidden = True
+        Control(Debug_Timer_SnapshotLB).Hidden = True
+        Control(td_displayLB).Hidden = True
+        Control(mouseXLB).Hidden = True
+        Control(mouseYLB).Hidden = True
+        Control(__ERRORLINELB).Hidden = True
+        Control(PictureBoxLogoBottom).Hidden = False
+        SetCaption Debug_TimerLB, "-"
+        SetCaption Debug_Timer_SnapshotLB, "-"
+        SetCaption td_displayLB, "-"
+        SetCaption mouseXLB, "-"
+        SetCaption mouseYLB, "-"
+        SetCaption __ERRORLINELB, "-"
+        SetCaption TimerLB, "-" 'TIMER
+        SetCaption TimerSnapshotLB, "-"
+        SetCaption td_displayVarLB, "-"
+        SetCaption mouseXVarLB, "-"
+        SetCaption mouseYVarLB, "-"
+        SetCaption __ERRORLINEVarLB, "-"
+    ELSEIF Debug = 1 THEN
+        Control(DebugFrame).Hidden = False
+        Control(versionFrame).Hidden = True
+        Control(TimerLB).Hidden = False
+        Control(TimerSnapshotLB).Hidden = False
+        Control(td_displayVarLB).Hidden = False
+        Control(mouseXVarLB).Hidden = False
+        Control(mouseYVarLB).Hidden = False
+        Control(__ERRORLINEVarLB).Hidden = False
+        Control(Debug_TimerLB).Hidden = False
+        Control(Debug_Timer_SnapshotLB).Hidden = False
+        Control(td_displayLB).Hidden = False
+        Control(mouseXLB).Hidden = False
+        Control(mouseYLB).Hidden = False
+        Control(__ERRORLINELB).Hidden = False
+        Control(PictureBoxLogoBottom).Hidden = True
+        SetCaption TimerLB, "TIMER" 'TIMER
+        SetCaption TimerSnapshotLB, "TIMER (snapshot)"
+        SetCaption td_displayVarLB, "td_display var"
+        SetCaption mouseXVarLB, "mouseX var"
+        SetCaption mouseYVarLB, "mouseY var"
+        SetCaption __ERRORLINEVarLB, "_ERRORLINE var"
+        TIMEms Debug_Timer#, 0
+        SetCaption (Debug_Timer_SnapshotLB), tout + " sec "
+    END IF
+
+    IF verCheck$ <> "" THEN
+        SetCaption StatusLB, verCheck$
+        updateDisplay = 1
+    END IF
+    '---------
+
+    'Get OBS scene -------------------------
+    IF __returnPreviousScene = 1 THEN
+        returnPreviousSceneTime = returnPreviousSceneTime + 1
+        IF returnPreviousSceneTime > 2 THEN returnPreviousSceneTime = 1 ELSE GOTO Exit_returnPreviousSceneCheck
+        returnFirstCheck = 1
+        SELECT CASE WebsocketMethod
+            CASE "nodejs"
+                SHELL _HIDE "%ComSpec% /C node.exe .\js\obs_get_scene.js > " + filePrevious
+            CASE "obscommand"
+                SHELL _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /command=GetCurrentScene > " + filePrevious
+        END SELECT
+        _DELAY .01
+        ON ERROR GOTO PUT_Fail
+        PUT_Refresh = 1
+        IF _FILEEXISTS(filePrevious) THEN
+            OPEN filePrevious FOR INPUT AS #96
+            'LOCK #96
+            DO UNTIL EOF(96)
+                IF LOF(96) = 0 THEN NoKill = 1: EXIT DO 'Overkill with EOF checking, but just being safe
+                IF EOF(96) THEN EXIT DO
+                LINE INPUT #96, file96$
+                SELECT CASE WebsocketMethod
+                    CASE "nodejs"
+                        IF streamsUp$ <> "0" THEN previousScene$ = file96$
+                        previousSceneDisplay$ = file96$
+                        EXIT DO 'Output to previousScene$
+                    CASE "obscommand"
+                        findSceneName = INSTR(file96$, "  " + c34 + "name" + c34 + ": " + c34)
+                        IF findSceneName THEN
+                            findSceneName2 = INSTR(findSceneName + 11, file96$, c34)
+                            IF streamsUp$ <> "0" THEN previousScene$ = MID$(file96$, findSceneName + 11, findSceneName2 - 12)
+                            previousSceneDisplay$ = MID$(file96$, findSceneName + 11, findSceneName2 - 12)
+                            EXIT DO 'Output to previousScene$
+                        END IF
+                END SELECT
+            LOOP
+        END IF
+    END IF
+    CLOSE #96
+
+    IF NoKill = 1 THEN NoKill = 0 ELSE IF _FILEEXISTS(filePrevious) THEN KILL filePrevious
+    ON ERROR GOTO 0
+    PUT_Refresh = 0
+
+    Exit_returnPreviousSceneCheck:
+    '---------------------------------------
 
     'Execute Stream OK
     IF __MultiCameraSwitch = 0 THEN
@@ -1711,7 +1829,12 @@ SUB Timer01
                 Exe_Fail = 0
                 Exe_OK = 1
                 LoadImageMEM Control(PictureBox1), "tick.png"
-                SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + CHR$(34) + Scene_OK + CHR$(34)
+                SELECT CASE WebsocketMethod
+                    CASE "nodejs"
+                        SHELL _DONTWAIT _HIDE "%ComSpec% /C node.exe .\js\obs_change_scene.js " + Scene_OK
+                    CASE "obscommand"
+                        SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + c34 + Scene_OK + c34
+                END SELECT
                 _DELAY .1
                 IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM UP]"
             END IF
@@ -1724,14 +1847,25 @@ SUB Timer01
                     IF Exe_Fail_First = 0 THEN
                         Exe_Fail_First = 1
                         Scene_Current$ = Scene_Intro
-                        SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + CHR$(34) + Scene_Intro + CHR$(34)
+                        SELECT CASE WebsocketMethod
+                            CASE "nodejs"
+                                SHELL _DONTWAIT _HIDE "%ComSpec% /C node.exe .\js\obs_change_scene.js " + Scene_Intro
+                            CASE "obscommand"
+                                SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + c34 + Scene_Intro + c34
+                        END SELECT
                         _DELAY .1
                     ELSE
                         Scene_Current$ = Scene_Fail
-                        SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + CHR$(34) + Scene_Fail + CHR$(34)
+                        SELECT CASE WebsocketMethod
+                            CASE "nodejs"
+                                SHELL _DONTWAIT _HIDE "%ComSpec% /C node.exe .\js\obs_change_scene.js " + Scene_Fail
+                            CASE "obscommand"
+                                SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + c34 + Scene_Fail + c34
+                        END SELECT
                         _DELAY .1
                         IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM DOWN]"
                         Timer_Fail_Count = Timer_Fail_Count + 1
+                        Timer_Failed = 1
                         IF Timer_Fail_Count > 999 THEN Timer_Fail_Count = 999
                     END IF
                 END IF
@@ -1753,12 +1887,22 @@ SUB Timer01
                 IF previousScene$ <> titleScene1 AND streamsUp$ = "0" THEN
                     IF lastStreamUp$ <> "1" THEN previousScene$ = titleScene1
                     Scene_Current$ = previousScene$
-                    SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + CHR$(34) + previousScene$ + CHR$(34)
+                    SELECT CASE WebsocketMethod
+                        CASE "nodejs"
+                            SHELL _DONTWAIT _HIDE "%ComSpec% /C node.exe .\js\obs_change_scene.js " + previousScene$
+                        CASE "obscommand"
+                            SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + c34 + previousScene$ + c34
+                    END SELECT
                     _DELAY .1
                     IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM UP]:[CAMERA #1 UP]:[CAMERA #2 DOWN]"
                 ELSE
                     Scene_Current$ = titleScene1
-                    SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + CHR$(34) + titleScene1 + CHR$(34)
+                    SELECT CASE WebsocketMethod
+                        CASE "nodejs"
+                            SHELL _DONTWAIT _HIDE "%ComSpec% /C node.exe .\js\obs_change_scene.js " + titleScene1
+                        CASE "obscommand"
+                            SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + c34 + titleScene1 + c34
+                    END SELECT
                     _DELAY .1
                     IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM UP]:[CAMERA #1 UP]"
                 END IF
@@ -1771,12 +1915,22 @@ SUB Timer01
                 IF previousScene$ <> titleScene2 AND streamsUp$ = "0" THEN
                     IF lastStreamUp$ <> "2" THEN previousScene$ = titleScene2
                     Scene_Current$ = previousScene$
-                    SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + CHR$(34) + previousScene$ + CHR$(34)
+                    SELECT CASE WebsocketMethod
+                        CASE "nodejs"
+                            SHELL _DONTWAIT _HIDE "%ComSpec% /C node.exe .\js\obs_change_scene.js " + previousScene$
+                        CASE "obscommand"
+                            SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + c34 + previousScene$ + c34
+                    END SELECT
                     _DELAY .1
                     IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM UP]:[CAMERA #2 UP]:[CAMERA #1 DOWN]"
                 ELSE
                     Scene_Current$ = titleScene2
-                    SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + CHR$(34) + titleScene2 + CHR$(34)
+                    SELECT CASE WebsocketMethod
+                        CASE "nodejs"
+                            SHELL _DONTWAIT _HIDE "%ComSpec% /C node.exe .\js\obs_change_scene.js " + titleScene2
+                        CASE "obscommand"
+                            SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + c34 + titleScene2 + c34
+                    END SELECT
                     _DELAY .1
                     IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM UP]:[CAMERA #2 UP]"
                 END IF
@@ -1789,12 +1943,22 @@ SUB Timer01
                 IF previousScene$ <> titleScene12 AND streamsUp$ = "0" THEN
                     IF lastStreamUp$ <> "12" THEN previousScene$ = titleScene12
                     Scene_Current$ = previousScene$
-                    SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + CHR$(34) + previousScene$ + CHR$(34)
+                    SELECT CASE WebsocketMethod
+                        CASE "nodejs"
+                            SHELL _DONTWAIT _HIDE "%ComSpec% /C node.exe .\js\obs_change_scene.js " + previousScene$
+                        CASE "obscommand"
+                            SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + c34 + previousScene$ + c34
+                    END SELECT
                     _DELAY .1
                     IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM UP]:[ALL CAMERAS UP]"
                 ELSE
                     Scene_Current$ = titleScene12
-                    SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + CHR$(34) + titleScene12 + CHR$(34)
+                    SELECT CASE WebsocketMethod
+                        CASE "nodejs"
+                            SHELL _DONTWAIT _HIDE "%ComSpec% /C node.exe .\js\obs_change_scene.js " + titleScene12
+                        CASE "obscommand"
+                            SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + c34 + titleScene12 + c34
+                    END SELECT
                     _DELAY .1
                     IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM UP]:[ALL CAMERAS UP]"
                 END IF
@@ -1809,14 +1973,25 @@ SUB Timer01
                 IF Exe_Fail_First = 0 THEN
                     Exe_Fail_First = 1
                     Scene_Current$ = Scene_Intro
-                    SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + CHR$(34) + Scene_Intro + CHR$(34)
+                    SELECT CASE WebsocketMethod
+                        CASE "nodejs"
+                            SHELL _DONTWAIT _HIDE "%ComSpec% /C node.exe .\js\obs_change_scene.js " + Scene_Intro
+                        CASE "obscommand"
+                            SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + c34 + Scene_Intro + c34
+                    END SELECT
                     _DELAY .1
                 ELSE
                     Scene_Current$ = Scene_Fail
-                    SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + CHR$(34) + Scene_Fail + CHR$(34)
+                    SELECT CASE WebsocketMethod
+                        CASE "nodejs"
+                            SHELL _DONTWAIT _HIDE "%ComSpec% /C node.exe .\js\obs_change_scene.js " + Scene_Fail
+                        CASE "obscommand"
+                            SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + c34 + Scene_Fail + c34
+                    END SELECT
                     _DELAY .1
                     IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM DOWN]:[ALL CAMERAS DOWN]"
                     Timer_Fail_Count = Timer_Fail_Count + 1
+                    Timer_Failed = 1
                     IF Timer_Fail_Count > 999 THEN Timer_Fail_Count = 999
                 END IF
             END IF
@@ -1856,3 +2031,4 @@ SUB Timer01
 
     td_display# = TIMER(.001) - timer1#
 END SUB
+

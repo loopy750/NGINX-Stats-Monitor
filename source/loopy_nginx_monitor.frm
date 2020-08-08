@@ -10,7 +10,7 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Form, "LoopyNGINXMonitor", 800, 450, 0, 0, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Loopy NGINX Monitor"
-    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
+    Control(__UI_NewID).Font = SetFont("phagspa.ttf?segoeui.ttf?seguisb.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(1, 1, 1)
     Control(__UI_NewID).BackColor = _RGB32(38, 40, 45)
     Control(__UI_NewID).BorderColor = _RGB32(163, 166, 170)
@@ -21,18 +21,19 @@ SUB __UI_LoadForm
     Control(__UI_NewID).ForeColor = _RGB32(255, 255, 255)
     Control(__UI_NewID).BorderColor = _RGB32(170, 166, 170)
 
-    __UI_NewID = __UI_NewControl(__UI_Type_MenuBar, "OptionsMenu", 58, 22, 42, 0, 0)
+    __UI_NewID = __UI_NewControl(__UI_Type_MenuBar, "OptionsMenu", 62, 22, 42, 0, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Options"
     Control(__UI_NewID).ForeColor = _RGB32(255, 255, 255)
 
-    __UI_NewID = __UI_NewControl(__UI_Type_MenuBar, "HelpMenu", 41, 22, 100, 0, 0)
+    __UI_NewID = __UI_NewControl(__UI_Type_MenuBar, "HelpMenu", 41, 22, 104, 0, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Help"
     Control(__UI_NewID).ForeColor = _RGB32(255, 255, 255)
 
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "NGINX", 753, 64, 24, 34, 0)
     __UI_RegisterResult = 0
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).HasBorder = True
@@ -40,6 +41,7 @@ SUB __UI_LoadForm
 
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "Status", 753, 64, 24, 111, 0)
     __UI_RegisterResult = 0
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).HasBorder = True
@@ -47,6 +49,7 @@ SUB __UI_LoadForm
 
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "Settings", 753, 64, 24, 187, 0)
     __UI_RegisterResult = 0
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).HasBorder = True
@@ -54,6 +57,7 @@ SUB __UI_LoadForm
 
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "CurrentScene", 199, 106, 301, 264, 0)
     __UI_RegisterResult = 0
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).HasBorder = True
@@ -61,6 +65,7 @@ SUB __UI_LoadForm
 
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "DebugFrame", 753, 59, 24, 382, 0)
     __UI_RegisterResult = 0
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(33, 4, 4)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
@@ -70,6 +75,7 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "Stream1", 245, 106, 24, 264, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Stream #1"
+    Control(__UI_NewID).Font = SetFont("phagspa.ttf?seguisb.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(64, 252, 48)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
@@ -79,6 +85,7 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "Stream2", 245, 106, 532, 264, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Stream #2"
+    Control(__UI_NewID).Font = SetFont("phagspa.ttf?seguisb.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(64, 252, 48)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
@@ -87,6 +94,7 @@ SUB __UI_LoadForm
 
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "versionFrame", 753, 59, 24, 382, 0)
     __UI_RegisterResult = 0
+    Control(__UI_NewID).Font = SetFont("phagspa.ttf?seguisb.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(32, 128, 16)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
@@ -97,8 +105,8 @@ SUB __UI_LoadForm
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Exit"
     ToolTip(__UI_NewID) = "Exits the program"
-    Control(__UI_NewID).ForeColor = _RGB32(144, 0, 0)
-    Control(__UI_NewID).BackColor = _RGB32(235, 233, 23)
+    Control(__UI_NewID).ForeColor = _RGB32(1, 1, 2)
+    Control(__UI_NewID).BackColor = _RGB32(254, 254, 255)
     Control(__UI_NewID).BorderColor = _RGB32(170, 166, 170)
 
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "RMTPLB", 65, 21, 42, 47, 0)
@@ -194,6 +202,7 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "rtmp_nacceptedLB", 65, 21, 42, 69, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "rtmp_naccepted"
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(125, 187, 154)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
@@ -203,6 +212,7 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "rtmp_codec_nclientsLB", 62, 21, 98, 69, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "rtmp_codec_nclients"
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(125, 187, 154)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
@@ -212,6 +222,7 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "rtmp_codec_videoLB", 69, 21, 157, 69, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "rtmp_codec_video"
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(125, 187, 154)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
@@ -221,6 +232,7 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "rtmp_codec_audioLB", 57, 21, 210, 69, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "rtmp_codec_audio"
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(125, 187, 154)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
@@ -230,6 +242,7 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "rtmp_bytes_inLB", 114, 21, 266, 69, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "rtmp_bytes_in"
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(125, 187, 154)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
@@ -239,6 +252,7 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "rtmp_bytes_outLB", 108, 21, 370, 69, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "rtmp_bytes_out"
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(125, 187, 154)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
@@ -248,6 +262,7 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "rtmp_bw_inLB", 110, 21, 472, 69, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "rtmp_bw_in"
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(125, 187, 154)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
@@ -257,6 +272,7 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "rtmp_bw_outLB", 109, 21, 576, 69, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "rtmp_bw_out"
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(125, 187, 154)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
@@ -266,6 +282,7 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "rtmp_uptimeLB", 83, 21, 677, 69, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "rtmp_uptime"
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(125, 187, 154)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
@@ -325,15 +342,17 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "Kb_DiffLB", 189, 21, 42, 146, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Kb_Diff"
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(131, 151, 163)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "Timer_FailLB", 191, 21, 231, 146, 0)
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "Timer_FailLB", 190, 21, 231, 146, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Timer_Fail"
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(131, 151, 163)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
@@ -343,6 +362,7 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "Timer_Fail_CountLB", 111, 21, 418, 146, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Timer_Fail_Count"
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(131, 151, 163)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
@@ -352,22 +372,24 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "tPingOutLB", 104, 21, 528, 146, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "tPingOut#"
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(131, 151, 163)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "td_updateLB", 129, 21, 632, 146, 0)
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "td_updateLB", 128, 21, 632, 146, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "td_update"
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(131, 151, 163)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "BandwidthThresholdLB", 240, 21, 42, 200, 0)
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "BandwidthThresholdLB", 190, 21, 42, 200, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Bandwidth threshold"
     Control(__UI_NewID).Font = SetFont("segoeui.ttf?phagspa.ttf?seguisb.ttf", 12)
@@ -377,7 +399,7 @@ SUB __UI_LoadForm
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "StreamFailDelayLB", 229, 21, 281, 200, 0)
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "StreamFailDelayLB", 190, 21, 232, 200, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Stream fail delay"
     Control(__UI_NewID).Font = SetFont("segoeui.ttf?phagspa.ttf?seguisb.ttf", 12)
@@ -387,7 +409,7 @@ SUB __UI_LoadForm
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "MultiCameraSwitchLB", 253, 21, 507, 200, 0)
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "MultiCameraSwitchLB", 225, 21, 420, 200, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Multi Camera Switch"
     Control(__UI_NewID).Font = SetFont("segoeui.ttf?phagspa.ttf?seguisb.ttf", 12)
@@ -397,34 +419,37 @@ SUB __UI_LoadForm
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "Bandwidth_ThresholdLB", 240, 21, 42, 222, 0)
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "Bandwidth_ThresholdLB", 190, 21, 42, 222, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Bandwidth_Threshold"
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(142, 166, 143)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "Stream_Fail_DelayLB", 229, 21, 281, 222, 0)
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "Stream_Fail_DelayLB", 190, 21, 232, 222, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Stream_Fail_Delay"
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(142, 166, 143)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "MultiCameraSwitchStatusLB", 253, 21, 507, 222, 0)
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "MultiCameraSwitchStatusLB", 225, 21, 420, 222, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "MultiCameraSwitchStatus"
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(142, 166, 143)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "TimerLB", 146, 21, 42, 394, 0)
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "TimerLB", 146, 21, 42, 393, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Timer"
     Control(__UI_NewID).Font = SetFont("segoeui.ttf?phagspa.ttf?seguisb.ttf", 12)
@@ -434,7 +459,7 @@ SUB __UI_LoadForm
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "TimerSnapshotLB", 175, 21, 185, 394, 0)
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "TimerSnapshotLB", 175, 21, 185, 393, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Timer (snapshot)"
     Control(__UI_NewID).Font = SetFont("segoeui.ttf?phagspa.ttf?seguisb.ttf", 12)
@@ -444,7 +469,7 @@ SUB __UI_LoadForm
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "td_displayVarLB", 125, 21, 350, 394, 0)
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "td_displayVarLB", 125, 21, 350, 393, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "td_display var"
     Control(__UI_NewID).Font = SetFont("segoeui.ttf?phagspa.ttf?seguisb.ttf", 12)
@@ -454,7 +479,7 @@ SUB __UI_LoadForm
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "mouseXVarLB", 80, 21, 460, 394, 0)
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "mouseXVarLB", 80, 21, 460, 393, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "mouseX var"
     Control(__UI_NewID).Font = SetFont("segoeui.ttf?phagspa.ttf?seguisb.ttf", 12)
@@ -464,7 +489,7 @@ SUB __UI_LoadForm
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "mouseYVarLB", 90, 21, 540, 394, 0)
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "mouseYVarLB", 90, 21, 540, 393, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "mouseY var"
     Control(__UI_NewID).Font = SetFont("segoeui.ttf?phagspa.ttf?seguisb.ttf", 12)
@@ -474,7 +499,7 @@ SUB __UI_LoadForm
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "__ERRORLINEVarLB", 130, 21, 622, 394, 0)
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "__ERRORLINEVarLB", 130, 21, 622, 393, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "_ERRORLINE var"
     Control(__UI_NewID).Font = SetFont("segoeui.ttf?phagspa.ttf?seguisb.ttf", 12)
@@ -484,54 +509,60 @@ SUB __UI_LoadForm
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "Debug_TimerLB", 146, 21, 42, 416, 0)
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "Debug_TimerLB", 146, 21, 42, 415, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Debug_Timer"
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(235, 96, 57)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "Debug_Timer_SnapshotLB", 175, 21, 185, 416, 0)
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "Debug_Timer_SnapshotLB", 175, 21, 185, 415, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Debug_Timer_Snapshot"
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(235, 96, 57)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "td_displayLB", 125, 21, 350, 416, 0)
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "td_displayLB", 125, 21, 350, 415, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "td_display"
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(235, 96, 57)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "mouseXLB", 80, 21, 460, 416, 0)
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "mouseXLB", 80, 21, 460, 415, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "mouseX"
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(235, 96, 57)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "mouseYLB", 90, 21, 540, 416, 0)
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "mouseYLB", 90, 21, 540, 415, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "mouseY"
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(235, 96, 57)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "__ERRORLINELB", 130, 21, 622, 416, 0)
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "__ERRORLINELB", 130, 21, 622, 415, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "_ERRORLINE"
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(235, 96, 57)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
@@ -568,9 +599,10 @@ SUB __UI_LoadForm
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "multiStream1LB", 77, 21, 153, 279, 0)
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "multiStream1LB", 77, 21, 153, 278, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "multiStream1"
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(185, 181, 211)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
@@ -579,6 +611,7 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "Kb_Diff_stream1LB", 90, 21, 153, 306, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Kb_Diff_stream1"
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(185, 181, 211)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
@@ -587,12 +620,13 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "Timer_Fail_Stream1LB", 108, 21, 153, 334, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Timer_Fail_Stream1"
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(185, 181, 211)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "Scene_CurrentLB", 187, 29, 307, 266, 0)
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "Scene_CurrentLB", 187, 29, 307, 265, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Scene_Current"
     Control(__UI_NewID).Font = SetFont("seguisb.ttf?ebrimabd.ttf?phagspa.ttf?segoeui.ttf", 18)
@@ -605,6 +639,7 @@ SUB __UI_LoadForm
 
     __UI_NewID = __UI_NewControl(__UI_Type_PictureBox, "PictureBox1", 64, 64, 369, 296, 0)
     __UI_RegisterResult = 0
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).BackStyle = __UI_Transparent
@@ -642,9 +677,10 @@ SUB __UI_LoadForm
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).Padding = 10
 
-    __UI_NewID = __UI_NewControl(__UI_Type_Label, "multiStream2LB", 77, 21, 661, 279, 0)
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "multiStream2LB", 77, 21, 661, 278, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "multiStream2"
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(185, 181, 211)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
@@ -653,6 +689,7 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "Kb_Diff_stream2LB", 90, 21, 661, 306, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Kb_Diff_stream2"
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(185, 181, 211)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
@@ -661,40 +698,47 @@ SUB __UI_LoadForm
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "Timer_Fail_Stream2LB", 108, 21, 661, 334, 0)
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Timer_Fail_Stream2"
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(185, 181, 211)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).VAlign = __UI_Middle
 
-    __UI_NewID = __UI_NewControl(__UI_Type_MenuItem, "OptionsMenuDebug", 80, 20, 0, 4, __UI_GetID("OptionsMenu"))
+    __UI_NewID = __UI_NewControl(__UI_Type_MenuItem, "OptionsMenuDebug", 82, 20, 0, 4, __UI_GetID("OptionsMenu"))
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Debug"
-    Control(__UI_NewID).BackColor = _RGB32(32, 32, 32)
+    Control(__UI_NewID).ForeColor = _RGB32(1, 1, 2)
+    Control(__UI_NewID).BackColor = _RGB32(254, 254, 255)
     __UI_RegisterResult = RegisterKeyCombo("Ctrl+D", __UI_NewID)
 
-    __UI_NewID = __UI_NewControl(__UI_Type_MenuItem, "HelpMenuCheckForUpdates", 139, 20, 0, 4, __UI_GetID("HelpMenu"))
+    __UI_NewID = __UI_NewControl(__UI_Type_MenuItem, "HelpMenuVisitWebsite", 114, 20, 0, 4, __UI_GetID("HelpMenu"))
     __UI_RegisterResult = 0
-    SetCaption __UI_NewID, "Check for updates"
-    Control(__UI_NewID).ForeColor = _RGB32(255, 255, 255)
-    Control(__UI_NewID).BackColor = _RGB32(32, 32, 32)
+    SetCaption __UI_NewID, "Visit Website"
 
-    __UI_NewID = __UI_NewControl(__UI_Type_MenuItem, "OptionsMenuFullscreen", 97, 20, 0, 24, __UI_GetID("OptionsMenu"))
+    __UI_NewID = __UI_NewControl(__UI_Type_MenuItem, "HelpMenuCheckForUpdates", 149, 20, 0, 24, __UI_GetID("HelpMenu"))
+    __UI_RegisterResult = 0
+    SetCaption __UI_NewID, "Check for updates-"
+    Control(__UI_NewID).ForeColor = _RGB32(1, 1, 2)
+    Control(__UI_NewID).BackColor = _RGB32(254, 254, 255)
+
+    __UI_NewID = __UI_NewControl(__UI_Type_MenuItem, "OptionsMenuFullscreen", 98, 20, 0, 24, __UI_GetID("OptionsMenu"))
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "Fullscreen"
-    Control(__UI_NewID).BackColor = _RGB32(32, 32, 32)
+    Control(__UI_NewID).ForeColor = _RGB32(1, 1, 2)
+    Control(__UI_NewID).BackColor = _RGB32(254, 254, 255)
     __UI_RegisterResult = RegisterKeyCombo("Ctrl+F", __UI_NewID)
 
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "IndicatorLB", 20, 20, 786, 0, 0)
     __UI_RegisterResult = 0
-    Control(__UI_NewID).Font = SetFont("phagspa.ttf?segoeui.ttf?seguisb.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(73, 70, 76)
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).BorderSize = 1
 
-    __UI_NewID = __UI_NewControl(__UI_Type_MenuItem, "HelpMenuAbout", 77, 20, 0, 24, __UI_GetID("HelpMenu"))
+    __UI_NewID = __UI_NewControl(__UI_Type_MenuItem, "HelpMenuAbout", 79, 20, 0, 51, __UI_GetID("HelpMenu"))
     __UI_RegisterResult = 0
     SetCaption __UI_NewID, "About"
-    Control(__UI_NewID).BackColor = _RGB32(32, 32, 32)
+    Control(__UI_NewID).ForeColor = _RGB32(1, 1, 2)
+    Control(__UI_NewID).BackColor = _RGB32(254, 254, 255)
 
     __UI_NewID = __UI_NewControl(__UI_Type_Label, "StatusLB", 310, 21, 450, 1, 0)
     __UI_RegisterResult = 0
@@ -705,12 +749,33 @@ SUB __UI_LoadForm
 
     __UI_NewID = __UI_NewControl(__UI_Type_PictureBox, "PictureBoxLogoBottom", 401, 30, 200, 396, 0)
     __UI_RegisterResult = 0
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
     Control(__UI_NewID).ForeColor = _RGB32(33, 4, 4)
     Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
     Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
     Control(__UI_NewID).Align = __UI_Center
     Control(__UI_NewID).VAlign = __UI_Middle
     Control(__UI_NewID).BorderSize = 1
+
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "OBSRemoteLB", 118, 21, 642, 200, 0)
+    __UI_RegisterResult = 0
+    SetCaption __UI_NewID, "OBS Remote"
+    Control(__UI_NewID).Font = SetFont("segoeui.ttf?phagspa.ttf?seguisb.ttf", 12)
+    Control(__UI_NewID).ForeColor = _RGB32(3, 4, 4)
+    Control(__UI_NewID).BackColor = _RGB32(164, 168, 172)
+    Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
+    Control(__UI_NewID).VAlign = __UI_Middle
+    Control(__UI_NewID).Padding = 10
+
+    __UI_NewID = __UI_NewControl(__UI_Type_Label, "OBS_RemoteLB", 118, 21, 642, 222, 0)
+    __UI_RegisterResult = 0
+    SetCaption __UI_NewID, "OBS_Remote"
+    Control(__UI_NewID).Font = SetFont("seguisb.ttf?phagspa.ttf?segoeui.ttf", 12)
+    Control(__UI_NewID).ForeColor = _RGB32(142, 166, 143)
+    Control(__UI_NewID).BackColor = _RGB32(25, 28, 33)
+    Control(__UI_NewID).BorderColor = _RGB32(10, 12, 15)
+    Control(__UI_NewID).VAlign = __UI_Middle
+    Control(__UI_NewID).Padding = 10
 
 END SUB
 
@@ -789,10 +854,13 @@ SUB __UI_AssignIDs
     Kb_Diff_stream2LB = __UI_GetID("Kb_Diff_stream2LB")
     Timer_Fail_Stream2LB = __UI_GetID("Timer_Fail_Stream2LB")
     OptionsMenuDebug = __UI_GetID("OptionsMenuDebug")
+    HelpMenuVisitWebsite = __UI_GetID("HelpMenuVisitWebsite")
     HelpMenuCheckForUpdates = __UI_GetID("HelpMenuCheckForUpdates")
     OptionsMenuFullscreen = __UI_GetID("OptionsMenuFullscreen")
     IndicatorLB = __UI_GetID("IndicatorLB")
     HelpMenuAbout = __UI_GetID("HelpMenuAbout")
     StatusLB = __UI_GetID("StatusLB")
     PictureBoxLogoBottom = __UI_GetID("PictureBoxLogoBottom")
+    OBSRemoteLB = __UI_GetID("OBSRemoteLB")
+    OBS_RemoteLB = __UI_GetID("OBS_RemoteLB")
 END SUB
