@@ -104,15 +104,15 @@ SUB __UI_BeforeInit
     $VERSIONINFO:ProductName=Loopy NGINX Monitor
     $VERSIONINFO:Comments=Monitor NGINX RTMP Streams
     $VERSIONINFO:FileDescription=Loopy NGINX Monitor
-    $VERSIONINFO:FILEVERSION#=1,3,8,0
-    $VERSIONINFO:PRODUCTVERSION#=1,3,8,0
+    $VERSIONINFO:FILEVERSION#=1,4,0,0
+    $VERSIONINFO:PRODUCTVERSION#=1,4,0,0
     $CHECKING:ON
     $RESIZE:OFF
     IF ERR = 0 THEN
         $EXEICON:'.\icon.ico'
         _TITLE "Loopy NGINX Monitor - loopy750"
     END IF
-    Ver$ = "1.3.8"
+    Ver$ = "1.4.0"
 
     'Always on top : ------------------------------------------------------------------
     CONST HWND_TOPMOST%& = -1
@@ -179,15 +179,27 @@ SUB __UI_OnLoad
     SetCaption mouseYVarLB, "-"
     SetCaption __ERRORLINEVarLB, "-"
 
+    'Variables
     c34 = CHR$(34)
     BG = _RGB(32, 32, 32)
     Exe_OK = 1
-    config_main = "config.ini"
     URL = "127.0.0.1"
     Port = "8080"
     fileStat = "stat"
-    filePrevious = "returnPreviousScene.tmp"
-    outputStatusFile = "outputStatus.txt"
+
+    'File variables
+    config_dir = _DIR$("documents") + "Loopy NGINX Monitor"
+    obscommand_dir = _DIR$("documents") + "Loopy NGINX Monitor\OBSCommand"
+    nodejs_dir = _DIR$("documents") + "Loopy NGINX Monitor\js"
+    temp_dir = _DIR$("documents") + "Loopy NGINX Monitor\Temp"
+    config_main = config_dir + "\config.ini"
+    obs_change_scene = config_dir + "\js\obs_change_scene.js"
+    obs_get_scene = config_dir + "\js\obs_get_scene.js"
+    obscommand_file = obscommand_dir + "\OBSCommand.exe"
+    filePrevious = temp_dir + "\returnPreviousScene.tmp"
+    fileCheckVersion = temp_dir + "\checkversion.txt"
+    outputStatusFile = temp_dir + "\outputStatus.txt"
+
     IF _FILEEXISTS(filePrevious) THEN KILL filePrevious
     _ALLOWFULLSCREEN OFF
     RANDOMIZE TIMER
@@ -267,8 +279,33 @@ SUB __UI_OnLoad
     IF __MultiCameraSwitch = 0 THEN __returnPreviousScene = 0: returnPreviousSceneRemember = 0
     IF WebsocketMethod <> "nodejs" THEN WebsocketMethod = "obscommand"
 
+IF WebsocketMethod = "nodejs" AND NOT _DIREXISTS(nodejs_dir) THEN
+        Error_msg$ = "Folder " + c34 + nodejs_dir + c34 + " cannot be accessed, check if it exists. (#2)"
+    ELSEIF WebsocketMethod = "obscommand" AND NOT _DIREXISTS(obscommand_dir) THEN
+        Error_msg$ = "Folder " + c34 + obscommand_dir + c34 + " cannot be accessed, check if it exists. (#2)"
+    END IF
+    IF Error_msg$ <> "" THEN
+        _DELAY 1
+        CLS , _RGB(1, 120, 220)
+        BSOD& = __imageMEM&("face_sad_x.png")
+        _PUTIMAGE (50, 50)-(107, 162), BSOD&
+        _FREEIMAGE BSOD&
+        COLOR _RGB(254, 254, 254), _RGB(1, 120, 220)
+        _PRINTSTRING (37, 12 * 18), "Program encountered an error and needs to restart."
+        _PRINTSTRING (37, 14 * 18), Error_msg$
+        _PRINTSTRING (37, 22 * 18), "Program will exit shortly"
+        _DISPLAY
+        _DELAY 10
+        SYSTEM
+    END IF
+
+    shell_obscommand_1 = "%ComSpec% /C " + c34 + c34 + obscommand_file + c34 + " /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + c34
+    shell_obscommand_2 = c34 + c34
+    shell_nodejs_1 = "%ComSpec% /C node.exe " + c34 + obs_change_scene + c34 + " "
+    shell_nodejs_2 = ""
+
     IF WebsocketMethod = "nodejs" THEN
-        OPEN ".\js\obs_change_scene.js" FOR OUTPUT AS #64
+        OPEN obs_change_scene FOR OUTPUT AS #64
         PRINT #64, "// This file has been automatically generated"
         PRINT #64, "// Any changes made will be lost"
         PRINT #64, "// https://github.com/loopy750/NGINX-Stats-Monitor"
@@ -305,7 +342,7 @@ SUB __UI_OnLoad
         PRINT #64, ".then(() => { obs.disconnect(); });"
         CLOSE #64
 
-        OPEN ".\js\obs_get_scene.js" FOR OUTPUT AS #72
+        OPEN obs_get_scene FOR OUTPUT AS #72
         PRINT #72, "// This file has been automatically generated"
         PRINT #72, "// Any changes made will be lost"
         PRINT #72, "// https://github.com/loopy750/NGINX-Stats-Monitor"
@@ -327,10 +364,10 @@ SUB __UI_OnLoad
         file224$ = ""
         updateResult$ = ""
         _DELAY .25
-        SHELL _HIDE "%ComSpec% /C curl -H " + c34 + "Cache-Control: no-cache" + c34 + " https://raw.githubusercontent.com/loopy750/NGINX-Stats-Monitor-Version/master/checkversion.txt > checkversion.txt"
+        SHELL _HIDE "%ComSpec% /C curl -H " + c34 + "Cache-Control: no-cache" + c34 + " https://raw.githubusercontent.com/loopy750/NGINX-Stats-Monitor-Version/master/checkversion.txt > " + c34 + fileCheckVersion + c34 + ""
         _DELAY .25
-        IF _FILEEXISTS("checkversion.txt") THEN
-            OPEN "checkversion.txt" FOR INPUT AS #224
+        IF _FILEEXISTS(fileCheckVersion) THEN
+            OPEN fileCheckVersion FOR INPUT AS #224
             DO UNTIL EOF(224)
                 IF LOF(224) = 0 THEN NoKill = 1: EXIT DO 'Overkill with EOF checking, but just being safe
                 IF EOF(224) THEN EXIT DO
@@ -338,7 +375,7 @@ SUB __UI_OnLoad
             LOOP
         END IF
         CLOSE #224
-        IF _FILEEXISTS("checkversion.txt") THEN KILL "checkversion.txt"
+        IF _FILEEXISTS(fileCheckVersion) THEN KILL fileCheckVersion
         updateResult$ = file224$
         IF file224$ <> Ver$ THEN verCheck$ = "A new version is available..."
         IF file224$ = "" OR file224$ = "404: Not Found" THEN verCheck$ = "Unable to check for new version..."
@@ -349,15 +386,15 @@ SUB __UI_OnLoad
 
     Port_Client$ = "TCP/IP:" + Port + ":"
 
-    IF Scene_OK = "" OR Scene_Fail = "" OR Scene_Intro = "" OR URL = "" OR Port = "" OR OBS_URL = "" THEN RefreshDisplayRequest = 1: Error_msg$ = "Variable/s for scenes empty, check if " + c34 + config_main + c34 + " exists. (#2)": _DELAY 3
+    IF Scene_OK = "" OR Scene_Fail = "" OR Scene_Intro = "" OR URL = "" OR Port = "" OR OBS_URL = "" THEN RefreshDisplayRequest = 1: Error_msg$ = "Variable/s for scenes empty, check if " + c34 + config_main + c34 + " exists. (#3)": _DELAY 3
 
     IF __MultiCameraSwitch = 0 THEN
         Scene_Current$ = Scene_OK
         SELECT CASE WebsocketMethod
             CASE "nodejs"
-                SHELL _DONTWAIT _HIDE "%ComSpec% /C node.exe .\js\obs_change_scene.js " + Scene_OK
+                SHELL _DONTWAIT _HIDE shell_nodejs_1 + Scene_OK
             CASE "obscommand"
-                SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + c34 + Scene_OK + c34
+                SHELL _DONTWAIT _HIDE shell_obscommand_1 + Scene_OK + shell_obscommand_2
         END SELECT
     END IF
 
@@ -365,9 +402,9 @@ SUB __UI_OnLoad
         Scene_Current$ = titleScene12
         SELECT CASE WebsocketMethod
             CASE "nodejs"
-                SHELL _DONTWAIT _HIDE "%ComSpec% /C node.exe .\js\obs_change_scene.js " + titleScene12
+                SHELL _DONTWAIT _HIDE shell_nodejs_1 + titleScene12
             CASE "obscommand"
-                SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + c34 + titleScene12 + c34
+                SHELL _DONTWAIT _HIDE shell_obscommand_1 + titleScene12 + shell_obscommand_2
         END SELECT
     END IF
 
@@ -567,10 +604,10 @@ SUB __UI_Click (id AS LONG)
             file224$ = ""
             updateResult$ = ""
             _DELAY .25
-            SHELL _HIDE "%ComSpec% /C curl -H " + c34 + "Cache-Control: no-cache" + c34 + " https://raw.githubusercontent.com/loopy750/NGINX-Stats-Monitor-Version/master/checkversion.txt > checkversion.txt"
+            SHELL _HIDE "%ComSpec% /C curl -H " + c34 + "Cache-Control: no-cache" + c34 + " https://raw.githubusercontent.com/loopy750/NGINX-Stats-Monitor-Version/master/checkversion.txt > " + c34 + fileCheckVersion + c34 + ""
             _DELAY .25
-            IF _FILEEXISTS("checkversion.txt") THEN
-                OPEN "checkversion.txt" FOR INPUT AS #224
+            IF _FILEEXISTS(fileCheckVersion) THEN
+                OPEN fileCheckVersion FOR INPUT AS #224
                 DO UNTIL EOF(224)
                     IF LOF(224) = 0 THEN NoKill = 1: EXIT DO 'Overkill with EOF checking, but just being safe
                     IF EOF(224) THEN EXIT DO
@@ -578,7 +615,7 @@ SUB __UI_Click (id AS LONG)
                 LOOP
             END IF
             CLOSE #224
-            IF _FILEEXISTS("checkversion.txt") THEN KILL "checkversion.txt"
+            IF _FILEEXISTS(fileCheckVersion) THEN KILL fileCheckVersion
             updateResult$ = file224$
             IF file224$ <> Ver$ THEN verCheck$ = "A new version is available..."
             IF file224$ = "" OR file224$ = "404: Not Found" THEN verCheck$ = "Unable to check for new version..."
@@ -1489,7 +1526,7 @@ SUB Timer01
     tPing2# = TIMER(.001)
     tPingOut# = (tPing2# - tPing1#)
 
-    IF client THEN NULL = NULL ELSE RefreshDisplayRequest = 1: Error_msg$ = "Unable to connect, check if " + c34 + URL + ":" + Port + c34 + " is correct. (#3)": _DELAY 3: GOTO URL_OK
+    IF client THEN NULL = NULL ELSE RefreshDisplayRequest = 1: Error_msg$ = "Unable to connect, check if " + c34 + URL + ":" + Port + c34 + " is correct. (#4)": _DELAY 3: GOTO URL_OK
 
     EOL$ = CHR$(13) + CHR$(10)
     xHeader1$ = "GET /" + fileStat + " HTTP/1.1" + EOL$
@@ -1704,7 +1741,7 @@ SUB Timer01
         SetCaption (Timer_Fail_Stream2LB), calc_nginx$(Timer_Fail_Stream2, 1)
     END IF
 
-    IF Scene_OK = "" OR Scene_Fail = "" OR Scene_Intro = "" THEN RefreshDisplayRequest = 1: Error_msg$ = "Variable/s for scenes empty, check if " + c34 + config_main + c34 + " exists. (#4)": _DELAY 3
+    IF Scene_OK = "" OR Scene_Fail = "" OR Scene_Intro = "" THEN RefreshDisplayRequest = 1: Error_msg$ = "Variable/s for scenes empty, check if " + c34 + config_main + c34 + " exists. (#5)": _DELAY 3
 
     IF Timer_Fail >= 1 AND Exe_OK = 1 AND streamsUp$ <> "0" THEN
         LoadImageMEM Control(PictureBox1), "tick_warning.png"
@@ -1780,9 +1817,9 @@ SUB Timer01
         returnFirstCheck = 1
         SELECT CASE WebsocketMethod
             CASE "nodejs"
-                SHELL _HIDE "%ComSpec% /C node.exe .\js\obs_get_scene.js > " + filePrevious
+                SHELL _HIDE "%ComSpec% /C node.exe " + c34 + obs_get_scene + c34 + " > " + c34 + filePrevious + c34
             CASE "obscommand"
-                SHELL _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /command=GetCurrentScene > " + filePrevious
+                SHELL _HIDE "%ComSpec% /C " + c34 + c34 + obscommand_file + c34 + " /server=" + OBS_URL + " /password=" + OBS_PW + " /command=GetCurrentScene > " + c34 + filePrevious + c34 + c34
         END SELECT
         _DELAY .01
         ON ERROR GOTO PUT_Fail
@@ -1831,9 +1868,9 @@ SUB Timer01
                 LoadImageMEM Control(PictureBox1), "tick.png"
                 SELECT CASE WebsocketMethod
                     CASE "nodejs"
-                        SHELL _DONTWAIT _HIDE "%ComSpec% /C node.exe .\js\obs_change_scene.js " + Scene_OK
+                        SHELL _DONTWAIT _HIDE shell_nodejs_1 + Scene_OK
                     CASE "obscommand"
-                        SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + c34 + Scene_OK + c34
+                        SHELL _DONTWAIT _HIDE shell_obscommand_1 + Scene_OK + shell_obscommand_2
                 END SELECT
                 _DELAY .1
                 IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM UP]"
@@ -1849,18 +1886,18 @@ SUB Timer01
                         Scene_Current$ = Scene_Intro
                         SELECT CASE WebsocketMethod
                             CASE "nodejs"
-                                SHELL _DONTWAIT _HIDE "%ComSpec% /C node.exe .\js\obs_change_scene.js " + Scene_Intro
+                                SHELL _DONTWAIT _HIDE shell_nodejs_1 + Scene_Intro
                             CASE "obscommand"
-                                SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + c34 + Scene_Intro + c34
+                                SHELL _DONTWAIT _HIDE shell_obscommand_1 + Scene_Intro + shell_obscommand_2
                         END SELECT
                         _DELAY .1
                     ELSE
                         Scene_Current$ = Scene_Fail
                         SELECT CASE WebsocketMethod
                             CASE "nodejs"
-                                SHELL _DONTWAIT _HIDE "%ComSpec% /C node.exe .\js\obs_change_scene.js " + Scene_Fail
+                                SHELL _DONTWAIT _HIDE shell_nodejs_1 + Scene_Fail
                             CASE "obscommand"
-                                SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + c34 + Scene_Fail + c34
+                                SHELL _DONTWAIT _HIDE shell_obscommand_1 + Scene_Fail + shell_obscommand_2
                         END SELECT
                         _DELAY .1
                         IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM DOWN]"
@@ -1889,9 +1926,9 @@ SUB Timer01
                     Scene_Current$ = previousScene$
                     SELECT CASE WebsocketMethod
                         CASE "nodejs"
-                            SHELL _DONTWAIT _HIDE "%ComSpec% /C node.exe .\js\obs_change_scene.js " + previousScene$
+                            SHELL _DONTWAIT _HIDE shell_nodejs_1 + previousScene$
                         CASE "obscommand"
-                            SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + c34 + previousScene$ + c34
+                            SHELL _DONTWAIT _HIDE shell_obscommand_1 + previousScene$ + shell_obscommand_2
                     END SELECT
                     _DELAY .1
                     IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM UP]:[CAMERA #1 UP]:[CAMERA #2 DOWN]"
@@ -1899,9 +1936,9 @@ SUB Timer01
                     Scene_Current$ = titleScene1
                     SELECT CASE WebsocketMethod
                         CASE "nodejs"
-                            SHELL _DONTWAIT _HIDE "%ComSpec% /C node.exe .\js\obs_change_scene.js " + titleScene1
+                            SHELL _DONTWAIT _HIDE shell_nodejs_1 + titleScene1
                         CASE "obscommand"
-                            SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + c34 + titleScene1 + c34
+                            SHELL _DONTWAIT _HIDE shell_obscommand_1 + titleScene1 + shell_obscommand_2
                     END SELECT
                     _DELAY .1
                     IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM UP]:[CAMERA #1 UP]"
@@ -1917,9 +1954,9 @@ SUB Timer01
                     Scene_Current$ = previousScene$
                     SELECT CASE WebsocketMethod
                         CASE "nodejs"
-                            SHELL _DONTWAIT _HIDE "%ComSpec% /C node.exe .\js\obs_change_scene.js " + previousScene$
+                            SHELL _DONTWAIT _HIDE shell_nodejs_1 + previousScene$
                         CASE "obscommand"
-                            SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + c34 + previousScene$ + c34
+                            SHELL _DONTWAIT _HIDE shell_obscommand_1 + previousScene$ + shell_obscommand_2
                     END SELECT
                     _DELAY .1
                     IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM UP]:[CAMERA #2 UP]:[CAMERA #1 DOWN]"
@@ -1927,9 +1964,9 @@ SUB Timer01
                     Scene_Current$ = titleScene2
                     SELECT CASE WebsocketMethod
                         CASE "nodejs"
-                            SHELL _DONTWAIT _HIDE "%ComSpec% /C node.exe .\js\obs_change_scene.js " + titleScene2
+                            SHELL _DONTWAIT _HIDE shell_nodejs_1 + titleScene2
                         CASE "obscommand"
-                            SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + c34 + titleScene2 + c34
+                            SHELL _DONTWAIT _HIDE shell_obscommand_1 + titleScene2 + shell_obscommand_2
                     END SELECT
                     _DELAY .1
                     IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM UP]:[CAMERA #2 UP]"
@@ -1945,9 +1982,9 @@ SUB Timer01
                     Scene_Current$ = previousScene$
                     SELECT CASE WebsocketMethod
                         CASE "nodejs"
-                            SHELL _DONTWAIT _HIDE "%ComSpec% /C node.exe .\js\obs_change_scene.js " + previousScene$
+                            SHELL _DONTWAIT _HIDE shell_nodejs_1 + previousScene$
                         CASE "obscommand"
-                            SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + c34 + previousScene$ + c34
+                            SHELL _DONTWAIT _HIDE shell_obscommand_1 + previousScene$ + shell_obscommand_2
                     END SELECT
                     _DELAY .1
                     IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM UP]:[ALL CAMERAS UP]"
@@ -1955,9 +1992,9 @@ SUB Timer01
                     Scene_Current$ = titleScene12
                     SELECT CASE WebsocketMethod
                         CASE "nodejs"
-                            SHELL _DONTWAIT _HIDE "%ComSpec% /C node.exe .\js\obs_change_scene.js " + titleScene12
+                            SHELL _DONTWAIT _HIDE shell_nodejs_1 + titleScene12
                         CASE "obscommand"
-                            SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + c34 + titleScene12 + c34
+                            SHELL _DONTWAIT _HIDE shell_obscommand_1 + titleScene12 + shell_obscommand_2
                     END SELECT
                     _DELAY .1
                     IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM UP]:[ALL CAMERAS UP]"
@@ -1975,18 +2012,18 @@ SUB Timer01
                     Scene_Current$ = Scene_Intro
                     SELECT CASE WebsocketMethod
                         CASE "nodejs"
-                            SHELL _DONTWAIT _HIDE "%ComSpec% /C node.exe .\js\obs_change_scene.js " + Scene_Intro
+                            SHELL _DONTWAIT _HIDE shell_nodejs_1 + Scene_Intro
                         CASE "obscommand"
-                            SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + c34 + Scene_Intro + c34
+                            SHELL _DONTWAIT _HIDE shell_obscommand_1 + Scene_Intro + shell_obscommand_2
                     END SELECT
                     _DELAY .1
                 ELSE
                     Scene_Current$ = Scene_Fail
                     SELECT CASE WebsocketMethod
                         CASE "nodejs"
-                            SHELL _DONTWAIT _HIDE "%ComSpec% /C node.exe .\js\obs_change_scene.js " + Scene_Fail
+                            SHELL _DONTWAIT _HIDE shell_nodejs_1 + Scene_Fail
                         CASE "obscommand"
-                            SHELL _DONTWAIT _HIDE "%ComSpec% /C .\OBSCommand\OBSCommand.exe /server=" + OBS_URL + " /password=" + OBS_PW + " /scene=" + c34 + Scene_Fail + c34
+                            SHELL _DONTWAIT _HIDE shell_obscommand_1 + Scene_Fail + shell_obscommand_2
                     END SELECT
                     _DELAY .1
                     IF __FileStatusOutput = 1 THEN statusOutputToFile "[STREAM DOWN]:[ALL CAMERAS DOWN]"
@@ -1998,7 +2035,7 @@ SUB Timer01
         END IF
     END IF
 
-    IF nginx_warmup = 1 AND returnFirstCheck = 1 AND __MultiCameraSwitch = 1 AND previousSceneDisplay$ = "" THEN RefreshDisplayRequest = 1: Error_msg$ = "Variable/s for scenes empty, check if OBS is open. (#5)": _DELAY 3
+    IF nginx_warmup = 1 AND returnFirstCheck = 1 AND __MultiCameraSwitch = 1 AND previousSceneDisplay$ = "" THEN RefreshDisplayRequest = 1: Error_msg$ = "Variable/s for scenes empty, check if OBS is open. (#6)": _DELAY 3
 
     'temp2 variables
     rtmp_bytes_in_temp2# = rtmp_bytes_in#
