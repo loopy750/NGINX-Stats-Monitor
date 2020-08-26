@@ -1,4 +1,6 @@
 # Loopy NGINX Stats Monitor
+
+![Loopy NGINX Stats Monitor](./nginx_stats_monitor.png)
   
 Latest release available [here](https://github.com/loopy750/NGINX-Stats-Monitor/releases/latest).
 
