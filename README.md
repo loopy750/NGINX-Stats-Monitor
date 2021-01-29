@@ -14,8 +14,9 @@ Advanced features (**_MultiCameraSwitch=true_**) consider for a two-camera multi
   
   
   
-Guide is a work in progress...
+  [Example of program being used in a live stream](https://user-images.githubusercontent.com/35911135/106327988-26973f80-62d3-11eb-99aa-52f1809f9d57.mp4)
   
+  Guide is a work in progress...
   
 DOWNLOADS
 =========
@@ -49,15 +50,15 @@ After extracting to a location of your choice, use 'nginx.exe' to start the serv
 
 Node.js
 -------
-Following installation of Node.js, run 'install.cmd' within 'Documents\NGINX Stats Monitor' to install "obs-websocket-js" and complete the installation.
+Following installation of Node.js, run __install.cmd__ within '__Documents\Loopy NGINX Monitor__' to install "obs-websocket-js" and complete the installation.
 
 OBSCommand
 ----------
-Extract the files into the 'OBSCommand' folder within 'Documents\NGINX Stats Monitor'.
+Extract the files into the 'OBSCommand' folder within '__Documents\Loopy NGINX Monitor__'.
 
 mpv
 ---
-Extract and use 'updater.bat' to install to a location of your choice.
+Extract and use __updater.bat__ to install to a location of your choice.
 
 * See the "Modifications" section below for recommended changes.
 
@@ -73,7 +74,7 @@ MODIFICATIONS
 
 NGINX
 ------
-Open 'nginx.conf'
+Open __nginx.conf__
 
 Find the line: `"listen 1935;"`  
 Below that line, add: `"ping 3s;"`
@@ -82,15 +83,15 @@ Alternatively, download [nginx.conf](https://raw.githubusercontent.com/loopy750/
 
 mpv
 ---
-Download [rtmp_stream_1.cmd](https://raw.githubusercontent.com/loopy750/NGINX-Stats-Monitor/master/modifications/mpv/rtmp_stream_1.cmd) and copy to the _mpv_ root folder (where 'mpv.com' and 'mpv.exe' are located).
+Download [rtmp_stream_1.cmd](https://raw.githubusercontent.com/loopy750/NGINX-Stats-Monitor/master/modifications/mpv/rtmp_stream_1.cmd) and copy to the _mpv_ root folder (where __mpv.com__ and __mpv.exe__ are located).
 
-If two cameras/scenes are to be used, download an additional file [rtmp_stream_2.cmd](https://raw.githubusercontent.com/loopy750/NGINX-Stats-Monitor/master/modifications/mpv/rtmp_stream_2.cmd) and also copy to the _mpv_ root folder (where 'mpv.com' and 'mpv.exe' are located).
+If two cameras/scenes are to be used, download an additional file [rtmp_stream_2.cmd](https://raw.githubusercontent.com/loopy750/NGINX-Stats-Monitor/master/modifications/mpv/rtmp_stream_2.cmd) and also copy to the _mpv_ root folder (where __mpv.com__ and __mpv.exe__ are located).
 
-These **.cmd** file/s are to be executed AFTER 'nginx.exe'.
+These **.cmd** file/s are to be executed AFTER __nginx.exe__.
 
-Download [input.conf](https://raw.githubusercontent.com/loopy750/NGINX-Stats-Monitor/master/modifications/mpv/input.conf) and copy to the _mpv_ folder (where 'fonts.conf' is located). This will disable several mouse and keyboard functions from accidentally seeking/interrupting a live stream.
+Download [input.conf](https://raw.githubusercontent.com/loopy750/NGINX-Stats-Monitor/master/modifications/mpv/input.conf) and copy to the _mpv_ folder (where __fonts.conf__ is located). This will disable several mouse and keyboard functions from accidentally seeking/interrupting a live stream.
 
-Download [mpv.conf](https://raw.githubusercontent.com/loopy750/NGINX-Stats-Monitor/master/modifications/mpv/mpv.conf) and also copy to the _mpv_ folder (where 'fonts.conf' is located). This add the "rtmpstream" profile which will allow for stable streaming. mpv has many options, so any suggestions to further improve the stability are welcome. Also contained in the file are high quality OpenGL options for most modern hardware that support them, providing improved video quality over the standard mpv settings. Remove these OpenGL options if they cause problems, though this is unlikely.
+Download [mpv.conf](https://raw.githubusercontent.com/loopy750/NGINX-Stats-Monitor/master/modifications/mpv/mpv.conf) and also copy to the _mpv_ folder (where __fonts.conf__ is located). This add the "rtmpstream" profile which will allow for stable streaming. mpv has many options, so any suggestions to further improve the stability are welcome. Also contained in the file are high quality OpenGL options for most modern hardware that support them, providing improved video quality over the standard mpv settings. Remove these OpenGL options if they cause problems, though this is unlikely.
 
 mpv.conf also allows the use of [ffmpeg filters](https://ffmpeg.org/ffmpeg-filters.html). One handy filter could be the audio equalizer. The following is an example of what you can append to the "rtmpstream" profile to give some GoPro microphones a subjectively required treble boost, as the high frequencies may be tapered off otherwise:
 
