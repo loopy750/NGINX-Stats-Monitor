@@ -1,11 +1,11 @@
-OPTION _EXPLICIT
 ': This program uses
-': InForm - GUI library for QB64 - v1.2
-': Fellippe Heitor, 2016-2019 - fellippe@qb64.org - @fellippeheitor
+': InForm - GUI library for QB64 - v1.3
+': Fellippe Heitor, 2016-2020 - fellippe@qb64.org - @fellippeheitor
 ': https://github.com/FellippeHeitor/InForm
 '-----------------------------------------------------------
+
 ': Controls' IDs: ------------------------------------------------------------------
-': EDITED --------------------------------------------------------------------------
+OPTION _EXPLICIT
 DIM SHARED LoopyNGINXMonitor AS LONG
 DIM SHARED FileMenu AS LONG
 DIM SHARED OptionsMenu AS LONG
@@ -90,29 +90,312 @@ DIM SHARED PictureBoxLogoBottom AS LONG
 DIM SHARED OBSRemoteLB AS LONG
 DIM SHARED OBS_RemoteLB AS LONG
 
+'InForm v1.3 or newer required else this section gets removed (InForm_Deleted.bas)
+DEFINT A-Z
+COMMON SHARED Error_Display AS STRING
+COMMON SHARED Error_msg AS STRING
+COMMON SHARED Ver AS STRING
+COMMON SHARED VerDate AS STRING
+COMMON SHARED bout AS STRING
+COMMON SHARED tout AS STRING
+COMMON SHARED BG_Count AS LONG
+COMMON SHARED ConnErr
+COMMON SHARED Refresh_Request
+COMMON SHARED RefreshDisplayRequest
+COMMON SHARED rtmp_uptime#
+COMMON SHARED ba&
+COMMON SHARED winstyle&
+COMMON SHARED timerFree
+COMMON SHARED BG AS DOUBLE
+COMMON SHARED BG_New AS DOUBLE
+COMMON SHARED BGA AS DOUBLE
+COMMON SHARED __BGA AS _BYTE
+COMMON SHARED SpaceLength AS INTEGER
+COMMON SHARED ProgressCounter AS INTEGER
+COMMON SHARED updateResult AS STRING
+COMMON SHARED updateDisplay AS INTEGER
+COMMON SHARED updateDisplayCounter AS INTEGER
+COMMON SHARED verCheck AS STRING
+COMMON SHARED CheckUpdateOnStartup AS STRING
+COMMON SHARED file224 AS STRING
+COMMON SHARED __FileStatusOutput AS _BYTE
+COMMON SHARED FileStatusOutput AS STRING
+COMMON SHARED outputBitrateFile AS STRING
+COMMON SHARED outputStatusFile AS STRING
+COMMON SHARED iniFeatures AS _BYTE
+COMMON SHARED Debug AS _BYTE
+COMMON SHARED q
+COMMON SHARED Timer_Failed AS _BYTE
+COMMON SHARED WebsocketMethod AS STRING
+COMMON SHARED c34 AS STRING
+
+COMMON SHARED image_data() AS _UNSIGNED LONG
+COMMON SHARED Scene_OK AS STRING
+COMMON SHARED Scene_Fail AS STRING
+COMMON SHARED Scene_Intro AS STRING
+COMMON SHARED URL AS STRING
+COMMON SHARED Port AS STRING
+COMMON SHARED OBS_URL AS STRING
+COMMON SHARED OBS_PW AS STRING
+COMMON SHARED urlStream1 AS STRING
+COMMON SHARED urlStream2 AS STRING
+COMMON SHARED titleScene1 AS STRING
+COMMON SHARED titleScene2 AS STRING
+COMMON SHARED titleScene12 AS STRING
+COMMON SHARED returnPreviousScene AS STRING
+COMMON SHARED shell_obscommand_1 AS STRING
+COMMON SHARED shell_obscommand_2 AS STRING
+COMMON SHARED shell_nodejs_1 AS STRING
+COMMON SHARED shell_nodejs_2 AS STRING
+
+COMMON SHARED config_dir AS STRING
+COMMON SHARED obscommand_dir AS STRING
+COMMON SHARED nodejs_dir AS STRING
+COMMON SHARED temp_dir AS STRING
+COMMON SHARED config_main AS STRING
+COMMON SHARED obs_change_scene AS STRING
+COMMON SHARED obs_get_scene AS STRING
+COMMON SHARED filePrevious AS STRING
+COMMON SHARED fileStat AS STRING
+COMMON SHARED fileCheckVersion AS STRING
+COMMON SHARED obscommand_file AS STRING
+
+COMMON SHARED Exe_OK AS _BYTE
+COMMON SHARED Exe_Fail AS _BYTE
+COMMON SHARED Exe_Fail_First AS _BYTE
+COMMON SHARED Exe_Fail_First_Stream1 AS _BYTE
+COMMON SHARED Exe_Fail_First_Stream2 AS _BYTE
+
+COMMON SHARED __MultiCameraSwitch AS _BYTE
+
+'Tooltips
+COMMON SHARED rtmp_codec_video_level$
+COMMON SHARED rtmp_codec_video_profile$
+COMMON SHARED rtmp_codec_audio_channels$
+COMMON SHARED rtmp_codec_audio_samplerate$
+COMMON SHARED rtmp_codec_audio_profile$
+COMMON SHARED rtmp_codec_video_width$
+COMMON SHARED rtmp_codec_video_height$
+COMMON SHARED rtmp_codec_video_resolution$
+COMMON SHARED rtmp_codec_version$
+COMMON SHARED rtmp_codec_rtmp_version$
+
+'Timer01
+COMMON SHARED mouseX
+COMMON SHARED mouseY
+COMMON SHARED Timer_Fail AS INTEGER
+COMMON SHARED Timer_Fail_Count AS INTEGER
+COMMON SHARED Timer_Fail_Stream1 AS INTEGER
+COMMON SHARED Timer_Fail_Stream2 AS INTEGER
+COMMON SHARED FullScreen AS _BYTE
+COMMON SHARED BG
+COMMON SHARED nginx_warmup AS _BYTE
+COMMON SHARED Port_Client$
+COMMON SHARED td_update#
+COMMON SHARED timer1#
+COMMON SHARED Debug_Timer#
+COMMON SHARED __returnPreviousScene
+COMMON SHARED returnPreviousSceneTime AS _BYTE
+COMMON SHARED returnFirstCheck
+COMMON SHARED filePrevious
+COMMON SHARED PUT_Refresh
+COMMON SHARED NoKill
+COMMON SHARED file96$
+COMMON SHARED findSceneName
+COMMON SHARED findSceneName2
+COMMON SHARED streamsUp$
+COMMON SHARED previousScene$
+COMMON SHARED previousSceneDisplay$
+COMMON SHARED rtmp_naccepted$
+COMMON SHARED rtmp_bytes_in$
+COMMON SHARED rtmp_bytes_out$
+COMMON SHARED rtmp_bw_in$
+COMMON SHARED rtmp_bw_out$
+COMMON SHARED rtmp_codec_video$
+COMMON SHARED rtmp_codec_audio$
+COMMON SHARED rtmp_codec_nclients$
+COMMON SHARED rtmp_codec_nclients#
+COMMON SHARED rtmp_codec_nclients_temp#
+COMMON SHARED a$
+COMMON SHARED a2$
+COMMON SHARED d$
+COMMON SHARED I
+COMMON SHARED i2
+COMMON SHARED i3
+COMMON SHARED stats_rtmp.xml$
+COMMON SHARED tPing1#
+COMMON SHARED client
+COMMON SHARED tPing2#
+COMMON SHARED tPingOut#
+COMMON SHARED EOL$
+COMMON SHARED Timer_GET!
+COMMON SHARED __MultiCameraSwitch
+COMMON SHARED Stream%
+COMMON SHARED multiStream1#
+COMMON SHARED multiStream2#
+COMMON SHARED pos_xml_m&
+COMMON SHARED Kb_Diff#
+COMMON SHARED Bandwidth_Threshold
+COMMON SHARED rtmp_bytes_in#
+COMMON SHARED rtmp_bytes_in_temp1#
+COMMON SHARED rtmp_bytes_in_temp2#
+COMMON SHARED Stream_Fail_Delay
+COMMON SHARED SD
+COMMON SHARED Kb_Diff_stream1#
+COMMON SHARED multiStream1_temp1#
+COMMON SHARED multiStream1_temp2#
+COMMON SHARED Kb_Diff_stream2#
+COMMON SHARED multiStream2_temp1#
+COMMON SHARED multiStream2_temp2#
+COMMON SHARED Scene_OK
+COMMON SHARED Scene_Fail
+COMMON SHARED Scene_Intro
+COMMON SHARED Exe_OK
+COMMON SHARED Scene_Current$
+COMMON SHARED Exe_Fail
+COMMON SHARED lastStreamUp$
+COMMON SHARED returnPreviousSceneRemember
+COMMON SHARED titleScene1
+COMMON SHARED titleScene2
+COMMON SHARED titleScene12
+COMMON SHARED OBS_URL
+COMMON SHARED OBS_PW
+COMMON SHARED Exe_Fail_First
+COMMON SHARED Timer_Fail_First
+COMMON SHARED Timer_Fail_First_Stream1
+COMMON SHARED Exe_Fail_First_Stream1
+COMMON SHARED Exe_Fail_First_Stream2
+COMMON SHARED Timer_Fail_First_Stream
+COMMON SHARED Timer_Fail_First_Stream2
+COMMON SHARED td_display#
+
+'Misc
+COMMON SHARED FGwin AS LONG
+COMMON SHARED file4_var AS STRING
+COMMON SHARED file4_val AS STRING
+COMMON SHARED BSOD AS LONG
+COMMON SHARED OptionsMenuAlwaysOnTop AS INTEGER
+COMMON SHARED AlwaysOnTop AS INTEGER
+COMMON SHARED Myhwnd AS _UNSIGNED LONG
+COMMON SHARED y AS LONG
+COMMON SHARED HWND_TOPMOST AS LONG
+COMMON SHARED SWP_NOMOVE AS LONG
+COMMON SHARED SWP_NOSIZE AS LONG
+COMMON SHARED SWP_SHOWWINDOW AS LONG
+COMMON SHARED HWND_BOTTOM AS LONG
+COMMON SHARED SWP_NOACTIVATE AS LONG
+COMMON SHARED About AS INTEGER
+COMMON SHARED Answer AS INTEGER
+COMMON SHARED Pt AS LONG
+COMMON SHARED x2 AS INTEGER
+COMMON SHARED Px AS INTEGER
+COMMON SHARED Py AS INTEGER
+COMMON SHARED NULL AS INTEGER
+COMMON SHARED xHeader1 AS STRING
+COMMON SHARED xHeader2 AS STRING
+COMMON SHARED xHeader3 AS STRING
+COMMON SHARED xHeader4 AS STRING
+COMMON SHARED xHeader5 AS STRING
+COMMON SHARED xHeader6 AS STRING
+COMMON SHARED xHeader7 AS STRING
+COMMON SHARED xHeader8 AS STRING
+COMMON SHARED xHeader9 AS STRING
+COMMON SHARED x AS STRING
+COMMON SHARED l AS INTEGER
+COMMON SHARED rtmp_naccepted AS DOUBLE
+COMMON SHARED rtmp_bytes_out AS DOUBLE
+COMMON SHARED rtmp_bw_in AS DOUBLE
+COMMON SHARED rtmp_bw_out AS DOUBLE
+
+'OnLoad
+COMMON SHARED config_dir
+COMMON SHARED config_main
+COMMON SHARED URL
+COMMON SHARED Port
+COMMON SHARED fileStat
+COMMON SHARED Desktop_Width_Position
+COMMON SHARED Desktop_Height_Position
+COMMON SHARED file4$
+COMMON SHARED EqualFound
+COMMON SHARED MultiCameraSwitch$
+COMMON SHARED urlStream1
+COMMON SHARED urlStream2
+COMMON SHARED returnPreviousScene
+COMMON SHARED returnPreviousSceneRemember$
+
+
+'SUB Indicators
+COMMON SHARED AliveIndicator!
+COMMON SHARED __BGA
+COMMON SHARED BGA
+COMMON SHARED aioffsetX
+COMMON SHARED aioffsetY
+
+'SUB TIMEms
+COMMON SHARED tout
+COMMON SHARED tout#
+COMMON SHARED tout2#
+COMMON SHARED toutint#
+COMMON SHARED toutdec#
+COMMON SHARED plus
+
+'SUB calcbw
+COMMON SHARED bout
+COMMON SHARED bout2#
+COMMON SHARED bout#
+COMMON SHARED boutnodec
+COMMON SHARED bits
+COMMON SHARED boutint#
+COMMON SHARED boutm$
+COMMON SHARED boutdec#
+COMMON SHARED boutdec$
+
+'FUNC calc_nginx$
+COMMON SHARED convertTime#
+COMMON SHARED includeSec
+COMMON SHARED t_hr
+COMMON SHARED t_min
+COMMON SHARED t_sec
+
+COMMON SHARED RED_WARNING AS _UNSIGNED LONG
+COMMON SHARED RED_FAIL AS _UNSIGNED LONG
+COMMON SHARED GREEN_OK AS _UNSIGNED LONG
+
+RED_WARNING = _RGB32(205, 64, 32)
+RED_FAIL = _RGB32(255, 32, 16)
+GREEN_OK = _RGB32(123, 151, 163)
+
+q = _EXIT
+
+PUT_Fail:
+IF ERR THEN CLS: _PRINTSTRING (20, 30), "ERR, _ERRORLINE:" + STR$(ERR) + "," + STR$(_ERRORLINE): _AUTODISPLAY: _DELAY 3: IF PUT_Refresh = 1 THEN PUT_Refresh = 0: Refresh_Request = 1: RESUME NEXT ELSE RESUME NEXT
+'END (InForm_Deleted.bas)
+
 ': External modules: ---------------------------------------------------------------
-'$INCLUDE:'InForm_Deleted.bas'
 '$INCLUDE:'InForm\InForm.ui'
 '$INCLUDE:'InForm\xp.uitheme'
 '$INCLUDE:'loopy_nginx_monitor.frm'
-'$INCLUDE:'loopy_nginx_monitor_light.frm'
 
 ': Event procedures: ---------------------------------------------------------------
+': External modules: ---------------------------------------------------------------
+'$INCLUDE:'loopy_nginx_monitor_light.frm'
 '$INCLUDE:'image.png.MEM'
+': ---------------------------------------------------------------------------------
 SUB __UI_BeforeInit
     $VERSIONINFO:CompanyName=loopy750
     $VERSIONINFO:ProductName=Loopy NGINX Monitor
     $VERSIONINFO:Comments=Monitor NGINX RTMP Streams
     $VERSIONINFO:FileDescription=Loopy NGINX Monitor
-    $VERSIONINFO:FILEVERSION#=1,4,0,0
-    $VERSIONINFO:PRODUCTVERSION#=1,4,0,0
+    $VERSIONINFO:FILEVERSION#=1,4,1,0
+    $VERSIONINFO:PRODUCTVERSION#=1,4,1,0
     $CHECKING:ON
     $RESIZE:OFF
     IF ERR = 0 THEN
         $EXEICON:'.\icon.ico'
         _TITLE "Loopy NGINX Monitor - loopy750"
     END IF
-    Ver$ = "1.4.0"
+    Ver = "1.4.1"
+    VerDate = "02/21"
 
     'Always on top : ------------------------------------------------------------------
     CONST HWND_TOPMOST%& = -1
@@ -198,8 +481,10 @@ SUB __UI_OnLoad
     obscommand_file = obscommand_dir + "\OBSCommand.exe"
     filePrevious = temp_dir + "\returnPreviousScene.tmp"
     fileCheckVersion = temp_dir + "\checkversion.txt"
+    outputBitrateFile = temp_dir + "\outputBitrate.txt"
     outputStatusFile = temp_dir + "\outputStatus.txt"
 
+    IF _DIREXISTS(config_dir) THEN IF NOT _DIREXISTS(temp_dir) THEN MKDIR temp_dir
     IF _FILEEXISTS(filePrevious) THEN KILL filePrevious
     _ALLOWFULLSCREEN OFF
     RANDOMIZE TIMER
@@ -209,7 +494,7 @@ SUB __UI_OnLoad
     Stream_Fail_Delay = 10
     Desktop_Width_Position = 160
     Desktop_Height_Position = 100
-    IF NOT _FILEEXISTS(config_main) THEN RefreshDisplayRequest = 1: Error_msg$ = "File " + c34 + config_main + c34 + " cannot be accessed, check if it exists. (#1)": _DELAY 3
+    IF NOT _FILEEXISTS(config_main) THEN RefreshDisplayRequest = 1: Error_msg$ = "- Unable to read config file in the " + c34 + "Documents\Loopy NGINX Monitor" + c34 + " folder" + CHR$(10) + "- File " + c34 + config_main + c34 + " cannot be accessed, check if it exists. (#1)": _DELAY 3
     IF _FILEEXISTS(config_main) THEN
         OPEN config_main FOR INPUT AS #4 'Basic INI management, nothing fancy needed
         DO
@@ -279,10 +564,10 @@ SUB __UI_OnLoad
     IF __MultiCameraSwitch = 0 THEN __returnPreviousScene = 0: returnPreviousSceneRemember = 0
     IF WebsocketMethod <> "nodejs" THEN WebsocketMethod = "obscommand"
 
-IF WebsocketMethod = "nodejs" AND NOT _DIREXISTS(nodejs_dir) THEN
-        Error_msg$ = "Folder " + c34 + nodejs_dir + c34 + " cannot be accessed, check if it exists. (#2)"
+    IF WebsocketMethod = "nodejs" AND NOT _DIREXISTS(nodejs_dir) THEN
+        Error_msg$ = "- Folder " + c34 + nodejs_dir + c34 + " cannot be accessed, check if it exists. (#2)"
     ELSEIF WebsocketMethod = "obscommand" AND NOT _DIREXISTS(obscommand_dir) THEN
-        Error_msg$ = "Folder " + c34 + obscommand_dir + c34 + " cannot be accessed, check if it exists. (#2)"
+        Error_msg$ = "- Folder " + c34 + obscommand_dir + c34 + " cannot be accessed, check if it exists. (#2)"
     END IF
     IF Error_msg$ <> "" THEN
         _DELAY 1
@@ -292,10 +577,15 @@ IF WebsocketMethod = "nodejs" AND NOT _DIREXISTS(nodejs_dir) THEN
         _FREEIMAGE BSOD&
         COLOR _RGB(254, 254, 254), _RGB(1, 120, 220)
         _PRINTSTRING (37, 12 * 18), "Program encountered an error and needs to restart."
-        _PRINTSTRING (37, 14 * 18), Error_msg$
+        IF INSTR(Error_msg$, CHR$(10)) >= 1 THEN
+            _PRINTSTRING (37, 14 * 18), LEFT$(Error_msg$, INSTR(Error_msg$, CHR$(10)) - 1)
+            _PRINTSTRING (37, 15 * 18), MID$(Error_msg$, INSTR(Error_msg$, CHR$(10)) + 1)
+        ELSE
+            _PRINTSTRING (37, 14 * 18), Error_msg$
+        END IF
         _PRINTSTRING (37, 22 * 18), "Program will exit shortly"
         _DISPLAY
-        _DELAY 10
+        _DELAY 15
         SYSTEM
     END IF
 
@@ -377,16 +667,16 @@ IF WebsocketMethod = "nodejs" AND NOT _DIREXISTS(nodejs_dir) THEN
         CLOSE #224
         IF _FILEEXISTS(fileCheckVersion) THEN KILL fileCheckVersion
         updateResult$ = file224$
-        IF file224$ <> Ver$ THEN verCheck$ = "A new version is available..."
+        IF file224$ <> Ver THEN verCheck$ = "A new version is available..."
         IF file224$ = "" OR file224$ = "404: Not Found" THEN verCheck$ = "Unable to check for new version..."
-        IF file224$ = Ver$ THEN verCheck$ = "You are using the latest version..."
+        IF file224$ = Ver THEN verCheck$ = "You are using the latest version..."
     END IF
 
     iniFeatures = 0
 
     Port_Client$ = "TCP/IP:" + Port + ":"
 
-    IF Scene_OK = "" OR Scene_Fail = "" OR Scene_Intro = "" OR URL = "" OR Port = "" OR OBS_URL = "" THEN RefreshDisplayRequest = 1: Error_msg$ = "Variable/s for scenes empty, check if " + c34 + config_main + c34 + " exists. (#3)": _DELAY 3
+    IF Scene_OK = "" OR Scene_Fail = "" OR Scene_Intro = "" OR URL = "" OR Port = "" OR OBS_URL = "" THEN RefreshDisplayRequest = 1: Error_msg$ = "- Variable/s for scenes empty, check if " + c34 + config_main + c34 + " exists. (#3)": _DELAY 3
 
     IF __MultiCameraSwitch = 0 THEN
         Scene_Current$ = Scene_OK
@@ -444,17 +734,18 @@ IF WebsocketMethod = "nodejs" AND NOT _DIREXISTS(nodejs_dir) THEN
     Control(mouseYLB).Hidden = True
     Control(__ERRORLINELB).Hidden = True
     Control(PictureBoxLogoBottom).Hidden = False
-    SetCaption (versionFrame), "v" + Ver$
+    SetCaption (versionFrame), "v" + Ver
 
     ON TIMER(1) Timer01
     TIMER ON
 END SUB
 
-'BeforeUpdateDisplay ----------------------------------------------------------------------------------------------------------------------------------------------------
 SUB __UI_BeforeUpdateDisplay
     'This event occurs at approximately 30 frames per second.
     'You can change the update frequency by calling SetFrameRate DesiredRate%
-    IF NOT _WINDOWHASFOCUS THEN SetFrameRate 30 ELSE SetFrameRate 36
+
+    'BeforeUpdateDisplay ----------------------------------------------------------------------------------------------------------------------------------------------------
+    IF NOT _WINDOWHASFOCUS THEN SetFrameRate 15 ELSE SetFrameRate 30
 
     IF RefreshDisplayRequest = 1 THEN
         RefreshDisplayRequest = 0
@@ -465,7 +756,12 @@ SUB __UI_BeforeUpdateDisplay
         _FREEIMAGE BSOD&
         COLOR _RGB(254, 254, 254), _RGB(1, 120, 220)
         _PRINTSTRING (37, 12 * 18), "Program encountered an error and needs to restart."
-        _PRINTSTRING (37, 14 * 18), Error_msg$
+        IF INSTR(Error_msg$, CHR$(10)) >= 1 THEN
+            _PRINTSTRING (37, 14 * 18), LEFT$(Error_msg$, INSTR(Error_msg$, CHR$(10)) - 1)
+            _PRINTSTRING (37, 15 * 18), MID$(Error_msg$, INSTR(Error_msg$, CHR$(10)) + 1)
+        ELSE
+            _PRINTSTRING (37, 14 * 18), Error_msg$
+        END IF
         _PRINTSTRING (37, 22 * 18), "Program will resume shortly"
         _DISPLAY
         _DELAY 10
@@ -500,6 +796,7 @@ SUB __UI_BeforeUpdateDisplay
 
     IF _EXIT THEN
         IF _FILEEXISTS(filePrevious) THEN KILL filePrevious
+        IF _FILEEXISTS(outputBitrateFile) THEN KILL outputBitrateFile
         IF _FILEEXISTS(outputStatusFile) THEN KILL outputStatusFile
         SYSTEM
     END IF
@@ -525,8 +822,9 @@ SUB __UI_BeforeUpdateDisplay
         CASE IS >= 64
             ProgressCounter = 1
     END SELECT
+    '------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 END SUB
-'------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 SUB __UI_BeforeUnload
     'If you set __UI_UnloadSignal = False here you can
@@ -552,11 +850,139 @@ SUB __UI_Click (id AS LONG)
 
         CASE CurrentScene
 
-        CASE Debug
+        CASE DebugFrame
 
         CASE Stream1
 
         CASE Stream2
+
+        CASE versionFrame
+
+        CASE FileMenuExit
+            IF _FILEEXISTS(filePrevious) THEN KILL filePrevious
+            IF _FILEEXISTS(outputBitrateFile) THEN KILL outputBitrateFile
+            IF _FILEEXISTS(outputStatusFile) THEN KILL outputStatusFile
+            SYSTEM
+
+        CASE RMTPLB
+
+        CASE clientsLB
+
+        CASE VideoLB
+
+        CASE AudioLB
+
+        CASE InBytesLB
+
+        CASE OutBytesLB
+
+        CASE InBitssLB
+
+        CASE OutBitssLB
+
+        CASE TimeLB
+
+        CASE rtmp_nacceptedLB
+
+        CASE rtmp_codec_nclientsLB
+
+        CASE rtmp_codec_videoLB
+
+        CASE rtmp_codec_audioLB
+
+        CASE rtmp_bytes_inLB
+
+        CASE rtmp_bytes_outLB
+
+        CASE rtmp_bw_inLB
+
+        CASE rtmp_bw_outLB
+
+        CASE rtmp_uptimeLB
+
+        CASE InBytesDifferenceLB
+
+        CASE StreamFailTimerLB
+
+        CASE FailCountLB
+
+        CASE ServerPingLB
+
+        CASE UpdateIntervalLB
+
+        CASE Kb_DiffLB
+
+        CASE Timer_FailLB
+
+        CASE Timer_Fail_CountLB
+
+        CASE tPingOutLB
+
+        CASE td_updateLB
+
+        CASE BandwidthThresholdLB
+
+        CASE StreamFailDelayLB
+
+        CASE MultiCameraSwitchLB
+
+        CASE Bandwidth_ThresholdLB
+
+        CASE Stream_Fail_DelayLB
+
+        CASE MultiCameraSwitchStatusLB
+
+        CASE TimerLB
+
+        CASE TimerSnapshotLB
+
+        CASE td_displayVarLB
+
+        CASE mouseXVarLB
+
+        CASE mouseYVarLB
+
+        CASE __ERRORLINEVarLB
+
+        CASE Debug_TimerLB
+
+        CASE Debug_Timer_SnapshotLB
+
+        CASE td_displayLB
+
+        CASE mouseXLB
+
+        CASE mouseYLB
+
+        CASE __ERRORLINELB
+
+        CASE InBytesLB2
+
+        CASE InBytesDifferenceLB2
+
+        CASE failLB
+
+        CASE multiStream1LB
+
+        CASE Kb_Diff_stream1LB
+
+        CASE Timer_Fail_Stream1LB
+
+        CASE Scene_CurrentLB
+
+        CASE PictureBox1
+
+        CASE InBytesLB3
+
+        CASE InBytesDifferenceLB3
+
+        CASE failLB2
+
+        CASE multiStream2LB
+
+        CASE Kb_Diff_stream2LB
+
+        CASE Timer_Fail_Stream2LB
 
         CASE OptionsMenuAlwaysOnTop
             IF AlwaysOnTop <> 1 THEN
@@ -581,20 +1007,6 @@ SUB __UI_Click (id AS LONG)
                 SetRadioButtonValue OptionsMenuDebug
             END IF
 
-        CASE OptionsMenuFullscreen
-            IF FullScreen <> 1 THEN
-                FullScreen = 1
-                _FULLSCREEN _SQUAREPIXELS , _SMOOTH
-            ELSE
-                FullScreen = 0
-                _FULLSCREEN _OFF
-            END IF
-
-        CASE FileMenuExit
-            IF _FILEEXISTS(filePrevious) THEN KILL filePrevious
-            IF _FILEEXISTS(outputStatusFile) THEN KILL outputStatusFile
-            SYSTEM
-
         CASE HelpMenuVisitWebsite
             SHELL _DONTWAIT _HIDE "%ComSpec% /C START " + c34 + c34 + " /B https://github.com/loopy750/NGINX-Stats-Monitor"
 
@@ -617,131 +1029,32 @@ SUB __UI_Click (id AS LONG)
             CLOSE #224
             IF _FILEEXISTS(fileCheckVersion) THEN KILL fileCheckVersion
             updateResult$ = file224$
-            IF file224$ <> Ver$ THEN verCheck$ = "A new version is available..."
+            IF file224$ <> Ver THEN verCheck$ = "A new version is available..."
             IF file224$ = "" OR file224$ = "404: Not Found" THEN verCheck$ = "Unable to check for new version..."
-            IF file224$ = Ver$ THEN verCheck$ = "You are using the latest version..."
+            IF file224$ = Ver THEN verCheck$ = "You are using the latest version..."
             IF verCheck <> "" THEN updateDisplayCounter = 0
 
+        CASE OptionsMenuFullscreen
+            IF FullScreen <> 1 THEN
+                FullScreen = 1
+                _FULLSCREEN _SQUAREPIXELS , _SMOOTH
+            ELSE
+                FullScreen = 0
+                _FULLSCREEN _OFF
+            END IF
+
+        CASE IndicatorLB
+
         CASE HelpMenuAbout
-            Answer = MessageBox("Loopy NGINX Stats Monitor v" + Ver$ + " (08/20)\nby loopy750\n\nGitHub: https://www.github.com/loopy750", "About", MsgBox_OkOnly + MsgBox_Information)
+            Answer = MessageBox("Loopy NGINX Stats Monitor v" + Ver + " (" + VerDate + ") \nby loopy750\n\nGitHub: https://www.github.com/loopy750", "About", MsgBox_OkOnly + MsgBox_Information)
 
-        CASE RMTPLB
+        CASE StatusLB
 
-        CASE clientsLB
+        CASE PictureBoxLogoBottom
 
-        CASE VideoLB
+        CASE OBSRemoteLB
 
-        CASE AudioLB
-
-        CASE InBytesLB
-
-        CASE OutBytesLB
-
-        CASE InBitssLB
-
-        CASE OutBitssLB
-
-        CASE TimeLB
-
-        CASE rtmp_nacceptedLB
-
-        CASE rtmp_codec_nclientsLB
-
-        CASE rtmp_codec_videoLB
-
-        CASE rtmp_codec_audioLB
-
-        CASE rtmp_bytes_inLB
-
-        CASE rtmp_bytes_outLB
-
-        CASE rtmp_bw_inLB
-
-        CASE rtmp_bw_outLB
-
-        CASE rtmp_uptimeLB
-
-        CASE InBytesDifferenceLB
-
-        CASE StreamFailTimerLB
-
-        CASE FailCountLB
-
-        CASE ServerPingLB
-
-        CASE UpdateIntervalLB
-
-        CASE Kb_DiffLB
-
-        CASE Timer_FailLB
-
-        CASE Timer_Fail_CountLB
-
-        CASE tPingOutLB
-
-        CASE td_updateLB
-
-        CASE BandwidthThresholdLB
-
-        CASE StreamFailDelayLB
-
-        CASE MultiCameraSwitchLB
-
-        CASE Bandwidth_ThresholdLB
-
-        CASE Stream_Fail_DelayLB
-
-        CASE MultiCameraSwitchStatusLB
-
-        CASE TimerLB
-
-        CASE TimerSnapshotLB
-
-        CASE td_displayVarLB
-
-        CASE mouseXVarLB
-
-        CASE mouseYVarLB
-
-        CASE __ERRORLINEVarLB
-
-        CASE Debug_TimerLB
-
-        CASE Debug_Timer_SnapshotLB
-
-        CASE td_displayLB
-
-        CASE mouseXLB
-
-        CASE mouseYLB
-
-        CASE __ERRORLINELB
-
-        CASE InBytesLB2
-
-        CASE InBytesDifferenceLB2
-
-        CASE failLB
-
-        CASE InBytesLB3
-
-        CASE InBytesDifferenceLB3
-
-        CASE failLB2
-
-        CASE multiStream1LB
-
-        CASE Kb_Diff_stream1LB
-
-        CASE Timer_Fail_Stream1LB
-
-        CASE multiStream2LB
-
-        CASE Kb_Diff_stream2LB
-
-        CASE Timer_Fail_Stream2LB
-
-        CASE Scene_CurrentLB
+        CASE OBS_RemoteLB
 
     END SELECT
 END SUB
@@ -764,19 +1077,15 @@ SUB __UI_MouseEnter (id AS LONG)
 
         CASE CurrentScene
 
-        CASE Debug
+        CASE DebugFrame
 
         CASE Stream1
 
         CASE Stream2
 
-        CASE OptionsMenuAlwaysOnTop
-
-        CASE OptionsMenuDebug
+        CASE versionFrame
 
         CASE FileMenuExit
-
-        CASE HelpMenuAbout
 
         CASE RMTPLB
 
@@ -876,17 +1185,21 @@ SUB __UI_MouseEnter (id AS LONG)
 
         CASE failLB
 
-        CASE InBytesLB3
-
-        CASE InBytesDifferenceLB3
-
-        CASE failLB2
-
         CASE multiStream1LB
 
         CASE Kb_Diff_stream1LB
 
         CASE Timer_Fail_Stream1LB
+
+        CASE Scene_CurrentLB
+
+        CASE PictureBox1
+
+        CASE InBytesLB3
+
+        CASE InBytesDifferenceLB3
+
+        CASE failLB2
 
         CASE multiStream2LB
 
@@ -894,7 +1207,25 @@ SUB __UI_MouseEnter (id AS LONG)
 
         CASE Timer_Fail_Stream2LB
 
-        CASE Scene_CurrentLB
+        CASE OptionsMenuDebug
+
+        CASE HelpMenuVisitWebsite
+
+        CASE HelpMenuCheckForUpdates
+
+        CASE OptionsMenuFullscreen
+
+        CASE IndicatorLB
+
+        CASE HelpMenuAbout
+
+        CASE StatusLB
+
+        CASE PictureBoxLogoBottom
+
+        CASE OBSRemoteLB
+
+        CASE OBS_RemoteLB
 
     END SELECT
 END SUB
@@ -917,19 +1248,15 @@ SUB __UI_MouseLeave (id AS LONG)
 
         CASE CurrentScene
 
-        CASE Debug
+        CASE DebugFrame
 
         CASE Stream1
 
         CASE Stream2
 
-        CASE OptionsMenuAlwaysOnTop
-
-        CASE OptionsMenuDebug
+        CASE versionFrame
 
         CASE FileMenuExit
-
-        CASE HelpMenuAbout
 
         CASE RMTPLB
 
@@ -1029,17 +1356,21 @@ SUB __UI_MouseLeave (id AS LONG)
 
         CASE failLB
 
-        CASE InBytesLB3
-
-        CASE InBytesDifferenceLB3
-
-        CASE failLB2
-
         CASE multiStream1LB
 
         CASE Kb_Diff_stream1LB
 
         CASE Timer_Fail_Stream1LB
+
+        CASE Scene_CurrentLB
+
+        CASE PictureBox1
+
+        CASE InBytesLB3
+
+        CASE InBytesDifferenceLB3
+
+        CASE failLB2
 
         CASE multiStream2LB
 
@@ -1047,13 +1378,32 @@ SUB __UI_MouseLeave (id AS LONG)
 
         CASE Timer_Fail_Stream2LB
 
-        CASE Scene_CurrentLB
+        CASE OptionsMenuDebug
+
+        CASE HelpMenuVisitWebsite
+
+        CASE HelpMenuCheckForUpdates
+
+        CASE OptionsMenuFullscreen
+
+        CASE IndicatorLB
+
+        CASE HelpMenuAbout
+
+        CASE StatusLB
+
+        CASE PictureBoxLogoBottom
+
+        CASE OBSRemoteLB
+
+        CASE OBS_RemoteLB
 
     END SELECT
 END SUB
 
 SUB __UI_FocusIn (id AS LONG)
     SELECT CASE id
+        CASE 0
     END SELECT
 END SUB
 
@@ -1061,6 +1411,7 @@ SUB __UI_FocusOut (id AS LONG)
     'This event occurs right before a control loses focus.
     'To prevent a control from losing focus, set __UI_KeepFocus = True below.
     SELECT CASE id
+        CASE 0
     END SELECT
 END SUB
 
@@ -1082,19 +1433,15 @@ SUB __UI_MouseDown (id AS LONG)
 
         CASE CurrentScene
 
-        CASE Debug
+        CASE DebugFrame
 
         CASE Stream1
 
         CASE Stream2
 
-        CASE OptionsMenuAlwaysOnTop
-
-        CASE OptionsMenuDebug
+        CASE versionFrame
 
         CASE FileMenuExit
-
-        CASE HelpMenuAbout
 
         CASE RMTPLB
 
@@ -1194,17 +1541,21 @@ SUB __UI_MouseDown (id AS LONG)
 
         CASE failLB
 
-        CASE InBytesLB3
-
-        CASE InBytesDifferenceLB3
-
-        CASE failLB2
-
         CASE multiStream1LB
 
         CASE Kb_Diff_stream1LB
 
         CASE Timer_Fail_Stream1LB
+
+        CASE Scene_CurrentLB
+
+        CASE PictureBox1
+
+        CASE InBytesLB3
+
+        CASE InBytesDifferenceLB3
+
+        CASE failLB2
 
         CASE multiStream2LB
 
@@ -1212,7 +1563,25 @@ SUB __UI_MouseDown (id AS LONG)
 
         CASE Timer_Fail_Stream2LB
 
-        CASE Scene_CurrentLB
+        CASE OptionsMenuDebug
+
+        CASE HelpMenuVisitWebsite
+
+        CASE HelpMenuCheckForUpdates
+
+        CASE OptionsMenuFullscreen
+
+        CASE IndicatorLB
+
+        CASE HelpMenuAbout
+
+        CASE StatusLB
+
+        CASE PictureBoxLogoBottom
+
+        CASE OBSRemoteLB
+
+        CASE OBS_RemoteLB
 
     END SELECT
 END SUB
@@ -1235,19 +1604,15 @@ SUB __UI_MouseUp (id AS LONG)
 
         CASE CurrentScene
 
-        CASE Debug
+        CASE DebugFrame
 
         CASE Stream1
 
         CASE Stream2
 
-        CASE OptionsMenuAlwaysOnTop
-
-        CASE OptionsMenuDebug
+        CASE versionFrame
 
         CASE FileMenuExit
-
-        CASE HelpMenuAbout
 
         CASE RMTPLB
 
@@ -1347,17 +1712,21 @@ SUB __UI_MouseUp (id AS LONG)
 
         CASE failLB
 
-        CASE InBytesLB3
-
-        CASE InBytesDifferenceLB3
-
-        CASE failLB2
-
         CASE multiStream1LB
 
         CASE Kb_Diff_stream1LB
 
         CASE Timer_Fail_Stream1LB
+
+        CASE Scene_CurrentLB
+
+        CASE PictureBox1
+
+        CASE InBytesLB3
+
+        CASE InBytesDifferenceLB3
+
+        CASE failLB2
 
         CASE multiStream2LB
 
@@ -1365,7 +1734,25 @@ SUB __UI_MouseUp (id AS LONG)
 
         CASE Timer_Fail_Stream2LB
 
-        CASE Scene_CurrentLB
+        CASE OptionsMenuDebug
+
+        CASE HelpMenuVisitWebsite
+
+        CASE HelpMenuCheckForUpdates
+
+        CASE OptionsMenuFullscreen
+
+        CASE IndicatorLB
+
+        CASE HelpMenuAbout
+
+        CASE StatusLB
+
+        CASE PictureBoxLogoBottom
+
+        CASE OBSRemoteLB
+
+        CASE OBS_RemoteLB
 
     END SELECT
 END SUB
@@ -1374,16 +1761,19 @@ SUB __UI_KeyPress (id AS LONG)
     'When this event is fired, __UI_KeyHit will contain the code of the key hit.
     'You can change it and even cancel it by making it = 0
     SELECT CASE id
+        CASE 0
     END SELECT
 END SUB
 
 SUB __UI_TextChanged (id AS LONG)
     SELECT CASE id
+        CASE 0
     END SELECT
 END SUB
 
 SUB __UI_ValueChanged (id AS LONG)
     SELECT CASE id
+        CASE 0
     END SELECT
 END SUB
 
@@ -1494,19 +1884,33 @@ END FUNCTION
 
 SUB statusOutputToFile (outputMSG$)
 
+    TIMER STOP
     OPEN outputStatusFile FOR OUTPUT AS #48
     PRINT #48, outputMSG$
     CLOSE #48
+    TIMER ON
 
 END SUB
 
-'Timer01 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+SUB statusBitrateToFile (outputBR$)
+
+    TIMER STOP
+    OPEN outputBitrateFile FOR OUTPUT AS #56
+    PRINT #56, outputBR$
+    CLOSE #56
+    TIMER ON
+
+END SUB
+
 SUB Timer01
+    'Timer01 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
     td_update# = TIMER(.001) - timer1#
     timer1# = TIMER(.001)
 
     'Debug moved down from here ---------------------------------------------------------------------------------------------------------------------------------------------------
     'Get OBS scene moved down from here -------------------------------------------------------------------------------------------------------------------------------------------
+
+    IF _DIREXISTS(config_dir) THEN IF NOT _DIREXISTS(temp_dir) THEN MKDIR temp_dir
 
     SELECT CASE WebsocketMethod
         CASE "nodejs"
@@ -1526,7 +1930,7 @@ SUB Timer01
     tPing2# = TIMER(.001)
     tPingOut# = (tPing2# - tPing1#)
 
-    IF client THEN NULL = NULL ELSE RefreshDisplayRequest = 1: Error_msg$ = "Unable to connect, check if " + c34 + URL + ":" + Port + c34 + " is correct. (#4)": _DELAY 3: GOTO URL_OK
+    IF client THEN NULL = NULL ELSE RefreshDisplayRequest = 1: Error_msg$ = "- Unable to connect, check if " + c34 + URL + ":" + Port + c34 + " is correct." + CHR$(10) + "- Program is unable to read the NGINX /stats URL from its http server. (#4)": _DELAY 3: GOTO URL_OK
 
     EOL$ = CHR$(13) + CHR$(10)
     xHeader1$ = "GET /" + fileStat + " HTTP/1.1" + EOL$
@@ -1741,7 +2145,7 @@ SUB Timer01
         SetCaption (Timer_Fail_Stream2LB), calc_nginx$(Timer_Fail_Stream2, 1)
     END IF
 
-    IF Scene_OK = "" OR Scene_Fail = "" OR Scene_Intro = "" THEN RefreshDisplayRequest = 1: Error_msg$ = "Variable/s for scenes empty, check if " + c34 + config_main + c34 + " exists. (#5)": _DELAY 3
+    IF Scene_OK = "" OR Scene_Fail = "" OR Scene_Intro = "" THEN RefreshDisplayRequest = 1: Error_msg$ = "- Variable/s for scenes empty, check if " + c34 + config_main + c34 + " exists. (#5)": _DELAY 3
 
     IF Timer_Fail >= 1 AND Exe_OK = 1 AND streamsUp$ <> "0" THEN
         LoadImageMEM Control(PictureBox1), "tick_warning.png"
@@ -1856,6 +2260,7 @@ SUB Timer01
 
     Exit_returnPreviousSceneCheck:
     '---------------------------------------
+    IF __FileStatusOutput = 1 THEN statusBitrateToFile "Bitrate: (#1: " + _TRIM$(STR$(Kb_Diff_stream1#)) + " Kb/s) (#2: " + _TRIM$(STR$(Kb_Diff_stream2#)) + " Kb/s)"
 
     'Execute Stream OK
     IF __MultiCameraSwitch = 0 THEN
@@ -2035,7 +2440,7 @@ SUB Timer01
         END IF
     END IF
 
-    IF nginx_warmup = 1 AND returnFirstCheck = 1 AND __MultiCameraSwitch = 1 AND previousSceneDisplay$ = "" THEN RefreshDisplayRequest = 1: Error_msg$ = "Variable/s for scenes empty, check if OBS is open. (#6)": _DELAY 3
+    IF nginx_warmup = 1 AND returnFirstCheck = 1 AND __MultiCameraSwitch = 1 AND previousSceneDisplay$ = "" THEN RefreshDisplayRequest = 1: Error_msg$ = "- Variable/s for scenes empty, check if OBS is open." + CHR$(10) + "- If OBS is open, check communication is available via Node.js or OBSCommand. (#6)": _DELAY 3
 
     'temp2 variables
     rtmp_bytes_in_temp2# = rtmp_bytes_in#
